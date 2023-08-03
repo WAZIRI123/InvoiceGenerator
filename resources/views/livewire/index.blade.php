@@ -108,16 +108,7 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <!-- @foreach($latestSales as $sale)
-                            <tr class="bg-gray-100 hover:bg-primary hover:bg-opacity-20 transition duration-200">
-                                <td class="py-3 pl-2">#{{$loop->iteration}}</td>
-                                <td class="py-3 pl-2 capitalize">{{$sale->product->name}}</td>
-                                <td class="py-3 pl-2">{{$sale->quantity}}</td>
-                                <td class="py-3 pl-2">Tsh {{$sale->product->sale_price}}</td>
-                                <td class="py-3 pl-2">{{$sale->employee_id}}</td>
-                                <td class="py-3 pl-2">{{$sale->created_at}}</td>
-                            </tr>
-                        @endforeach -->
+               
                     </tbody>
                 </table>
             </div>

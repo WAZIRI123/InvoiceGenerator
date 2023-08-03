@@ -9,6 +9,6 @@ class Index extends Component
     
     public function render()
     {
-        return view('livewire.index');
+        return view('livewire.index')->layoutData(['title' => 'Admin Dashboard | School Management System']);
     }
 }

@@ -22,6 +22,12 @@ Route::namespace('App\Livewire')->group(function () {
         Route::prefix('/dashboard')->name('dashboard.')->group(function () {
             Route::get('/', Index::class)->name('index');
         });
+
+        //Employee
+        Route::namespace('Employee')->group(function () {
+
+            Route::get('/employee', Table::class)->name('employee');
+        });
     });
 });
 
