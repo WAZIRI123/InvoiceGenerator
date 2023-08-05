@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <style>
         [x-cloak] {
@@ -22,7 +21,7 @@
     @livewireStyles
 </head>
 <body>
-    <div x-data="{ menuOpen: false }" class=" custom-scrollbar">
+    <div x-data="{ menuOpen: false }" class="custom-scrollbar">
         <div class="">
             @include('layouts.partials.sidebar')
             <div class="lg:pl-64 w-full flex flex-col">
@@ -31,7 +30,7 @@
             </div>
         </div>
         @livewireScripts
-         <!-- <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script> -->
+    
 </body>
 
 </html>

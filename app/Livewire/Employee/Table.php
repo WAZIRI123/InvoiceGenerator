@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employee;
 
+use App\Livewire\Employee\Create;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,6 +10,7 @@ use \Illuminate\View\View;
 
 use App\Models\Employee;
 use App\Models\Product;
+use Livewire\Attributes\On;
 
 class Table extends Component
 {
@@ -50,6 +52,13 @@ class Table extends Component
         return view('livewire.employee.table', [
             'results' => $results
         ])->layoutData(['title' => 'Employee | School Management System']);
+    }
+
+    #[On('post-created')]
+    public function showCreateForm(): void
+    {
+
+        $this->dispatch('post-created')->to(Create::class);
     }
 
     public function sortBy(string $field): void

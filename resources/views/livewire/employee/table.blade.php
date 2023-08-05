@@ -1,9 +1,9 @@
 <div class="h-full bg-gray-200 p-8">
 <div class="mt-8 min-h-screen">
-   
+@livewire('livewire-toast')
     <div class="flex justify-between">
         <div class="text-2xl" >Employees</div>
-        <button type="submit" wire:click="$emitTo('employee.create', 'showCreateForm');" class="text-blue-500">
+        <button type="submit" @click="$dispatch('post-created')" class="text-blue-500">
             <x-custom-components.icon-add />
         </button> 
     </div>
@@ -39,10 +39,10 @@
                     <td class="px-3 py-2" >{{ $result->user_id }}</td>
                     <td class="px-3 py-2" >{{ $result->user?->name }}</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$emitTo('employee.create', 'showEditForm', {{ $result->id}});" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('employee.create', 'showEditForm', { employee: {{ $result->id}} })" class="text-green-500">
                             <x-custom-components.icon-edit />
                         </button>
-                        <button type="submit" wire:click="$emitTo('employee.create', 'showDeleteForm', {{ $result->id}});" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('employee.create', 'showDeleteForm', { employee: {{ $result->id}} })" class="text-red-500">
                             <x-custom-components.icon-delete />
                         </button>
                     </td>
@@ -55,6 +55,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
+    
     @livewire('employee.create')
 </div>
 </div>

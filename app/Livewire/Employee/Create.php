@@ -7,6 +7,7 @@ use \Illuminate\View\View;
 use App\Models\Employee;
 use App\Models\Product;
 use App\Models\User;
+use Livewire\Attributes\On; 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -16,17 +17,10 @@ class Create extends Component
 {
     use AuthorizesRequests, WithFileUploads;
 
-    public $item;
+    public $item=[];
 
-    /**
-     * @var array
-     */
-    protected $listeners = [
-        'showDeleteForm',
-        'showCreateForm',
-        'showEditForm',
-    ];
-
+   
+    
     /**
      * @var array
      */
@@ -37,6 +31,11 @@ class Create extends Component
     /**
      * @var array
      */
+
+     public function mount(){
+        $this->user=auth()->user();
+
+     }
     protected function rules()
     {
         return [
@@ -78,6 +77,7 @@ class Create extends Component
         return view('livewire.employee.create');
     }
 
+    #[On('showDeleteForm')]
     public function showDeleteForm(Employee $employee): void
     {
         $this->authorize('delete', $employee);
@@ -96,18 +96,19 @@ class Create extends Component
         $this->confirmingItemDeletion = false;
         $this->employee = '';
         $this->reset(['item']);
-        $this->emitTo('employee.table', 'refresh');
-        $this->emitTo('livewire-toast', 'show', 'Record Deleted Successfully');
+        $this->dispatch('refresh')->to('employee.table');
+        $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
     }
- 
+    
+    #[On('post-created')]
     public function showCreateForm(): void
     {
-        $this->authorize('create', [Employee::class]);
         $this->confirmingItemCreation = true;
         $this->resetErrorBag();
         $this->reset(['item','profile_picture']);
 
         $this->users = User::orderBy('name')->get();
+
     }
 
     public function createItem(): void
@@ -131,21 +132,25 @@ class Create extends Component
         ]);
 
         $this->confirmingItemCreation = false;
-        $this->emitTo('employee.table', 'refresh');
-        $this->emitTo('livewire-toast', 'show', 'Record Added Successfully');
+        $this->dispatch('refresh')->to('employee.table');
+        $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
     }
- 
+    #[On('showEditForm')]
     public function showEditForm(Employee $employee): void
     {
+       
         $this->authorize('update', $employee);
         $this->resetErrorBag();
         $this->reset(['profile_picture']);
         $this->employee= $employee;
         $this->user= $employee->user;
         $this->item['name']=$employee->user->name;
+       
         $this->item['email']=$employee->user->email;
+        
         $this->oldImage=$employee->user->profile_picture;
         $this->confirmingItemEdit = true;
+        
 
         $this->users = User::orderBy('name')->get();
     }
@@ -173,8 +178,8 @@ class Create extends Component
 
         $this->confirmingItemEdit = false;
         $this->employee = '';
-        $this->emitTo('employee.table', 'refresh');
-        $this->emitTo('livewire-toast', 'show', 'Record Updated Successfully');
+        $this->dispatch('employee.table', 'refresh');
+        $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
     }
 
 }

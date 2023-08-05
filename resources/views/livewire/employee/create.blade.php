@@ -1,6 +1,6 @@
 <div>
 
-    <x-custom-components.confirmation-dialog wire:model="confirmingItemDeletion">
+    <x-custom-components.confirmation-dialog wire:model.live="confirmingItemDeletion">
         <x-slot name="title">
             Delete Record
         </x-slot>
@@ -15,7 +15,7 @@
         </x-slot>
     </x-custom-components.confirmation-dialog>
 
-    <x-custom-components.dialog-modal wire:model="confirmingItemCreation">
+    <x-custom-components.dialog-modal wire:model.live="confirmingItemCreation">
         <x-slot name="title">
             Add Record
         </x-slot>
@@ -24,12 +24,12 @@
             <div class="grid grid-cols-2 gap-8">
                 <div class="mt-4">
                     <x-custom-components.label>Name</x-custom-components.label>
-                    <x-custom-components.input class="block mt-1 w-full" type="text" wire:model.defer="item.name" />
+                    <x-custom-components.input class="block mt-1 w-full" type="text" wire:model="item.name" />
                     @error('item.name') <x-custom-components.error-message>{{$message}}</x-custom-components.error-message> @enderror
                 </div>
                 <div class="mt-4">
                     <x-custom-components.label>Email</x-custom-components.label>
-                    <x-custom-components.input class="block mt-1 w-full" type="text" wire:model.defer="item.email" />
+                    <x-custom-components.input class="block mt-1 w-full" type="text" wire:model="item.email" />
                     @error('item.email') <x-custom-components.error-message>{{$message}}</x-custom-components.error-message> @enderror
                 </div>
             </div>
@@ -41,7 +41,7 @@
         </x-slot>
     </x-custom-components.dialog-modal>
 
-    <x-custom-components.dialog-modal wire:model="confirmingItemEdit">
+    <x-custom-components.dialog-modal wire:model.live="confirmingItemEdit">
         <x-slot name="title">
             Edit Record
         </x-slot>
@@ -49,12 +49,12 @@
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                 <x-custom-components.label>Name</x-custom-components.label>
-                <x-custom-components.input class="block mt-1 w-full" type="text" wire:model.defer="item.name" />
+                <x-custom-components.input class="block mt-1 w-full" type="text" wire:model="item.name" />
                 @error('item.name') <x-custom-components.error-message>{{$message}}</x-custom-components.error-message> @enderror
             </div>
             <div class="mt-4">
                 <x-custom-components.label>Email</x-custom-components.label>
-                <x-custom-components.input class="block mt-1 w-full" type="text" wire:model.defer="item.email" />
+                <x-custom-components.input class="block mt-1 w-full" type="text" wire:model="item.email" />
                 @error('item.email') <x-custom-components.error-message>{{$message}}</x-custom-components.error-message> @enderror
             </div>
         </div>
