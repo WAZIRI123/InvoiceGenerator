@@ -100,7 +100,7 @@ class Create extends Component
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
     }
     
-    #[On('post-created')]
+    #[On('showCreateForm')]
     public function showCreateForm(): void
     {
         $this->confirmingItemCreation = true;

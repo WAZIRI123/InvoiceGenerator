@@ -3,7 +3,7 @@
 @livewire('livewire-toast')
     <div class="flex justify-between">
         <div class="text-2xl" >Employees</div>
-        <button type="submit" @click="$dispatch('post-created')" class="text-blue-500">
+        <button type="submit" wire:click="$dispatchTo('employee.create', 'showCreateForm')" class="text-blue-500">
             <x-custom-components.icon-add />
         </button> 
     </div>

@@ -54,13 +54,6 @@ class Table extends Component
         ])->layoutData(['title' => 'Employee | School Management System']);
     }
 
-    #[On('post-created')]
-    public function showCreateForm(): void
-    {
-
-        $this->dispatch('post-created')->to(Create::class);
-    }
-
     public function sortBy(string $field): void
     {
         if ($field == $this->sortBy) {

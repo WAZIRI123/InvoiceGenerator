@@ -16,7 +16,7 @@
     <nav class="py-10 custom-scrollbar">
         <!-- start::Menu link -->
         <x-side-menu.div-link  
-        route="employee" 
+        route="dashboard.index" 
         title="Dashboard" />
         <!-- end::Menu link -->
 
