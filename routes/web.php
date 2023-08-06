@@ -28,6 +28,13 @@ Route::namespace('App\Livewire')->group(function () {
 
             Route::get('/employee', Table::class)->name('employee');
         });
+          //Category
+          Route::namespace('Category')->group(function () {
+
+            Route::get('/category', Table::class)->name('category');
+        });
+
+        
     });
 });
 

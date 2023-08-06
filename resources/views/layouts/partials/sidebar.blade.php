@@ -35,6 +35,10 @@
         <x-side-menu.div-link   route="employee" title="Employees" />
         <!-- end::Menu link -->
 
+         <!-- start::Menu link  -->
+         <x-side-menu.div-link   route="category" title="categories" />
+        <!-- end::Menu link -->
+
         @endif
 
            <!-- start::Menu link  -->
