@@ -90,15 +90,42 @@
         </tr>
     </thead>
     <tbody class="divide-y divide-blue-400">
-        @foreach($results as $result)
-            <tr class="hover:bg-blue-300 {{ ($loop->even ) ? 'bg-blue-100' : ''}}">
-                <td class="px-3 py-2"> <x-custom-components.input class="block mt-1 w-full" type="text" wire:model="item.invoice_number" /></td>
-                <td class="px-3 py-2"> <x-custom-components.input class="block mt-1 w-full" type="text-area" wire:model="item.invoice_number" /></td>
-                <td class="px-3 py-2"> <x-custom-components.input class="block mt-1 w-full" type="number" wire:model="item.invoice_number" /></td>
-                <td class="px-3 py-2">{{ $result->purchase_price }}</td>
-                <td class="px-3 py-2">{{ $result->category?->name }}</td>
-           </tr>
-        @endforeach
+    @foreach($item-list as $index => $row)
+    <tr class="hover:bg-blue-300 {{ ($loop->even ) ? 'bg-blue-100' : ''}}">
+        <td class="px-3 py-2">
+            <x-custom-components.input class="block mt-1 w-full" type="text" wire:model="items.{{ $index }}.name" />
+        </td>
+        <td class="px-3 py-2">
+            <x-custom-components.input class="block mt-1 w-full" type="number" wire:model="items.{{ $index }}.quantity" />
+        </td>
+        <td class="px-3 py-2">
+            <x-custom-components.input class="block mt-1 w-full" type="number" wire:model="items.{{ $index }}.price" />
+        </td>
+   </tr>
+@endforeach
+
+<tr class="hover:bg-blue-300 {{ ($loop->even ) ? 'bg-blue-100' : ''}}" ><td class="px-3 py-2">
+
+<div class="mt-4">
+                    <x-custom-components.label>item</x-custom-components.label>
+                    <x-custom-components.select class="block mt-1 w-full" wire:model="item.item_id">
+                        <option value="">Select a item or add a new one...</option>
+                        @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                        <button type="submit" wire:click="$dispatchTo('item.create', 'showCreateForm')" class="text-blue-500">
+            <x-custom-components.icon-add />
+        </button> 
+                    </x-custom-components.select>
+                </div>
+</td></tr>
+<tr class="hover:bg-blue-300 {{ ($loop->even ) ? 'bg-blue-100' : ''}}">
+<td class="px-3 py-2">    
+     <button type="submit" wire:click="$dispatchTo('item.create', 'showSelectItem')" class="text-blue-500">
+            <x-custom-components.icon-add />
+     </button> </td>
+</tr>
+
     </tbody>
 </table>
                     <x-custom-components.select class="block mt-1 w-full" wire:model="item.category_id">
