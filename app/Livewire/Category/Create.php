@@ -102,7 +102,6 @@ class Create extends Component
     {
        
         $this->resetErrorBag();
-        $this->reset(['profile_picture']);
         $this->category= $category;
         $this->item['name']=$category->name;
         $this->confirmingItemEdit = true;

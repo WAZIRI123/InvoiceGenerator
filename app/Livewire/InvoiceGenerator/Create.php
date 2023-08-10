@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Livewire\Item;
+namespace App\Livewire\InvoiceGenerator;
 
-use App\Models\Category;
 use Livewire\Component;
 use \Illuminate\View\View;
 use App\Models\Item;
@@ -14,7 +13,7 @@ class Create extends Component
 
     public $item=[];
 
-   
+    
     
     /**
      * @var array

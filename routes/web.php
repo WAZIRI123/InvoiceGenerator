@@ -34,6 +34,12 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/category', Table::class)->name('category');
         });
 
+          //Item
+          Route::namespace('Item')->group(function () {
+
+            Route::get('/item', Table::class)->name('item');
+        });
+
         
     });
 });

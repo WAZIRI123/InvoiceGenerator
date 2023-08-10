@@ -30,4 +30,8 @@ class Item extends Model
         'deleted_at'        => 'datetime',
     ];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -39,6 +39,10 @@
          <x-side-menu.div-link   route="category" title="categories" />
         <!-- end::Menu link -->
 
+             <!-- start::Menu link  -->
+             <x-side-menu.div-link   route="item" title="items" />
+        <!-- end::Menu link -->
+
         @endif
 
            <!-- start::Menu link  -->
