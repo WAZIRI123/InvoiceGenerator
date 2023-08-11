@@ -76,17 +76,10 @@
                     <table class="w-full whitespace-no-wrap mt-4 shadow-2xl text-xs" wire:loading.class.delay="opacity-50">
                         <thead>
                             <tr class="text-left font-bold bg-blue-400">
-                                <td class="px-3 py-2">
-                                    <div class="flex items-center">
-                                        <button wire:click="sortBy('id')">Id</button>
-                                        <x-custom-components.sort-icon sortField="id" :sort-by="$sortBy" :sort-asc="$sortAsc" />
-                                    </div>
-                                </td>
                                 <td class="px-3 py-2">Name</td>
-                                <td class="px-3 py-2">Description</td>
-                                <td class="px-3 py-2">Sale Price</td>
-                                <td class="px-3 py-2">Purchase Price</td>
-                                <td class="px-3 py-2">Category</td>
+                               
+                                <td class="px-3 py-2">Quantity</td>
+                                <td class="px-3 py-2">Total</td>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-blue-400">
@@ -100,7 +93,13 @@
                                     <x-custom-components.input class="block mt-1 w-full" type="number" wire:model="items.{{ $index }}.quantity" />
                                 </td>
                                 <td class="px-3 py-2">
-                                    <x-custom-components.input class="block mt-1 w-full" type="number" wire:model="items.{{ $index }}.price" />
+                                    <x-custom-components.input class="block mt-1 w-full" type="number" 
+                                    value="{{ $index }}"wire:model="items.{{ $index }}.product_id" hidden />
+                                </td>
+
+                                <td class="px-3 py-2">
+                                    <x-custom-components.input class="block mt-1 w-full" type="number" 
+                                    value="{{ $index }}" />
                                 </td>
                             </tr>
                             @endforeach

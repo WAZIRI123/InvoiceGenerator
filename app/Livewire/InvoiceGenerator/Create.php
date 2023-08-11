@@ -2,6 +2,7 @@
 
 namespace App\Livewire\InvoiceGenerator;
 
+use App\Livewire\Item\Create as ItemCreate;
 use Livewire\Component;
 use \Illuminate\View\View;
 use App\Models\Item;
@@ -20,44 +21,52 @@ class Create extends Component
      */
     public $products = [];
 
+    public $customers = [];
+
     public $itemList = [];
 
     /**
      * @var array
      */
 
-    protected function rules()
-    {
-        return [
-            'item.name' => 'required|string',
-            'item.description' => 'nullable|string',
-            'item.sale_price' => 'required|numeric|between:0,999999999999999.9999',
-            'item.purchase_price' => 'required|numeric|between:0,999999999999999.9999',
-            'item.category_id' => 'required|exists:products,id',
-            'item.quantity' => 'required|integer',
-            'item.enabled' => 'boolean',
-        ];
-    }
+     protected function rules()
+     {
+         return [
+             'item.title' => 'required|string|max:255',
+             'item.description' => 'nullable|string|max:1000', // Adjust max length as needed
+             'item.customer_id' => 'required|exists:customers,id', // Change 'products' to 'customers' if that's the intended table
+             'item.invoice_date' => 'required|date',
+             'item.invoice_number' => 'required|integer',
+             'item.due_date' => 'nullable|date|after_or_equal:item.invoice_date', // Add validation for due date
+             'item.order_number' => 'nullable|string|max:50', // Adjust max length as needed
+             'items' => 'array', // Validate items as an array
+             'items.*.name' => 'required|string|max:255',
+             'items.*.quantity' => 'required|integer|min:1',
+             'items.*.product_id' => 'required|exists:products,id', // Validate product_id
+         ];
+     }
+     
 
     /**
      * @var array
      */
     protected $validationAttributes = [
-        'item.name' => 'name',
+        'item.title' => 'title',
         'item.description' => 'description',
-        'item.sale_price' => 'sale price',
-        'item.purchase_price' => 'purchase price',
-        'item.category_id' => 'category',
-        'item.quantity' => 'quantity',
-        'item.enabled' => 'enabled',
+        'item.customer_id' => 'customer',
+        'item.invoice_date' => 'invoice date',
+        'item.invoice_number' => 'invoice number',
+        'item.due_date' => 'due date',
+        'item.order_number' => 'order number',
+        'items.*.name' => 'item name',
+        'items.*.quantity' => 'item quantity',
+        'items.*.product_id' => 'item product',
     ];
+    
     /**
      * @var bool
      */
     public $confirmingItemDeletion = false;
-
-
-    public $itemModel;
 
     /**
      * @var bool
@@ -74,6 +83,7 @@ class Create extends Component
     public function mount()
     {
         $this->products = Item::all();
+        $this->customers = Customer::all();
     }
 
     public function render(): View
@@ -89,7 +99,6 @@ class Create extends Component
     }
 
     #[On('addItem')]
-
     public function addItem($selectItem = null)
     {
         if ($selectItem) {
@@ -98,18 +107,9 @@ class Create extends Component
                 'name'=>$selectItem,
             ];
         }else {
-            $product=Item::create([
-                'id'=>$product->id,
-                'name'=>$product->name,
-                'price'=>
-            ]);
-            $this->itemList[]=[
-                'id'=>$product->id,
-                'name'=>$product->name,
-            ];
+            $this->dispatch('showCreateForm')->to(ItemCreate::class);
         }
     
-      
     }
 
 
