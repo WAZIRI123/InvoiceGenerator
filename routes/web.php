@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Invoice;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,11 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Route::namespace('App\Livewire')->group(function () {
     //? Routes that can be accessed only when logging in
     Route::middleware(['auth', 'verified'])->group(function () {
 
-        Route::prefix('/dashboard')->name('dashboard.')->group(function () {
+        Route::name('dashboard.')->group(function () {
             Route::get('/', Index::class)->name('index');
         });
 
@@ -34,10 +37,12 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/category', Table::class)->name('category');
         });
 
-          //Item
-          Route::namespace('Item')->group(function () {
+         
 
-            Route::get('/item', Table::class)->name('item');
+          //Item
+          Route::namespace('Invoice')->group(function () {
+
+            Route::get('/create-invoice', Create::class)->name('create-invoice');
         });
 
         
@@ -45,7 +50,9 @@ Route::namespace('App\Livewire')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+    ->name('profile.edit');
+    Route::get('/print-invoice', [InvoiceController::class, 'printInvoice'])->name('print-Invoice');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

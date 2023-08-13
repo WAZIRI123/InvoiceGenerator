@@ -11,17 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
-            $table->id();
+        // Taxes
+        Schema::create('taxes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('company_id');
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->double('sale_price', 15, 4);
-            $table->double('purchase_price', 15, 4);
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->integer('quantity');
+            $table->double('rate', 15, 4);
+            $table->string('type')->default('normal');
             $table->boolean('enabled')->default(1);
+            $table->unsignedInteger('created_by')->nullable();
+            $table->string('created_from', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('company_id');
         });
     }
 
