@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Invoice;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
+use App\Services\print\PrintService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('/print-pdf', [PdfController::class, 'printPdf'])->name('sale-reports');
 
 Route::namespace('App\Livewire')->group(function () {
     //? Routes that can be accessed only when logging in
@@ -37,6 +39,17 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/category', Table::class)->name('category');
         });
 
+          //Category
+          Route::namespace('Car')->group(function () {
+
+            Route::get('/car', Table::class)->name('car');
+        });
+
+          //Category
+          Route::namespace('CareRental')->group(function () {
+
+            Route::get('/car-reservation', Table::class)->name('car-reservation');
+        });
          
 
           //Item

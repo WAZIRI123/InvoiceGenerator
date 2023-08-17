@@ -7,7 +7,7 @@
     <!-- start::Logo -->
     <div class="flex items-center justify-center bg-black bg-opacity-30 h-16">
         <h1 class="text-gray-100 text-lg font-bold uppercase tracking-widest">
-            Invoice Generator
+           Car Reservation
         </h1>
     </div>
     <!-- end::Logo -->
@@ -20,7 +20,7 @@
         title="Dashboard" />
         <!-- end::Menu link -->
 
-        <p class="text-xs text-gray-600 mt-10 mb-2 px-6 uppercase">Inventory activities</p>
+        <p class="text-xs text-gray-600 mt-10 mb-2 px-6 uppercase">Reservation activities</p>
 
         {{-- start menu wrapper --}}
 
@@ -29,8 +29,14 @@
         @if (auth()->user()->hasRole('Admin'))
                  
 
-             <!-- start::Menu link  -->
-             <x-side-menu.div-link   route="create-invoice" title="Create Invoice" />
+         
+        <!-- end::Menu link -->
+           <!-- start::Menu link  -->
+           <x-side-menu.div-link   route="car" title="car" />
+        <!-- end::Menu link -->
+
+           <!-- start::Menu link  -->
+           <x-side-menu.div-link   route="car-reservation" title="Create Reservation" />
         <!-- end::Menu link -->
 
         @endif
