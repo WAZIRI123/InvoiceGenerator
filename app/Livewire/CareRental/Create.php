@@ -129,7 +129,6 @@ class Create extends Component
                 'guideName' => $this->item['guideName'],
                 'specialEvent' => $this->item['specialEvent'],
             ]);
-    
             $this->confirmingItemCreation = false;
             $this->dispatch('refresh')->to('care-rental.table');
             $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
@@ -142,15 +141,13 @@ class Create extends Component
     #[On('showEditForm')]
     public function showEditForm(Rental $rental): void
     {
-       
-       
         $this->resetErrorBag();
         $this->rental= $rental;
         $this->item['visitorName']=$rental->visitorName;
         $this->item['arrivalDate']=$rental->arrivalDate;
         $this->item['safariStartDate']=$rental->safariStartDate;
         $this->item['safariEndDate']=$rental->safariEndDate;
-        $this->item['carNumber']=$rental->car?->carNumber;
+        $this->item['carNumber']=$rental->car?->car_number;
         $this->item['guideName']=$rental->guideName;
         $this->item['specialEvent']=$rental->specialEvent;
         
@@ -175,21 +172,23 @@ class Create extends Component
                          ->where('safariEndDate', '>=', $this->item['safariEndDate']);
                  });
          })
-         ->where('id', '<>', $rental->id) // Exclude the current rental
+         ->where('id', '<>', $this->rental->id) // Exclude the current rental
          ->first();
- 
+
      // If no overlapping rental found, update the rental
      if (!$existingRental) {
-         $rental->update([
-             'visitor_name' => $this->item['visitorName'],
-             'arrival_date' => $this->item['arrivalDate'],
-             'safari_start_date' => $this->item['safariStartDate'],
-             'safari_end_date' => $this->item['safariEndDate'],
-             'car_number' => $this->item['carNumber'],
-             'guide_name' => $this->item['guideName'],
-             'special_event' => $this->item['specialEvent'],
+
+        $this->rental->update([
+             'visitorName' => $this->item['visitorName'],
+             'arrivalDate' => $this->item['arrivalDate'],
+             'safariStartDate' => $this->item['safariStartDate'],
+             'safariEndDate' => $this->item['safariEndDate'],
+             'carNumber' => $this->item['carNumber'],
+             'guideName' => $this->item['guideName'],
+             'specialEvent' => $this->item['specialEvent'],
          ]);
- 
+
+       
          $this->confirmingItemEdit = false;
          $this->car = '';
          $this->dispatch('refresh')->to('care-rental.table');

@@ -55,7 +55,7 @@
                         <option value="">Select a car...</option>
                         <!-- Loop through your categories to populate the options -->
                         @foreach($cars as $car)
-                        <option value="{{ $car->car_number }}">{{ $car->name }}</option>
+                        <option value="{{ $car->id}}">{{ $car->car_number }}</option>
                         @endforeach
                     </x-custom-components.select>
                     @error('item.carNumber') <x-custom-components.error-message>{{$message}}</x-custom-components.error-message> @enderror
@@ -123,11 +123,11 @@
                         <!-- Loop through your categories to populate the options -->
                         @if(isset($item['carNumber']))
                         @foreach($cars as $car)
-                        <option value="{{ $car->car_number }}" {{ $item['carNumber'] == $car->carNumber ? 'selected' : '' }}>{{ $car->name }}</option>
+                        <option value="{{ $car->id }}" {{ $item['carNumber'] == $car->car_number ? 'selected' : '' }}>{{ $car->car_number }}</option>
                         @endforeach
                         @else
                         @foreach($cars as $car)
-                        <option value="{{ $car->car_number }}">{{ $car->name }}</option>
+                        <option value="{{ $car->id }}">{{ $car->car_number }}</option>
                         @endforeach
                         @endif
                     </x-custom-components.select>
