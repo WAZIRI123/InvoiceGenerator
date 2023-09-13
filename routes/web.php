@@ -28,37 +28,7 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/', Index::class)->name('index');
         });
 
-        //Employee
-        Route::namespace('Employee')->group(function () {
-
-            Route::get('/employee', Table::class)->name('employee');
-        });
-          //Category
-          Route::namespace('Category')->group(function () {
-
-            Route::get('/category', Table::class)->name('category');
-        });
-
-          //Category
-          Route::namespace('Car')->group(function () {
-
-            Route::get('/car', Table::class)->name('car');
-        });
-
-          //Category
-          Route::namespace('CareRental')->group(function () {
-
-            Route::get('/car-reservation', Table::class)->name('car-reservation');
-        });
-         
-
-          //Item
-          Route::namespace('Invoice')->group(function () {
-
-            Route::get('/create-invoice', Create::class)->name('create-invoice');
-        });
-
-        
+          
     });
 });
 
