@@ -28,7 +28,9 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/', Index::class)->name('index');
         });
 
-          
+        Route::namespace('AcademicPerformance')->name('Reports.')->group(function () {
+            Route::get('/exam-result', ExamResult::class)->name('ExamResult');
+        });
     });
 });
 

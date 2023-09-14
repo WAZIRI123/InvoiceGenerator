@@ -16,4 +16,8 @@ class Teacher extends Model
         'registration_no',
         'date_of_employment',
     ];
+
+    public function classes(){
+        return $this->belongsToMany(Classes::class);
+    }
 }

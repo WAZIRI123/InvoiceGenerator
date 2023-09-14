@@ -69,19 +69,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-blue-400">
-                    @foreach($latestReservations as $result)
-                    <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
-                        
-                        <td class="px-3 py-2">{{ $result->visitorName }}</td>
-                        <td class="px-3 py-2">{{ $result->arrivalDate }}</td>
-                        <td class="px-3 py-2">{{ $result->safariStartDate }}</td>
-                        <td class="px-3 py-2">{{ $result->safariEndDate }}</td>
-                        
-                        <td class="px-3 py-2">{{ $result->guideName }}</td>
-                        <td class="px-3 py-2">{{ $result->specialEvent }}</td>
-                       
-                    </tr>
-                    @endforeach
+                
                 </tbody>
                 </table>
             </div>

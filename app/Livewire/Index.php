@@ -24,12 +24,7 @@ class Index extends Component
 
     public function render()
     {
-        $this->totalCars = Car::count();
-        $latestReservations=Rental::with('car')->latest()->take(10)->get();
-
-        $this->latestReservations= $latestReservations;
-        
-        $this->Reservations = Rental::count();
+      
      
         return view('livewire.index')->layoutData(['title' => 'Admin Dashboard | School Management System']);
     }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Exam;
+use App\Models\ExamResult;
 use App\Models\Gender;
 use App\Models\Semester;
 use App\Models\Stream;
@@ -12,7 +13,6 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -35,7 +35,8 @@ class DataTesterSeeder extends Seeder
 
         $academicYear = AcademicYear::where('status', 'active')->first();
 
-    $class = Classes::factory()->existing()->create()->pluck('id')->toArray();
+    $class = Classes::factory()->create();
+    $class2 = Classes::factory()->create();
         
      $semester = Semester::create([
     'name' => 'Fall Semester',
@@ -43,6 +44,13 @@ class DataTesterSeeder extends Seeder
     'start_date' => '2023-08-29',
     'end_date' => '2023-12-22',
         ]);
+
+        $semester2 = Semester::create([
+            'name' => 'Fall Semester2',
+            'description' => 'The Fall Semester is the first 2 semester of the academic year.',
+            'start_date' => '2023-08-29',
+            'end_date' => '2023-12-22',
+                ]);
        
      
         $user=User::create([
@@ -63,8 +71,15 @@ class DataTesterSeeder extends Seeder
             'registration_no' => '123456',
             'date_of_employment' => '2021-01-01',
         ]);
+        $teacher->classes()->attach([$class->id,$class2->id]); 
         $subject=Subject::create([
             'name' => 'test subjects',
+            'subject_code' => '10test',
+            'classes_id'=>$class->id,
+            'description' => 'test desc',
+        ]);
+        $subject2=Subject::create([
+            'name' => 'test subjects2',
             'subject_code' => '10test',
             'classes_id'=>$class->id,
             'description' => 'test desc',
@@ -78,14 +93,16 @@ class DataTesterSeeder extends Seeder
             'description' => 'This is my exam.',
             'start_date' => now(),
             'end_date' => now()->addDays(1),
-            'subject_id'=>$subject->id
+            
         ]);
+
+        
 
         $user2=User::create([
             'name' => 'John Doe2',
             'email' => 'john@example2.com',
             'password' => bcrypt('password123'),
-            'role' => 'student',
+            
         ]);
         $studentRole = Role::create(['name' => 'student']);
 
@@ -93,7 +110,7 @@ class DataTesterSeeder extends Seeder
             'name' => 'Student 1',
             'email' => 'student1@example.com',
             'password' => bcrypt('password123'),
-            'role' => 'student',
+            
         ]);
 
         $student2 = Student::create([
@@ -106,7 +123,7 @@ class DataTesterSeeder extends Seeder
             'semester_id' => $semester->id,
             'date_of_admission' => '2021-02-15',  // Change the date of admission
             'is_graduate' => 0,  // Not a graduate
-            'graduation_year' => null,  // No graduation year
+             // No graduation year
             'academic_year_id' => $academicYear->id,
         ]);
         $user3->assignRole([$studentRole->id]);
@@ -115,7 +132,7 @@ class DataTesterSeeder extends Seeder
             'name' => 'Student 2',
             'email' => 'student2@example.com',
             'password' => bcrypt('password123'),
-            'role' => 'student',
+            
         ]);
 
         $student4 = Student::create([
@@ -128,7 +145,7 @@ class DataTesterSeeder extends Seeder
             'gender_id' => $gender->id,
             'date_of_admission' => '2021-03-20',  // Change the date of admission
             'is_graduate' => 0,  // Not a graduate
-            'graduation_year' => null,  // No graduation year
+             // No graduation year
             'academic_year_id' => $academicYear->id,
         ]);
         $user4->assignRole([$studentRole->id]);
@@ -142,11 +159,25 @@ class DataTesterSeeder extends Seeder
             'gender_id' => $gender->id,
             'date_of_admission' => '2021-01-01',
             'is_graduate' => 1, // 10% probability of being a graduate
-            'graduation_year' => '2026-01-01', // 70% probability of having a graduation year
+             // 70% probability of having a graduation year
             'academic_year_id' => $academicYear->id,
         ]);
         $user2->assignRole([$studentRole->id]);
 
-        
+        ExamResult::create([
+            'student_id' => $student->id,
+            'exam_id' => $exam->id,
+            'subject_id'=>$subject->id,
+            'semester_id'=>$semester->id,
+            'marks_obtained' => rand(0, 100),
+        ]);
+
+        ExamResult::create([
+            'student_id' => $student->id,
+            'exam_id' => $exam->id,
+            'subject_id'=>$subject2->id,
+            'semester_id'=>$semester2->id,
+            'marks_obtained' => rand(0, 100),
+        ]);
     }
 }

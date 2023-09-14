@@ -20,6 +20,12 @@
         title="Dashboard" />
         <!-- end::Menu link -->
 
+            <!-- start::Menu link -->
+            <x-side-menu.div-link  
+        route="Reports.ExamResult" 
+        title="Exam Result" />
+        <!-- end::Menu link -->
+
         <p class="text-xs text-gray-600 mt-10 mb-2 px-6 uppercase">School activities</p>
 
         {{-- start menu wrapper --}}

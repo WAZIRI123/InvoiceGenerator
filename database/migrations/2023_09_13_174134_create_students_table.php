@@ -17,7 +17,6 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->date('date_of_admission');
             $table->boolean('is_graduate')->default(false);
-            $table->year('graduation_year')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('classes_id')->constrained()->onDelete('cascade');
             $table->foreignId('stream_id')->constrained()->onDelete('cascade');
