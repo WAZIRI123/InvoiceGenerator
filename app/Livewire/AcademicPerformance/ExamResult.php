@@ -77,7 +77,7 @@ public function showStudentResult($studentId)
     }
 
     $cumulativeAverageSemester1 = $totalSubjectsSemester1 > 0 ? ($totalMarksSemester1 / $totalSubjectsSemester1) : 0;
-    $cumulativePercentageSemester1=$totalMarksSemester1/(100*$totalSubjectsSemester1)*100;
+    $cumulativePercentageSemester1=$totalSubjectsSemester1 ? $totalMarksSemester1/(100*$totalSubjectsSemester1)*100:0;
    
     // Initialize Semester 2 variables with default values
     $examResultsSemester2 = [];
@@ -97,25 +97,29 @@ public function showStudentResult($studentId)
 
         $cumulativeAverageSemester2 = $totalSubjectsSemester2 > 0 ? ($totalMarksSemester2 / $totalSubjectsSemester2) : 0;
 
-        $cumulativePercentageSemester2=$totalMarksSemester2/(100*$totalSubjectsSemester2)*100;
+        $cumulativePercentageSemester2=$totalSubjectsSemester2 ? $totalMarksSemester2/(100*$totalSubjectsSemester2)*100:0;
+    }else {
+        $totalSubjectsSemester2 =0;
+        $totalMarksSemester2 = 0;
+        $cumulativePercentageSemester2=0;
     }
 
     // Calculate the rank of the student in the class based on the total marks obtained in Semester 1
-    $rankSemester1 = Student::where('classes_id', $student->classes_id)
+    $rankSemester1 =$totalSubjectsSemester1? Student::where('classes_id', $student->classes_id)
         ->where('stream_id', $student->stream_id)
         ->where('academic_year_id', $student->academic_year_id)
         ->where('semester_id', 1)
         ->whereRaw("(SELECT SUM(marks_obtained) FROM exam_results WHERE student_id = students.id AND semester_id = 1) > ?", [$totalMarksSemester1])
-        ->count() + 1;
+        ->count() + 1:'';
         
 
     // Calculate the rank of the student in the class based on the total marks obtained in Semester 2
-    $rankSemester2 = Student::where('classes_id', $student->classes_id)
+    $rankSemester2 =$totalSubjectsSemester2? Student::where('classes_id', $student->classes_id)
         ->where('stream_id', $student->stream_id)
         ->where('academic_year_id', $student->academic_year_id)
         ->where('semester_id', 2)
         ->whereRaw("(SELECT SUM(marks_obtained) FROM exam_results WHERE student_id = students.id AND semester_id = 2) > ?", [$totalMarksSemester2])
-        ->count() + 1;
+        ->count() + 1:0;
 
     // Calculate the overall rank based on the total marks obtained in both semesters
     $overallRank = Student::where('classes_id', $student->classes_id)
