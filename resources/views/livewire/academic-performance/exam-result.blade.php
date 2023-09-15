@@ -151,6 +151,78 @@
         </tbody>
     </table>
     <br>
+
+    <table align="left" style="font-family: verdana, arial, sans-serif;
+        font-size: 11px;
+        color: blue;
+        border-width: 1px;
+        border-color: black;
+        border-collapse: collapse;" border="1" bordercolor="#FFFFFF" width="100%">
+        <tbody>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <th style="background: #dadafc;
+                    border-width: 1px;
+                    padding: 3px;
+                    border-style: ridge;
+                    border-color: black;
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: blue;" colspan="100"> * Semester:2</th>
+            </tr>
+            <tr bgcolor="#ADC8AE" style="background-color: rgb(173, 200, 174);">
+                <td class="result_tables" align="center"><b>S/No.</b></td>
+                <td class="result_tables" colspan="2"><b>Exam</b></td>
+                
+                <td class="result_tables" colspan="2"><b>Subject</b></td>
+                <td class="result_tables" colspan="2"><b>Score</b></td>
+                <td class="result_tables"><b>Grade</b></td>
+                
+            </tr>
+            @foreach ($data['Semester Results']['Semester 2'] as $result)
+            <tr border="0" bgcolor="#d7fbdd" style="color:black;">
+                <td style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" class="result_tables" align="center">{{$loop->index +1}}</td>
+                <td style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" class="result_tables" colspan="2">{{ $result->exam?->name}}</td>
+                <td style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" class="result_tables" colspan="2">{{ $result->subject?->name}}</td>
+
+                <td style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" class="on_save_tables" colspan="2"><b>{{ $result->marks_obtained}}</b></td>
+
+                <td style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" class="on_save_tables"><b> {{ $data['Subject Grades Semester 2'][$result->subject->name]['Grade'] ?? '' }}</b></td>
+
+            </tr>
+            @endforeach
+            <!-- Add more data rows for the current semester as needed -->
+        </tbody>
+    </table>
+   
+
+    <!-- Display cumulative average and class rank here -->
+    <table align="left" border="1" style="font-family: verdana, arial, sans-serif;
+        font-size: 11px;
+        color: blue;
+        border-width: 1px;
+        border-color: black;
+        border-collapse: collapse;" width="50%">
+        <tbody>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Cumulative Average</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Cumulative Average Semester 2'] }}</td>
+            </tr>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>semester  Grade</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Grade Semester2'] }}</td>
+            </tr>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Rank</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Semester Ranks']['Semester 2'] }}</td>
+            </tr>
+            
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Student's Status</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['status Semester2'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
 </fieldset>
 
         </x-slot>
