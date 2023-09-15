@@ -178,7 +178,20 @@ class DataTesterSeeder extends Seeder
             'semester_id'=>$semester->id,
             'marks_obtained' => rand(0, 100),
         ]);
-
+        ExamResult::create([
+            'student_id' => $student2->id,
+            'exam_id' => $exam->id,
+            'subject_id'=>$subject->id,
+            'semester_id'=>$semester->id,
+            'marks_obtained' => rand(0, 100),
+        ]); 
+         ExamResult::create([
+            'student_id' => $student2->id,
+            'exam_id' => $exam->id,
+            'subject_id'=>$subject2->id,
+            'semester_id'=>$semester->id,
+            'marks_obtained' => rand(0, 100),
+        ]);
         ExamResult::create([
             'student_id' => $student->id,
             'exam_id' => $exam->id,

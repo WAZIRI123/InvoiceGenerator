@@ -40,8 +40,8 @@
         </div>
 @if ($data)
         <x-custom-components.confirmation-dialog wire:model.live="confirmingItemView">
-        <x-slot name="title">
-            Delete Record
+        <x-slot name="title" >
+            View
         </x-slot>
 
         <x-slot name="content">
@@ -157,7 +157,7 @@
 
         <x-slot name="footer">
             <x-custom-components.button wire:click="$set('confirmingItemView', false)">Cancel</x-custom-components.button>
-            <x-custom-components.button mode="delete" wire:loading.attr="disabled" wire:click="deleteItem()">Delete</x-custom-components.button>
+            <x-custom-components.button mode="delete" wire:loading.attr="disabled" wire:click="deleteItem()">Print</x-custom-components.button>
         </x-slot>
     </x-custom-components.confirmation-dialog>
     @endif

@@ -72,7 +72,7 @@ return ;
     $gradingScale = [
         ['grade' => 'A', 'min' => 90, 'max' => 100],
         ['grade' => 'B', 'min' => 70, 'max' => 89],
-        ['grade' => 'C', 'min' => 50, 'max' => 60],
+        ['grade' => 'C', 'min' => 40, 'max' => 60],
         ['grade' => 'D', 'min' => 30, 'max' => 39],
         ['grade' => 'F', 'min' => 0, 'max' => 29],
     ];
