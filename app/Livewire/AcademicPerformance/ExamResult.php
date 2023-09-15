@@ -3,6 +3,7 @@
 namespace App\Livewire\AcademicPerformance;
 
 use App\Models\ExamResult as ModelsExamResult;
+use App\Models\Semester;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Auth;
@@ -50,16 +51,28 @@ public function showStudentResult($studentId)
         'Admission No' => $student->admission_no,
     ];
 
+    $semester1Subjects=Semester::find(1)->subjects->pluck('id')->toArray();
+
+    $semester2Subjects=Semester::find(2)->subjects->pluck('id')->toArray();
+
     // Get the exam results for both Semester 1 and Semester 2
+  
     $examResultsSemester1 = ModelsExamResult::where('student_id', $studentId)->where('semester_id', 1)->get();
     $examResultsSemester2 = ModelsExamResult::where('student_id', $studentId)->where('semester_id', 2)->get();
 
-    
+    if(array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray())){
+return ;
+    }
+
+    if(array_diff($semester2Subjects,$examResultsSemester2->pluck('subject_id')->toArray())){
+        return ;
+            }
+
     // Define a grading scale (adjust as needed)
     $gradingScale = [
         ['grade' => 'A', 'min' => 90, 'max' => 100],
-        ['grade' => 'B', 'min' => 80, 'max' => 89],
-        ['grade' => 'C', 'min' => 50, 'max' => 6],
+        ['grade' => 'B', 'min' => 70, 'max' => 89],
+        ['grade' => 'C', 'min' => 50, 'max' => 60],
         ['grade' => 'D', 'min' => 30, 'max' => 39],
         ['grade' => 'F', 'min' => 0, 'max' => 29],
     ];

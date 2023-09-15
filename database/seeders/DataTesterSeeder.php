@@ -37,22 +37,35 @@ class DataTesterSeeder extends Seeder
 
     $class = Classes::factory()->create();
     $class2 = Classes::factory()->create();
-        
+    
+    $subject=Subject::create([
+        'name' => 'test subjects',
+        'subject_code' => '10test',
+        'classes_id'=>$class->id,
+        'description' => 'test desc',
+    ]);
+    $subject2=Subject::create([
+        'name' => 'test subjects2',
+        'subject_code' => '10test',
+        'classes_id'=>$class->id,
+        'description' => 'test desc',
+    ]);
      $semester = Semester::create([
     'name' => 'Fall Semester',
+    'classes_id'=>$class->id,
     'description' => 'The Fall Semester is the first semester of the academic year.',
     'start_date' => '2023-08-29',
     'end_date' => '2023-12-22',
         ]);
-
         $semester2 = Semester::create([
             'name' => 'Fall Semester2',
+            'classes_id'=>$class2->id,
             'description' => 'The Fall Semester is the first 2 semester of the academic year.',
             'start_date' => '2023-08-29',
             'end_date' => '2023-12-22',
                 ]);
+    $semester->subjects()->attach([$subject->id,$subject2->id]);
        
-     
         $user=User::create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
@@ -72,18 +85,7 @@ class DataTesterSeeder extends Seeder
             'date_of_employment' => '2021-01-01',
         ]);
         $teacher->classes()->attach([$class->id,$class2->id]); 
-        $subject=Subject::create([
-            'name' => 'test subjects',
-            'subject_code' => '10test',
-            'classes_id'=>$class->id,
-            'description' => 'test desc',
-        ]);
-        $subject2=Subject::create([
-            'name' => 'test subjects2',
-            'subject_code' => '10test',
-            'classes_id'=>$class->id,
-            'description' => 'test desc',
-        ]);
+      
         $user->assignRole([$teacherRole->id]);
     
 
@@ -93,10 +95,7 @@ class DataTesterSeeder extends Seeder
             'description' => 'This is my exam.',
             'start_date' => now(),
             'end_date' => now()->addDays(1),
-            
         ]);
-
-        
 
         $user2=User::create([
             'name' => 'John Doe2',
@@ -168,6 +167,14 @@ class DataTesterSeeder extends Seeder
             'student_id' => $student->id,
             'exam_id' => $exam->id,
             'subject_id'=>$subject->id,
+            'semester_id'=>$semester->id,
+            'marks_obtained' => rand(0, 100),
+        ]);
+
+        ExamResult::create([
+            'student_id' => $student->id,
+            'exam_id' => $exam->id,
+            'subject_id'=>$subject2->id,
             'semester_id'=>$semester->id,
             'marks_obtained' => rand(0, 100),
         ]);
