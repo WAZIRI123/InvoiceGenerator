@@ -64,9 +64,6 @@ public function showStudentResult($studentId)
 return ;
     }
 
-    if(array_diff($semester2Subjects,$examResultsSemester2->pluck('subject_id')->toArray())){
-        return ;
-            }
 
     // Define a grading scale (adjust as needed)
     $gradingScale = [
@@ -98,7 +95,7 @@ return ;
 
     // Check if Semester 2 results exist
     $examResultsSemester2 = ModelsExamResult::where('student_id', $studentId)->where('semester_id', 2)->get();
-    if ($examResultsSemester2->count() > 0) {
+    if ($examResultsSemester2->count() > 0 && count($semester2Subjects) > 0 && !array_diff($semester2Subjects,$examResultsSemester2->pluck('subject_id')->toArray())) {
         // Calculate the cumulative average for Semester 2
         $totalMarksSemester2 = 0;
         $totalSubjectsSemester2 = 0;
@@ -107,13 +104,14 @@ return ;
             $totalMarksSemester2 += $result->marks_obtained;
             $totalSubjectsSemester2++;
         }
-
         $cumulativeAverageSemester2 = $totalSubjectsSemester2 > 0 ? ($totalMarksSemester2 / $totalSubjectsSemester2) : 0;
 
         $cumulativePercentageSemester2=$totalSubjectsSemester2 ? $totalMarksSemester2/(100*$totalSubjectsSemester2)*100:0;
     }else {
+
         $totalSubjectsSemester2 =0;
         $totalMarksSemester2 = 0;
+        $examResultsSemester2=[];
         $cumulativePercentageSemester2=0;
     }
 
@@ -177,6 +175,7 @@ return ;
         'Overall Cumulative Average' => $overallCumulativeAverage,
         'Overall Grade' => $overallGrade,
         'Overall Rank' => $overallRank,
+        'Year Status'  =>$this->checkStudentAcademicStatus($overallGrade)
     ];
 
     // You can return the data to a view for better formatting

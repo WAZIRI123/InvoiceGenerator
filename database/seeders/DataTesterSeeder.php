@@ -65,7 +65,9 @@ class DataTesterSeeder extends Seeder
             'end_date' => '2023-12-22',
                 ]);
     $semester->subjects()->attach([$subject->id,$subject2->id]);
-       
+
+    $semester2->subjects()->attach([$subject->id]);
+
         $user=User::create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
@@ -195,7 +197,7 @@ class DataTesterSeeder extends Seeder
         ExamResult::create([
             'student_id' => $student->id,
             'exam_id' => $exam->id,
-            'subject_id'=>$subject2->id,
+            'subject_id'=>$subject->id,
             'semester_id'=>$semester2->id,
             'marks_obtained' => rand(0, 100),
         ]);

@@ -151,6 +151,7 @@
         </tbody>
     </table>
     <br>
+@if (count($data['Semester Results']['Semester 2'])>0)
 
     <table align="left" style="font-family: verdana, arial, sans-serif;
         font-size: 11px;
@@ -176,7 +177,7 @@
                 <td class="result_tables" colspan="2"><b>Subject</b></td>
                 <td class="result_tables" colspan="2"><b>Score</b></td>
                 <td class="result_tables"><b>Grade</b></td>
-                
+    
             </tr>
             @foreach ($data['Semester Results']['Semester 2'] as $result)
             <tr border="0" bgcolor="#d7fbdd" style="color:black;">
@@ -223,6 +224,37 @@
         </tbody>
     </table>
     <br>
+    
+    
+        <!-- Display cumulative average and class rank here -->
+        <table align="left" border="1" style="font-family: verdana, arial, sans-serif;
+        font-size: 11px;
+        color: blue;
+        border-width: 1px;
+        border-color: black;
+        border-collapse: collapse;" width="50%">
+        <tbody>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Year Average</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Overall Cumulative Average'] }}</td>
+            </tr>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Year  Grade</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Overall Grade'] }}</td>
+            </tr>
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Year Rank</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Overall Rank']}}</td>
+            </tr>
+            
+            <tr style="font-size: 11px; line-height: 11px;">
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="left"><b>Student's Status</b></td>
+                <td class="" style="background: #ececfb; border-width: 1px; padding: 3px; border-style: ridge; border-color: black; color: blue;" align="center">{{ $data['Year Status'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>  
+@endif
 </fieldset>
 
         </x-slot>
