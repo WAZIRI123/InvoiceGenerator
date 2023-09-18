@@ -74,6 +74,15 @@ class DataTesterSeeder extends Seeder
             'password' => bcrypt('password123'),
         ]);
         $teacherRole = Role::create(['name' => 'teacher']);
+
+        $useradmin=User::create([
+            'name' => 'John Doe',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+        $adminRole = Role::create(['name' => 'admin']);
+        $useradmin->assignRole([ $adminRole->id]);
+
         $gender=Gender::factory()->create();
         $Stream=Stream::create([
             'name'=>'test stream',

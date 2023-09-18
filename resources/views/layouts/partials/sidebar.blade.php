@@ -6,8 +6,8 @@
     class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 bg-secondary overflow-y-auto lg:translate-x-0 lg:inset-0 custom-scrollbar">
     <!-- start::Logo -->
     <div class="flex items-center justify-center bg-black bg-opacity-30 h-16">
-        <h1 class="text-gray-100 text-lg font-bold uppercase tracking-widest">
-          School Design Approach
+        <h1 class="text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
+        Menu
         </h1>
     </div>
     <!-- end::Logo -->
@@ -19,8 +19,22 @@
         route="dashboard.index" 
         title="Dashboard" />
         <!-- end::Menu link -->
+        @hasrole('admin')  
+          <!-- start::Menu link -->
+          <x-side-menu.div-link  
+        route="academic-year.index" 
+        title="Academicyear"/>
+        <!-- end::Menu link -->
 
-            <!-- start::Menu link -->
+          <!-- start::Menu link -->
+          <x-side-menu.div-link  
+        route="class.index" 
+        title="class"/>
+        <!-- end::Menu link -->
+        @endhasrole
+        
+
+            <!-- start::Menu  link -->
             <x-side-menu.div-link  
         route="Reports.ExamResult" 
         title="Exam Result" />

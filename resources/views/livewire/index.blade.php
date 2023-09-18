@@ -2,7 +2,7 @@
     <!-- start:Page content -->
     <div class="h-full bg-gray-200 p-8">
         <!-- start::Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-10">
+        <!-- <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-10">
             <div class="px-6 py-6 bg-white rounded-lg shadow-xl">
                 <div class="flex items-center justify-between">
                     <span class="font-bold text-sm text-indigo-600">Total cars</span>
@@ -47,24 +47,24 @@
 
 
 
-        </div>
+        </div> -->
         <!-- end::Stats -->
         <!-- start::Table -->
         <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
             <div class="bg-white rounded-lg px-8 py-6 overflow-x-scroll custom-scrollbar">
-                <h4 class="text-xl font-semibold">Recent Reservations</h4>
+                <h4 class="text-xl font-semibold">Results</h4>
                 <table class="w-full my-8 whitespace-nowrap">
                     <thead class="bg-secondary text-gray-100 font-bold">
                         <tr>
                            
-                      
-                        <td class="px-3 py-2">Visitor Name</td>
-                        <td class="px-3 py-2">Arrival Date</td>
-                        <td class="px-3 py-2">Safari Start Date</td>
-                        <td class="px-3 py-2">Safari End Date</td>
-                       
-                        <td class="px-3 py-2">Guide Name</td>
-                        <td class="px-3 py-2">Special Event</td>
+            <th class="px-3 py-2">Student Name</th>
+            <th class="px-3 py-2">Admission Number</th>
+            <th class="px-3 py-2">Gender</th>
+            <th class="px-3 py-2">Semester</th>
+            <th class="px-3 py-2">Stream</th>
+            <th class="px-3 py-2">Date of Admission</th>
+            <th class="px-3 py-2">Graduate</th>
+            <th class="px-3 py-2">Action</th>
                       
                         </tr>
                     </thead>

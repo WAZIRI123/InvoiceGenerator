@@ -1,6 +1,7 @@
 <!-- start::Topbar -->
 <div class="flex flex-col">
-    <header class="flex justify-between items-center h-16 py-4 px-6 bg-white">
+    <header class="flex justify-between items-center h-16 py-0 px-6 bg-gray-890/50 backdrop-blur-2xl border-gray-800 border-b" style="background-color: #0f172a80;     --tw-bg-opacity: 1;
+    background-color: rgb(15 23 42 / var(--tw-bg-opacity));">
         <!-- start::Mobile menu button -->
         <div class="flex items-center">
             <button @click="menuOpen = true" class="text-gray-500 hover:text-primary focus:outline-none lg:hidden transition duration-200">
@@ -11,6 +12,15 @@
             </button>
         </div>
         <div class="flex items-center"> 
+     <!-- Show the first section on medium screens and larger -->
+<h1 class="hidden md:block text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
+ABAINANO primary  SCHOOL │ Online Examination Result 
+</h1>
+
+<!-- Show the second section on small screens -->
+<h1 class="md:hidden text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
+    SOERS 
+</h1>
 
 </div>
         <!-- end::Mobile menu button 239-->
@@ -19,7 +29,7 @@
         <div class="flex items-center">
             <!-- start::Profile -->
             <label for="rounded_select"></label>
-                              
+                          
             <div x-data="{ linkActive: false }" class="relative">
                
                 <div @click="linkActive = !linkActive" class="cursor-pointer">
