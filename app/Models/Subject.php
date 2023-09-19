@@ -15,4 +15,9 @@ class Subject extends Model
         'classes_id',
         'description',
     ];
+
+    public function class()
+    {
+return $this->belongsTo(Classes::class,'classes_id');
+    }
 }

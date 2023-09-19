@@ -31,6 +31,12 @@
         route="class.index" 
         title="class"/>
         <!-- end::Menu link -->
+
+            <!-- start::Menu link -->
+            <x-side-menu.div-link  
+        route="subject.index" 
+        title="Subject"/>
+        <!-- end::Menu link -->
         @endhasrole
         
 

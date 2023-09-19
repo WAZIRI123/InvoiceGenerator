@@ -30,6 +30,12 @@ public function mount(){
 
             return $this->students= $students;
         }
+    }elseif ($loggedInUser->hasRole('admin')) {
+             // Get all students in the teacher's classes
+             $students = Student::all();
+
+       
+             return $this->students= $students;
     }
 
     // Return an empty collection if the user is not a teacher or is not assigned to any class
@@ -47,13 +53,13 @@ public function showStudentResult($studentId)
 
     // Get the student's name and other information
     $studentInfo = [
-        'Name' => $student->user->name,
+        'Name' => $student->user?->name,
         'Admission No' => $student->admission_no,
     ];
 
-    $semester1Subjects=Semester::find(1)->subjects->pluck('id')->toArray();
+    $semester1Subjects=Semester::find(1)->subjects?->pluck('id')->toArray();
 
-    $semester2Subjects=Semester::find(2)->subjects->pluck('id')->toArray();
+    $semester2Subjects=Semester::find(2)->subjects?->pluck('id')->toArray();
 
     // Get the exam results for both Semester 1 and Semester 2
   

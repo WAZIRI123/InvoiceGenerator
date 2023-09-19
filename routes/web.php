@@ -34,6 +34,10 @@ Route::namespace('App\Livewire')->group(function () {
         Route::namespace('Class')->name('class.')->group(function () {
             Route::get('/classes', Table::class)->name('index');
         });
+
+        Route::namespace('Subject')->name('subject.')->group(function () {
+            Route::get('/subjects', Table::class)->name('index');
+        });
         Route::namespace('AcademicPerformance')->name('Reports.')->group(function () {
             Route::get('/exam-result', ExamResult::class)->name('ExamResult');
         });
