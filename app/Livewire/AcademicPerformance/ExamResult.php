@@ -66,6 +66,7 @@ public function showStudentResult($studentId)
     $examResultsSemester1 = ModelsExamResult::where('student_id', $studentId)->where('semester_id', 1)->get();
     $examResultsSemester2 = ModelsExamResult::where('student_id', $studentId)->where('semester_id', 2)->get();
 
+    //student my done all exams for all subject in semester
     if(array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray())){
 return ;
     }
@@ -147,7 +148,7 @@ return ;
 
 
     // Calculate grades for Semester 1 and Semester 2
-    $gradeSemester1 = $this->calculateGrade( $cumulativePercentageSemester1, $gradingScale);
+    $gradeSemester1 = $this->calculateGrade($cumulativePercentageSemester1, $gradingScale);
     $statusSemester1=$this->checkStudentAcademicStatus($gradeSemester1);
     $gradeSemester2 = $this->calculateGrade( $cumulativePercentageSemester2, $gradingScale);
 
@@ -191,13 +192,17 @@ return ;
  
 public function checkStudentAcademicStatus($gradeSemester)
 {
-if($gradeSemester=='F'){
+if($gradeSemester=='F')
+{
 
     return 'failed';
 }
-else{
+
+else
+{
     return 'pass';
 }
+
 }
 
 // Helper function to calculate grades for each subject
@@ -221,19 +226,26 @@ private function calculateSubjectGrades($examResults, $gradingScale)
 }
 
 // Helper function to calculate the grade based on a grading scale
-private function calculateGrade($cumulativeAverage, $gradingScale)
+private function calculateGrade($marksObtained, $gradingScale)
 {
     foreach ($gradingScale as $gradeRange) {
-        if ($cumulativeAverage >= $gradeRange['min'] && $cumulativeAverage <= $gradeRange['max']) {
+        if ($marksObtained >= $gradeRange['min'] && $marksObtained <= $gradeRange['max']) {
             return $gradeRange['grade'];
         }
     }
     return 'N/A'; // Not applicable if the average doesn't fall within the grading scale
 }
 
-
     public function render()
     {
         return view('livewire.academic-performance.exam-result')->layoutData(['title' => 'Admin Dashboard | School Management System']);
     }
+
+    // brainstorm
+
+    /* 
+    -to find average of student does it need to include only number of subjects that student done exam for it or total of student in class =>  total of student in class in class to limit student from skip some exams
+    
+    -prevent student from do one exam multiple times?=done
+    */
 }

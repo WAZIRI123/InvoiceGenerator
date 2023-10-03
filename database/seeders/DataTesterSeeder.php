@@ -23,6 +23,17 @@ class DataTesterSeeder extends Seeder
      *
      * @return void
      */
+
+     public function recordExists(int $studentId, int $examId, int $subjectId, int $semesterId): bool
+     {
+         return ExamResult::where('student_id', $studentId)
+             ->where('exam_id', $examId)
+             ->where('subject_id', $subjectId)
+             ->where('semester_id', $semesterId)
+             ->exists();
+     }
+
+
     public function run()
     {
         $academicYear = AcademicYear::create([
@@ -31,25 +42,33 @@ class DataTesterSeeder extends Seeder
             'end_date' => '2024-07-31',
             'status' => 'active',
         ]);
-        AcademicYear::checkUserAcademicYear();
 
-        $academicYear = AcademicYear::where('status', 'active')->first();
+
+    AcademicYear::checkUserAcademicYear();
+
+    $academicYear = AcademicYear::where('status', 'active')->first();
 
     $class = Classes::factory()->create();
+
     $class2 = Classes::factory()->create();
+
+
     
+
     $subject=Subject::create([
         'name' => 'test subjects',
         'subject_code' => '10test',
         'classes_id'=>$class->id,
         'description' => 'test desc',
     ]);
+
     $subject2=Subject::create([
         'name' => 'test subjects2',
         'subject_code' => '10test',
         'classes_id'=>$class->id,
         'description' => 'test desc',
     ]);
+
      $semester = Semester::create([
     'name' => 'Fall Semester',
     'classes_id'=>$class->id,
@@ -57,12 +76,13 @@ class DataTesterSeeder extends Seeder
     'start_date' => '2023-08-29',
     'end_date' => '2023-12-22',
         ]);
-        $semester2 = Semester::create([
-            'name' => 'Fall Semester2',
-            'classes_id'=>$class2->id,
-            'description' => 'The Fall Semester is the first 2 semester of the academic year.',
-            'start_date' => '2023-08-29',
-            'end_date' => '2023-12-22',
+
+$semester2 = Semester::create([
+'name' => 'Fall Semester2',
+ 'classes_id'=>$class2->id,
+'description' => 'The Fall Semester is the first 2 semester of the academic year.',
+'start_date' => '2023-08-29',
+'end_date' => '2023-12-22',
                 ]);
     $semester->subjects()->attach([$subject->id,$subject2->id]);
 
@@ -112,8 +132,8 @@ class DataTesterSeeder extends Seeder
             'name' => 'John Doe2',
             'email' => 'john@example2.com',
             'password' => bcrypt('password123'),
-            
         ]);
+
         $studentRole = Role::create(['name' => 'student']);
 
         $user3 = User::create([
@@ -159,6 +179,7 @@ class DataTesterSeeder extends Seeder
             'academic_year_id' => $academicYear->id,
         ]);
         $user4->assignRole([$studentRole->id]);
+        
         $student=Student::create([
             'user_id' => $user->id,
             'admission_no' => 'A101',
@@ -174,6 +195,11 @@ class DataTesterSeeder extends Seeder
         ]);
         $user2->assignRole([$studentRole->id]);
 
+       // Check if a record exists
+       $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester->id);
+
+       if (! $recordExists) {
+
         ExamResult::create([
             'student_id' => $student->id,
             'exam_id' => $exam->id,
@@ -182,6 +208,23 @@ class DataTesterSeeder extends Seeder
             'marks_obtained' => rand(0, 100),
         ]);
 
+       }
+    // Check if a record exists
+    $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester->id);
+
+    if (! $recordExists) {
+       ExamResult::create([
+        'student_id' => $student->id,
+        'exam_id' => $exam->id,
+        'subject_id'=>$subject->id,
+        'semester_id'=>$semester->id,
+        'marks_obtained' => rand(0, 100),
+    ]);
+}
+        // Check if a record exists
+        $recordExists = $this->recordExists($student->id, $exam->id, $subject2->id, $semester->id);
+
+        if (! $recordExists) {
         ExamResult::create([
             'student_id' => $student->id,
             'exam_id' => $exam->id,
@@ -189,6 +232,11 @@ class DataTesterSeeder extends Seeder
             'semester_id'=>$semester->id,
             'marks_obtained' => rand(0, 100),
         ]);
+        }
+
+         // Check if a record exists
+         $recordExists = $this->recordExists($student2->id, $exam->id, $subject->id, $semester->id);
+         if (! $recordExists) {
         ExamResult::create([
             'student_id' => $student2->id,
             'exam_id' => $exam->id,
@@ -196,6 +244,12 @@ class DataTesterSeeder extends Seeder
             'semester_id'=>$semester->id,
             'marks_obtained' => rand(0, 100),
         ]); 
+         }
+
+     // Check if a record exists
+     $recordExists = $this->recordExists($student2->id, $exam->id, $subject2->id, $semester->id);
+     if (! $recordExists) {
+
          ExamResult::create([
             'student_id' => $student2->id,
             'exam_id' => $exam->id,
@@ -203,6 +257,12 @@ class DataTesterSeeder extends Seeder
             'semester_id'=>$semester->id,
             'marks_obtained' => rand(0, 100),
         ]);
+
+     }
+
+         // Check if a record exists
+         $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester2->id);
+         if (! $recordExists) {
         ExamResult::create([
             'student_id' => $student->id,
             'exam_id' => $exam->id,
@@ -210,5 +270,7 @@ class DataTesterSeeder extends Seeder
             'semester_id'=>$semester2->id,
             'marks_obtained' => rand(0, 100),
         ]);
+    }
+
     }
 }
