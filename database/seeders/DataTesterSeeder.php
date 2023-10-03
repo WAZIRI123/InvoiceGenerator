@@ -259,7 +259,7 @@ $semester2 = Semester::create([
         ]);
 
      }
-
+     
          // Check if a record exists
          $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester2->id);
          if (! $recordExists) {
