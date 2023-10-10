@@ -19,6 +19,7 @@
         "ext-tokenizer": "*",
         "ext-xml": "*",
         "ext-zip": "*",
+        "akaunting/laravel-setting": "^1.2",
         "ascsoftw/livewire-toast": "^1.0",
         "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",

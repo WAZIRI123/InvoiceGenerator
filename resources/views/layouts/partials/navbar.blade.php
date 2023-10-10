@@ -14,6 +14,8 @@
         <div class="flex items-center"> 
      <!-- Show the first section on medium screens and larger -->
 <h1 class="hidden md:block text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
+
+{{$academic_year_start.'-'.$academic_year_end}}
 ABAINANO primary  SCHOOL │ Online Examination Result 
 </h1>
 

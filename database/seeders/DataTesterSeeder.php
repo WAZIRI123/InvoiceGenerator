@@ -50,10 +50,7 @@ class DataTesterSeeder extends Seeder
 
     $class = Classes::factory()->create();
 
-    $class2 = Classes::factory()->create();
-
-
-    
+    $class2 = Classes::factory()->create();    
 
     $subject=Subject::create([
         'name' => 'test subjects',
@@ -259,7 +256,7 @@ $semester2 = Semester::create([
         ]);
 
      }
-     
+
          // Check if a record exists
          $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester2->id);
          if (! $recordExists) {
