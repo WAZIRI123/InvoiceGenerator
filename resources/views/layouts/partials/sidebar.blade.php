@@ -15,17 +15,12 @@
     <!-- start::Navigation  -->
     <nav class="py-10 custom-scrollbar">
         <!-- start::Menu link -->
-        <x-side-menu.div-link  
+        <x-side-menu.div-link
         route="dashboard.index" 
         title="Dashboard" />
         <!-- end::Menu link -->
         @hasrole('admin')  
-          <!-- start::Menu link -->
-          <x-side-menu.div-link  
-        route="academic-year.index" 
-        title="Academicyear"/>
-        <!-- end::Menu link -->
-
+    
           <!-- start::Menu link -->
           <x-side-menu.div-link  
         route="class.index" 
@@ -38,8 +33,7 @@
         title="Subject"/>
         <!-- end::Menu link -->
         @endhasrole
-        
-
+    
             <!-- start::Menu  link -->
             <x-side-menu.div-link  
         route="Reports.ExamResult" 

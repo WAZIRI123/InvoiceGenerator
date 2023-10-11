@@ -14,9 +14,14 @@
         <div class="flex items-center"> 
      <!-- Show the first section on medium screens and larger -->
 <h1 class="hidden md:block text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
+    @if($academic_year_start=getFinancialYear()['start'] && $academic_year_end=getFinancialYear()['end'])
 
-{{$academic_year_start.'-'.$academic_year_end}}
-ABAINANO primary  SCHOOL │ Online Examination Result 
+        {{getFinancialYear()['start'].'-'.$academic_year_end}}
+        ABAINANO primary  SCHOOL │ Online Examination Result 
+    
+
+    @endif
+
 </h1>
 
 <!-- Show the second section on small screens -->

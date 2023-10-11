@@ -28,9 +28,6 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/', Index::class)->name('index');
         });
 
-        Route::namespace('AcademicYear')->name('academic-year.')->group(function () {
-            Route::get('/academic-year', Table::class)->name('index');
-        });
         Route::namespace('Class')->name('class.')->group(function () {
             Route::get('/classes', Table::class)->name('index');
         });
