@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8746ed74130522c799aaa2287e0e02e2",
+    "content-hash": "a2a6fc3917c0762d11dbca56e18cad1d",
     "packages": [
         {
             "name": "akaunting/laravel-setting",
@@ -6858,6 +6858,60 @@
             "time": "2022-03-08T17:03:00+00:00"
         },
         {
+            "name": "waziri123/waziri-tall-crud-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WAZIRI123/waziri-tall-crud-generator.git",
+                "reference": "e3a427e4a486f797f09a5fef922aa76b8748280c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WAZIRI123/waziri-tall-crud-generator/zipball/e3a427e4a486f797f09a5fef922aa76b8748280c",
+                "reference": "e3a427e4a486f797f09a5fef922aa76b8748280c",
+                "shasum": ""
+            },
+            "require": {
+                "ascsoftw/livewire-toast": "^1.0"
+            },
+            "require-dev": {
+                "christophrumpel/missing-livewire-assertions": "^2.1",
+                "livewire/livewire": "^3.0",
+                "orchestra/testbench": "^8.13",
+                "phpunit/phpunit": "^10.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "WAZIRITALLCRUDGENERATOR\\TallCrudGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WAZIRITALLCRUDGENERATOR\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "waziri123",
+                    "email": "waziriallyamiri123@gmail.com"
+                }
+            ],
+            "description": "package for generating livewire 3 crud components",
+            "support": {
+                "issues": "https://github.com/WAZIRI123/waziri-tall-crud-generator/issues",
+                "source": "https://github.com/WAZIRI123/waziri-tall-crud-generator/tree/master"
+            },
+            "time": "2023-10-19T11:34:47+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.11.0",
             "source": {
@@ -9414,7 +9468,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "livewire/livewire": 10
+        "livewire/livewire": 10,
+        "waziri123/waziri-tall-crud-generator": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
