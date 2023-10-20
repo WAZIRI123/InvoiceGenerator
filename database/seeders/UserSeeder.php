@@ -24,24 +24,5 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'created_at'    => date("Y-m-d H:i:s")
         ]);
-        $user->assignRole('super-admin');
-        $user = User::create([
-            'name'          => 'Admin',
-            'email'         => 'admin@demo.com',
-            'password'      => bcrypt('12345678'),
-            'email_verified_at' => now(),
-            'created_at'    => date("Y-m-d H:i:s")
-        ]);
-        $user->assignRole('admin');
-
-        $user2 = User::create([
-            'name'          => 'Employee',
-            'email'         => 'employee@demo.com',
-            'email_verified_at' => now(),
-            'password'      => bcrypt('12345678'),
-            'created_at'    => date("Y-m-d H:i:s")
-        ]);
-        $user2->assignRole('Employee');
-
     }
 }
