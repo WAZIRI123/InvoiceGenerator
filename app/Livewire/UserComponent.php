@@ -9,7 +9,7 @@ use \Illuminate\View\View;
 
 use App\Models\User;
 
-class Wert extends Component
+class UserComponent extends Component
 {
     use WithPagination;
 
@@ -44,9 +44,9 @@ class Wert extends Component
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.wert', [
+        return view('livewire.user-component', [
             'results' => $results
-        ])->layoutData(['title' => 'test | School Management System']);
+        ]);
     }
 
     public function sortBy(string $field): void

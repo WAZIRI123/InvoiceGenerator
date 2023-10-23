@@ -1,16 +1,24 @@
 <?php
 
 namespace App\Livewire;
-
+use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
 use App\Models\User;
-use Livewire\Attributes\On;
 
-class WertChild extends Component
+class UserComponentChild extends Component
 {
 
     public $item=[];
+
+    /**
+     * @var array
+     */
+    protected $listeners = [
+        'showDeleteForm',
+        'showCreateForm',
+        'showEditForm',
+    ];
 
     /**
      * @var array
@@ -49,13 +57,17 @@ class WertChild extends Component
      */
     public $confirmingItemDeletion = false;
 
-    //remove type in this var
-    public $user;
+    /**
+     * @var string | int
+     */
+    public $primaryKey;
 
     /**
      * @var bool
      */
     public $confirmingItemCreation = false;
+
+    public $user ;
 
     /**
      * @var bool
@@ -64,10 +76,8 @@ class WertChild extends Component
 
     public function render(): View
     {
-        return view('livewire.wert-child');
+        return view('livewire.user-component-child');
     }
-    // change int $id to User $user
-    // change  $this->primaryKey = $id; to $this->user = $user;
     #[On('showDeleteForm')]
     public function showDeleteForm(User $user): void
     {
@@ -77,12 +87,11 @@ class WertChild extends Component
 
     public function deleteItem(): void
     {
-
         $this->user->delete();
         $this->confirmingItemDeletion = false;
         $this->user = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('user-component');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -111,26 +120,22 @@ class WertChild extends Component
             'updated_at' => $this->item['updated_at'] ?? '', 
         ]);
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('user-component');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
-    // change int $id to User $user
-    // change  $this->primaryKey = $id; to $this->user = $user;
-    // change $this->item = $user; $this->user = $user;
+        
     #[On('showEditForm')]
     public function showEditForm(User $user): void
     {
         $this->resetErrorBag();
-        $this->user= $user;
-        $this->item=$user->toArray();
+        $this->user = $user;
+        $this->item = $user->toArray();
         $this->confirmingItemEdit = true;
-        
     }
 
     public function editItem(): void
     {
-        // change save $this-item->save() to $this->user->update()
         $this->validate();
         $item = $this->user->update([
             'name' => $this->item['name'] ?? '', 
@@ -143,11 +148,12 @@ class WertChild extends Component
             'remember_token' => $this->item['remember_token'] ?? '', 
             'created_at' => $this->item['created_at'] ?? '', 
             'updated_at' => $this->item['updated_at'] ?? '', 
-        ]);
-  
+         ]);
         $this->confirmingItemEdit = false;
-        $this->dispatch('refresh')->to('wert');
+        $this->primaryKey = '';
+        $this->dispatch('refresh')->to('user-component');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
+
     }
 
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Invoice;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\UserComponent;
 use App\Livewire\Wert;
 use App\Services\print\PrintService;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ use WAZIRITALLCRUDGENERATOR\Http\Livewire\TallCrudGenerator;
 
 Route::get('/tall-crud-generator', TallCrudGenerator::class)->name('tall-crud-generator');
 
-Route::get('/test', Wert::class)->name('wert');
+Route::get('/test', UserComponent::class)->name('wert');
 Route::get('/print-pdf', [PdfController::class, 'printPdf'])->name('sale-reports');
 
 Route::namespace('App\Livewire')->group(function () {
