@@ -23,7 +23,7 @@ use WAZIRITALLCRUDGENERATOR\Http\Livewire\TallCrudGenerator;
 
 Route::get('/tall-crud-generator', TallCrudGenerator::class)->name('tall-crud-generator');
 
-Route::get('/test', UserComponent::class)->name('wert');
+
 Route::get('/print-pdf', [PdfController::class, 'printPdf'])->name('sale-reports');
 
 Route::namespace('App\Livewire')->group(function () {

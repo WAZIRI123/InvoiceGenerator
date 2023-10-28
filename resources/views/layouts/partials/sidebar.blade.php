@@ -20,11 +20,7 @@
         title="Dashboard" />
         <!-- end::Menu link -->
 
-            <!-- start::Menu link -->
-            <x-side-menu.div-link
-        route="wert" 
-        title="test" />
-        <!-- end::Menu link -->
+           
         @hasrole('admin')  
     
           <!-- start::Menu link -->
