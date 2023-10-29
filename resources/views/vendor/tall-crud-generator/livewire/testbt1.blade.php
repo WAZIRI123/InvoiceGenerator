@@ -1,84 +1,80 @@
 
 @if ($this->addFeature || $this->editFeature)
+<x-tall-crud-dialog-modal wire:model.live="confirmingBelongsToMany">
+    <x-slot name="title">
+        Add a Belongs to Many Relationship
+    </x-slot>
 
-<x-tall-crud-dialog-modal wire:model.live="confirmingBelongsTo">
-<x-slot name="title">
-    Add a Belongs to Relationship
-</x-slot>
-
-<x-slot name="content">
-    <div class="mt-4">
-        <div>
-            <x-tall-crud-label>Select Relationship</x-tall-crud-label>
-            <x-tall-crud-select class="block mt-1 w-1/2" wire:model.lazy="belongsToRelation.name">
-                <option value="">-Please Select-</option>
-                @if (Arr::exists($allRelations, 'belongsTo'))
-                @foreach ($allRelations['belongsTo'] as $c)
-                <option value="{{$c['name']}}">{{$c['name']}}</option>
-                @endforeach
-                @endif
-                
-            </x-tall-crud-select>
-            <h1 ></h1>
-            @error('belongsToRelation.name') <x-tall-crud-error-message>{{$message}}
-            </x-tall-crud-error-message> @enderror
-
-        </div>
-
-        <div class="mt-4 p-4 rounded border border-gray-300" x-show="isValidbelongsToRelation">
-        @if ($this->addFeature)
-                <x-tall-crud-label class="mt-2">
-                    Show in Add Form: 
-                    <x-tall-crud-checkbox class="ml-2" wire:model="belongsToRelation.inAdd" />
-                </x-tall-crud-label>
-
-   @endif
-   @if ($this->editFeature)
-                <x-tall-crud-label class="mt-2">
-                    Show in Edit Form:
-                    <x-tall-crud-checkbox class="ml-2" wire:model="belongsToRelation.inEdit" />
-                </x-tall-crud-label>
-                @endif
-
-            <div class="mt-4">
-                <x-tall-crud-label>Display Column</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-1/4"
-                    wire:model="belongsToRelation.displayColumn">
+    <x-slot name="content">
+        <div class="mt-4">
+            <div>
+                <x-tall-crud-label>Select Relationship</x-tall-crud-label>
+                <x-tall-crud-select class="block mt-1 w-1/2" wire:model.live="belongsToManyRelation.name">
                     <option value="">-Please Select-</option>
-  <template x-for="column in belongsToRelationColumns">
+                    @if (Arr::exists($allRelations, 'belongsToMany'))
+                    @foreach ($allRelations['belongsToMany'] as $c)
+                    <option value="{{$c['name']}}">{{$c['name']}}</option>
+                    @endforeach
+                    @endif
+                </x-tall-crud-select>
+                <x-tall-crud-error-message x-text="nameBtm == '' ? 'Please select a Relation' : belongsToManyRelations.find(r => r.relationName == nameBtm) ? 'Relation Already Defined.' : ''">
+</x-tall-crud-error-message>
+            </div>
+
+            <div class="mt-4 p-4 rounded border border-gray-300"
+            x-show="isValidbelongsToManyRelation">
+                @if ($this->addFeature)
+                    <x-tall-crud-label class="mt-2">
+                        Show in Add Form:
+                        <x-tall-crud-checkbox class="ml-2" wire:model="belongsToManyRelation.inAdd" />
+                    </x-tall-crud-label>
+                @endif
+                @if ($this->editFeature)
+                    <x-tall-crud-label class="mt-2">
+                        Show in Edit Form:
+                        <x-tall-crud-checkbox class="ml-2" wire:model="belongsToManyRelation.inEdit" />
+                    </x-tall-crud-label>
+                @endif
+                <x-tall-crud-label class="mt-2">
+                    Display as Multi-Select (Default is Checkboxes):
+                    <x-tall-crud-checkbox class="ml-2" wire:model="belongsToManyRelation.isMultiSelect" />
+                </x-tall-crud-label>
+
+                <div class="mt-4">
+                    <x-tall-crud-label>Display Column</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-1/2"
+                        wire:model="belongsToManyRelation.displayColumn">
+                        <option value="">-Please Select-</option>
+                        <template x-if="belongsToManyRelationColumns.contains(column)" x-for="column in belongsToManyRelationColumns">
                     <option x-bind:value="column" x-text="column"></option>
              </template>
-                  
-                </x-tall-crud-select>
-                @error('belongsToRelation.displayColumn') <x-tall-crud-error-message>{{$message}}
-                </x-tall-crud-error-message> @enderror
+                    </x-tall-crud-select>
+               
+             <x-tall-crud-error-message  x-text="nameBtmDisplayColumn == '' ? ' displayColumn required '  : ''">
+                </x-tall-crud-error-message> 
+                </div>
             </div>
         </div>
-      
-    </div>
-</x-slot>
+    </x-slot>
 
-<x-slot name="footer">
-    <x-tall-crud-button wire:click="$set('confirmingBelongsTo', false)">Cancel
-    </x-tall-crud-button>
-    <x-tall-crud-button mode="add" wire:click="addBelongsToRelation()">Save
-    </x-tall-crud-button>
-</x-slot>
+    <x-slot name="footer">
+        <x-tall-crud-button wire:click="$set('confirmingBelongsToMany', false)">Cancel
+        </x-tall-crud-button>
+        <x-tall-crud-button mode="add" wire:click="addBelongsToManyRelation()">Save
+        </x-tall-crud-button>
+    </x-slot>
 </x-tall-crud-dialog-modal>
 @endif
 
+@if ($this->addFeature || $this->editFeature)
+        <x-tall-crud-accordion-header tab="3">
+            Belongs To Many
+            <x-slot name="help">
+                Display BelongsToMany Relation Field in Add and Edit Form
+            </x-slot>
+        </x-tall-crud-accordion-header>
 
-    @if ($this->addFeature || $this->editFeature)
-    <x-tall-crud-accordion-header tab="4">
-        Belongs To
-        <x-slot name="help">
-            <h1 x-text=""></h1>
-      
-            Display BelongsTo Relation Field in Add and Edit Form
-        </x-slot>
-    </x-tall-crud-accordion-header>
-
-    <x-tall-crud-accordion-wrapper ref="advancedTab4" tab="4">
-        <x-tall-crud-show-relations-table type="belongsToRelations"></x-tall-crud-show-relations-table>
-    </x-tall-crud-accordion-wrapper>
-    @endif
+        <x-tall-crud-accordion-wrapper ref="advancedTab3" tab="3">
+            <x-tall-crud-show-relations-table type="belongsToManyRelations"></x-tall-crud-show-relations-table>
+        </x-tall-crud-accordion-wrapper>
+        @endif
