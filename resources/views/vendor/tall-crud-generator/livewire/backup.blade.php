@@ -86,9 +86,9 @@
                     <x-tall-crud-label>Select Options (add as JSON)</x-tall-crud-label>
                     <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="filter.options" />
                 </div>
-                <!-- ||  -->
+         
 
-                <div class="mt-4" x-show="filterType == 'BelongsTo'">
+                <div class="mt-4" x-show="filterType == 'BelongsTo' || filterType == 'BelongsToMany'">
                     <x-tall-crud-label>
                         Relationship
                     </x-tall-crud-label>
@@ -101,35 +101,17 @@
                     <option x-bind:value="column.name" x-text="column.name"></option>
              </template>
 
-   
-                    </x-tall-crud-select>
-                    <x-tall-crud-error-message  x-text="filterRelation == '' ? ' filterRelation required '  : ''">
-                </x-tall-crud-error-message> 
-                </div>
 
-
-                <div class="mt-4" x-show="filterType == 'BelongsToMany'">
-                    <x-tall-crud-label>
-                        Relationship
-                    </x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-1/2"
-                        wire:model.lazy="filter.relation">
-
-                        <option value="">-Please Select-</option>
-
-                        
-                <template x-show="(allRelations.contains('belongsToMany') && filterType == 'BelongsToMany')" x-for="column in allRelations.belongsToMany">
+             <template x-show="(allRelations.contains('belongsToMany') && filterType == 'BelongsToMany')" x-for="column in allRelations.belongsToMany">
                     <option x-bind:value="column.name" x-text="column.name"></option>
              </template>
-
+                        
    
                     </x-tall-crud-select>
                     <x-tall-crud-error-message  x-text="filterRelation == '' ? ' filterRelation required '  : ''">
                 </x-tall-crud-error-message> 
                 </div>
-              
-
-
+                
                 <div class="mt-4" x-show="filterRelation !=''">
                     <x-tall-crud-label>
                         Column
@@ -312,7 +294,7 @@
                         </x-tall-crud-button>
                     </x-tall-crud-table-column>
                 </tr>
-                </template>
+  </template>
             </x-tall-crud-table>
         </x-tall-crud-accordion-wrapper>
 

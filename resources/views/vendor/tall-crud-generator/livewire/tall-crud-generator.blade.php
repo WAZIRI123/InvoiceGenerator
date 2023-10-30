@@ -27,6 +27,7 @@
     </x-tall-crud-h2>
 
     <div class="border-b-2 border-gray-300 py-4 px-6">
+  
         @include('tall-crud-generator::livewire.step'.$step)
     </div>
 
