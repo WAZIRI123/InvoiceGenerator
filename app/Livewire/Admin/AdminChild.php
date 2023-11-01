@@ -103,7 +103,6 @@ class AdminChild extends Component
             'password' => $this->item['password'], 
             'profile_picture' => $this->item['profile_picture'], 
         ]);
-        $item-
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('user');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
@@ -123,10 +122,10 @@ class AdminChild extends Component
     {
         $this->validate();
         $item = $this->user->update([
-            'name' => $this->item['name'] ?? '', 
-            'email' => $this->item['email'] ?? '', 
-            'password' => $this->item['password'] ?? '', 
-            'profile_picture' => $this->item['profile_picture'] ?? '', 
+            'name' => $this->item['name'], 
+            'email' => $this->item['email'], 
+            'password' => $this->item['password'], 
+            'profile_picture' => $this->item['profile_picture'], 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
