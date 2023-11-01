@@ -3,7 +3,7 @@
     Add All Fields
 </x-tall-crud-button>
 @endif
-
+<div wire:ignore.self x-data="{fieldAttributesType: @entangle('fieldAttributes.type')}">
 <x-tall-crud-table class="mt-4">
     <x-slot name="header">
         <x-tall-crud-table-column>Column</x-tall-crud-table-column>
@@ -110,10 +110,10 @@
                 </x-tall-crud-select>
             </div>
 
-            @if ($fieldAttributes['type'] == 'select')
+           <div x-show="fieldAttributesType=='select'">
             <x-tall-crud-label>Select Options (add as JSON)</x-tall-crud-label>
             <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="fieldAttributes.options" />
-            @endif
+            </div>
         </div>
     </x-slot>
 
@@ -124,3 +124,4 @@
     </x-slot>
 </x-tall-crud-dialog-modal>
 @endif
+</div>

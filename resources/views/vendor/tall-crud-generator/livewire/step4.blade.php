@@ -1,6 +1,4 @@
-<div >
-
-    <div wire:ignore.self x-data="{ selected : @entangle('selected').live,
+<div wire:ignore.self x-data="{ selected : @entangle('selected').live,
                     
                     
                     
@@ -63,6 +61,8 @@
 
             
             }">
+
+    <div >
         
 <x-tall-crud-dialog-modal wire:model.live="confirmingWith">
     <x-slot name="title">

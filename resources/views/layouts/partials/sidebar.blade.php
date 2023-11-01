@@ -20,6 +20,13 @@
         title="Dashboard" />
         <!-- end::Menu link -->
 
+
+         <!-- start::Menu link -->
+         <x-side-menu.div-link
+        route="admin.index" 
+        title="Admin" />
+        <!-- end::Menu link -->
+
            
         @hasrole('admin')  
     

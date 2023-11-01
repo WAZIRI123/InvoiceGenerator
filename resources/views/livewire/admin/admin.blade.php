@@ -1,8 +1,8 @@
 <div>
 <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
     <div class="flex justify-between">
-        <div class="text-2xl">Roles</div>
-        <button type="submit" wire:click="$dispatchTo('wert-child', 'showCreateForm');" class="text-blue-500">
+        <div class="text-2xl">Users</div>
+        <button type="submit" wire:click="$dispatchTo('admin.admin-child', 'showCreateForm');" class="text-blue-500">
             <x-tall-crud-icon-add />
         </button> 
     </div>
@@ -11,7 +11,6 @@
         <div class="flex justify-between">
             <div class="flex">
 
-                <x-tall-crud-filter :filters=$filters />
             </div>
             <div class="flex">
 
@@ -20,7 +19,7 @@
         </div>
         <table class="w-full my-8 whitespace-nowrap" wire:loading.class.delay="opacity-50">
             <thead class="bg-secondary text-gray-100 font-bold">
-                <tr class="text-left font-bold bg-blue-400">
+                <tr class="text-left font-bold bg-black-400">
                 <td class="px-3 py-2" >
                     <div class="flex items-center">
                         <button wire:click="sortBy('id')">Id</button>
@@ -28,9 +27,8 @@
                     </div>
                 </td>
                 <td class="px-3 py-2" >Name</td>
-                <td class="px-3 py-2" >Guard Name</td>
-                <td class="px-3 py-2" >Created At</td>
-                <td class="px-3 py-2" >Updated At</td>
+                <td class="px-3 py-2" >Email</td>
+                <td class="px-3 py-2" >Profile Picture</td>
                 <td class="px-3 py-2" >Actions</td>
                 </tr>
             </thead>
@@ -39,14 +37,13 @@
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
                     <td class="px-3 py-2" >{{ $result->id }}</td>
                     <td class="px-3 py-2" >{{ $result->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->guard_name }}</td>
-                    <td class="px-3 py-2" >{{ $result->created_at }}</td>
-                    <td class="px-3 py-2" >{{ $result->updated_at }}</td>
+                    <td class="px-3 py-2" >{{ $result->email }}</td>
+                    <td class="px-3 py-2" >{{ $result->profile_picture }}</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('wert-child', 'showEditForm', { role: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('admin.admin-child', 'showEditForm', { user: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('wert-child', 'showDeleteForm', { role: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('admin.admin-child', 'showDeleteForm', { user: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>
@@ -59,7 +56,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
-    @livewire('wert-child')
+    @livewire('admin.admin-child')
     @livewire('livewire-toast')
 </div>
  </div>

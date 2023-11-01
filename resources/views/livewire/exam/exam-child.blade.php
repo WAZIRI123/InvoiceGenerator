@@ -27,19 +27,24 @@
                 @error('item.name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
-                <x-tall-crud-label>Guard Name</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.guard_name" />
-                @error('item.guard_name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-label>Slug</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.slug" />
+                @error('item.slug') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div></div><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
-                <x-tall-crud-label>Created At</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.created_at" />
-                @error('item.created_at') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-label>Description</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
+                @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
-                <x-tall-crud-label>Updated At</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.updated_at" />
-                @error('item.updated_at') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-label>Start Date</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
+                @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div></div><div class="grid grid-cols-2 gap-8">
+            <div class="mt-4">
+                <x-tall-crud-label>End Date</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.end_date" />
+                @error('item.end_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div></div>
         </x-slot>
 
@@ -61,19 +66,24 @@
                 @error('item.name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
-                <x-tall-crud-label>Guard Name</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.guard_name" />
-                @error('item.guard_name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-label>Slug</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.slug" />
+                @error('item.slug') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div></div><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
-                <x-tall-crud-label>Created At</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.created_at" />
-                @error('item.created_at') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-label>Description</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
+                @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
-                <x-tall-crud-label>Updated At</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.updated_at" />
-                @error('item.updated_at') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-label>Start Date</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
+                @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div></div><div class="grid grid-cols-2 gap-8">
+            <div class="mt-4">
+                <x-tall-crud-label>End Date</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.end_date" />
+                @error('item.end_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div></div>
         </x-slot>
 

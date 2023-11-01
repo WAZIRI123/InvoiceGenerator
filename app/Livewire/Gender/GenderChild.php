@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Gender;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
-use App\Models\Role;
+use App\Models\Gender;
 
-class WertChild extends Component
+class GenderChild extends Component
 {
 
     public $item=[];
@@ -25,9 +25,6 @@ class WertChild extends Component
      */
     protected $rules = [
         'item.name' => '',
-        'item.guard_name' => '',
-        'item.created_at' => '',
-        'item.updated_at' => '',
     ];
 
     /**
@@ -35,9 +32,6 @@ class WertChild extends Component
      */
     protected $validationAttributes = [
         'item.name' => 'Name',
-        'item.guard_name' => 'Guard Name',
-        'item.created_at' => 'Created At',
-        'item.updated_at' => 'Updated At',
     ];
 
     /**
@@ -55,7 +49,7 @@ class WertChild extends Component
      */
     public $confirmingItemCreation = false;
 
-    public $role ;
+    public $gender ;
 
     /**
      * @var bool
@@ -64,22 +58,22 @@ class WertChild extends Component
 
     public function render(): View
     {
-        return view('livewire.wert-child');
+        return view('livewire.gender.gender-child');
     }
     #[On('showDeleteForm')]
-    public function showDeleteForm(Role $role): void
+    public function showDeleteForm(Gender $gender): void
     {
         $this->confirmingItemDeletion = true;
-        $this->role = $role;
+        $this->gender = $gender;
     }
 
     public function deleteItem(): void
     {
-        $this->role->delete();
+        $this->gender->delete();
         $this->confirmingItemDeletion = false;
-        $this->role = '';
+        $this->gender = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('gender');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -95,39 +89,33 @@ class WertChild extends Component
     public function createItem(): void
     {
         $this->validate();
-        $item = Role::create([
+        $item = Gender::create([
             'name' => $this->item['name'] ?? '', 
-            'guard_name' => $this->item['guard_name'] ?? '', 
-            'created_at' => $this->item['created_at'] ?? '', 
-            'updated_at' => $this->item['updated_at'] ?? '', 
         ]);
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('gender');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
         
     #[On('showEditForm')]
-    public function showEditForm(Role $role): void
+    public function showEditForm(Gender $gender): void
     {
         $this->resetErrorBag();
-        $this->role = $role;
-        $this->item = $role->toArray();
+        $this->gender = $gender;
+        $this->item = $gender->toArray();
         $this->confirmingItemEdit = true;
     }
 
     public function editItem(): void
     {
         $this->validate();
-        $item = $this->role->update([
+        $item = $this->gender->update([
             'name' => $this->item['name'] ?? '', 
-            'guard_name' => $this->item['guard_name'] ?? '', 
-            'created_at' => $this->item['created_at'] ?? '', 
-            'updated_at' => $this->item['updated_at'] ?? '', 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('gender');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

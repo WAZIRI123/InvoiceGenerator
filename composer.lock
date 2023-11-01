@@ -2901,16 +2901,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v4.0.2",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "cead6637226456b35e1175cc53797dd585d85545"
+                "reference": "a9d127dd6a203ce6d255b2e2db49759f7506e015"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/cead6637226456b35e1175cc53797dd585d85545",
-                "reference": "cead6637226456b35e1175cc53797dd585d85545",
+                "url": "https://api.github.com/repos/nette/utils/zipball/a9d127dd6a203ce6d255b2e2db49759f7506e015",
+                "reference": "a9d127dd6a203ce6d255b2e2db49759f7506e015",
                 "shasum": ""
             },
             "require": {
@@ -2981,9 +2981,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v4.0.2"
+                "source": "https://github.com/nette/utils/tree/v4.0.3"
             },
-            "time": "2023-09-19T11:58:07+00:00"
+            "time": "2023-10-29T21:02:13+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -6880,12 +6880,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WAZIRI123/waziri-tall-crud-generator.git",
-                "reference": "0fffc49368fd3f7422ea9329b9b75a591abdd9f4"
+                "reference": "bd90d6716028c72446521473ea61ea9f55ad22e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WAZIRI123/waziri-tall-crud-generator/zipball/0fffc49368fd3f7422ea9329b9b75a591abdd9f4",
-                "reference": "0fffc49368fd3f7422ea9329b9b75a591abdd9f4",
+                "url": "https://api.github.com/repos/WAZIRI123/waziri-tall-crud-generator/zipball/bd90d6716028c72446521473ea61ea9f55ad22e8",
+                "reference": "bd90d6716028c72446521473ea61ea9f55ad22e8",
                 "shasum": ""
             },
             "require": {
@@ -6926,7 +6926,7 @@
                 "issues": "https://github.com/WAZIRI123/waziri-tall-crud-generator/issues",
                 "source": "https://github.com/WAZIRI123/waziri-tall-crud-generator/tree/master"
             },
-            "time": "2023-10-29T15:57:36+00:00"
+            "time": "2023-10-30T15:24:49+00:00"
         },
         {
             "name": "webmozart/assert",
