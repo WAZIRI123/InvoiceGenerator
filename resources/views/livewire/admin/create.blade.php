@@ -39,15 +39,26 @@
 
             <div class="mt-4">
                 <x-tall-crud-label>Confirm Password</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.confirm_password" />
-                @error('item.confirm_password') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.password_confirmation" />
+                @error('item.password_confirmation') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             </div>
             <div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
+            <div class="mt-4"         
+        x-data="{ uploading: false, progress: 0 }"
+        x-on:livewire-upload-start="uploading = true"
+        x-on:livewire-upload-finish="uploading = false"
+        x-on:livewire-upload-error="uploading = false"
+        x-on:livewire-upload-progress="progress = $event.detail.progress">
                 <x-tall-crud-label>Profile Picture</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="file" wire:model="item.profile_picture" />
-                @error('item.profile_picture') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-input class="block mt-1 w-full" type="file" wire:model="profile" />
+                @error('profile') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+
+                 <!-- Progress Bar -->
+        <div x-show="uploading">
+            <progress max="100" x-bind:value="progress"></progress>
+        </div>
+
             </div></div>
         </x-slot>
 
@@ -65,7 +76,7 @@
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                 <x-tall-crud-label>Name</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.name" />
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model.live="item.name" />
                 @error('item.name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
@@ -81,8 +92,8 @@
 
             <div class="mt-4">
                 <x-tall-crud-label>Confirm Password</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.confirm_password" />
-                @error('item.confirm_password') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.password_confirmation" />
+                @error('item.password_confirmation') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             </div>
             <div class="grid grid-cols-2 gap-8">

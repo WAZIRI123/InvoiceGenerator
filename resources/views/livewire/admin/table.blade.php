@@ -1,16 +1,17 @@
 <div>
 <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
     <div class="flex justify-between">
-        <div class="text-2xl">Exams</div>
-        <button type="submit" wire:click="$dispatchTo('exam.exam-child', 'showCreateForm');" class="text-blue-500">
+        <div class="text-2xl">Users</div>
+        <button type="submit" wire:click="$dispatchTo('admin.create', 'showCreateForm');" class="text-blue-500">
             <x-tall-crud-icon-add />
         </button> 
     </div>
 
     <div class="mt-6">
+    @livewire('livewire-toast')
         <div class="flex justify-between">
             <div class="flex">
-                <x-tall-crud-input-search />
+
             </div>
             <div class="flex">
 
@@ -27,10 +28,8 @@
                     </div>
                 </td>
                 <td class="px-3 py-2" >Name</td>
-                <td class="px-3 py-2" >Slug</td>
-                <td class="px-3 py-2" >Description</td>
-                <td class="px-3 py-2" >Start Date</td>
-                <td class="px-3 py-2" >End Date</td>
+                <td class="px-3 py-2" >Email</td>
+                <td class="px-3 py-2" >Profile Picture</td>
                 <td class="px-3 py-2" >Actions</td>
                 </tr>
             </thead>
@@ -39,15 +38,20 @@
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
                     <td class="px-3 py-2" >{{ $result->id }}</td>
                     <td class="px-3 py-2" >{{ $result->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->slug }}</td>
-                    <td class="px-3 py-2" >{{ $result->description }}</td>
-                    <td class="px-3 py-2" >{{ $result->start_date }}</td>
-                    <td class="px-3 py-2" >{{ $result->end_date }}</td>
+                    <td class="px-3 py-2" >{{ $result->email }}</td>
+                    <td class="px-3 py-2">
+                    @if (empty($result->profile_picture))
+    <img src="https://www.gravatar.com/avatar/{{ md5($result->email) }}?s=128" alt="{{ $result->email }}" class="rounded-full w-12 h-12 object-cover">
+@else
+    <img src="{{ asset($result->profile_picture) }}" alt="{{ $result->profile_picture }}" class="rounded-full w-12 h-12 object-cover">
+@endif
+    
+</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('exam.exam-child', 'showEditForm', { exam: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('admin.create', 'showEditForm', { user: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('exam.exam-child', 'showDeleteForm', { exam: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('admin.create', 'showDeleteForm', { user: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>
@@ -60,7 +64,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
-    @livewire('exam.exam-child')
-    @livewire('livewire-toast')
+    @livewire('admin.create')
+   
 </div>
  </div>

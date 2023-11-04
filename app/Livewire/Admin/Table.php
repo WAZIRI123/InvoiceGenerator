@@ -9,7 +9,7 @@ use \Illuminate\View\View;
 
 use App\Models\User;
 
-class Admin extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -44,7 +44,7 @@ class Admin extends Component
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.admin.admin', [
+        return view('livewire.admin.table', [
             'results' => $results
         ]);
     }

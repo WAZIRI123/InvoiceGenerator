@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Exam;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
-use App\Models\User;
+use App\Models\Exam;
 
-class AdminChild extends Component
+class Create extends Component
 {
 
     public $item=[];
@@ -24,11 +24,11 @@ class AdminChild extends Component
      * @var array
      */
     protected $rules = [
-        'item.name' => 'required|string|max:255',
-        'item.email' => 'required|email|max:255',
-        'item.password' => 'required|string|min:8|confirmed',
-        'item.profile_picture' => 'required|image|max:2048',
-
+        'item.name' => 'required',
+        'item.slug' => 'required',
+        'item.description' => 'required',
+        'item.start_date' => 'required',
+        'item.end_date' => 'required',
     ];
 
     /**
@@ -36,10 +36,10 @@ class AdminChild extends Component
      */
     protected $validationAttributes = [
         'item.name' => 'Name',
-        'item.email' => 'Email',
-        'item.password' => 'Password',
-        'item.confirm_password'=>'Confirm Password',
-        'item.profile_picture' => 'Profile Picture',
+        'item.slug' => 'Slug',
+        'item.description' => 'Description',
+        'item.start_date' => 'Start Date',
+        'item.end_date' => 'End Date',
     ];
 
     /**
@@ -57,7 +57,7 @@ class AdminChild extends Component
      */
     public $confirmingItemCreation = false;
 
-    public $user ;
+    public $exam ;
 
     /**
      * @var bool
@@ -66,22 +66,23 @@ class AdminChild extends Component
 
     public function render(): View
     {
-        return view('livewire.admin.admin-child');
+        return view('livewire.exam.create');
     }
+
     #[On('showDeleteForm')]
-    public function showDeleteForm(User $user): void
+    public function showDeleteForm(Exam $exam): void
     {
         $this->confirmingItemDeletion = true;
-        $this->user = $user;
+        $this->exam = $exam;
     }
 
     public function deleteItem(): void
     {
-        $this->user->delete();
+        $this->exam->delete();
         $this->confirmingItemDeletion = false;
-        $this->user = '';
+        $this->exam = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('user');
+        $this->dispatch('refresh')->to('exam.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -97,39 +98,41 @@ class AdminChild extends Component
     public function createItem(): void
     {
         $this->validate();
-        $item = User::create([
+        $item = Exam::create([
             'name' => $this->item['name'], 
-            'email' => $this->item['email'], 
-            'password' => $this->item['password'], 
-            'profile_picture' => $this->item['profile_picture'], 
+            'slug' => $this->item['slug'], 
+            'description' => $this->item['description'], 
+            'start_date' => $this->item['start_date'], 
+            'end_date' => $this->item['end_date'], 
         ]);
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('user');
+        $this->dispatch('refresh')->to('exam.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
         
     #[On('showEditForm')]
-    public function showEditForm(User $user): void
+    public function showEditForm(Exam $exam): void
     {
         $this->resetErrorBag();
-        $this->user = $user;
-        $this->item = $user->toArray();
+        $this->exam = $exam;
+        $this->item = $exam->toArray();
         $this->confirmingItemEdit = true;
     }
 
     public function editItem(): void
     {
         $this->validate();
-        $item = $this->user->update([
+        $item = $this->exam->update([
             'name' => $this->item['name'], 
-            'email' => $this->item['email'], 
-            'password' => $this->item['password'], 
-            'profile_picture' => $this->item['profile_picture'], 
+            'slug' => $this->item['slug'], 
+            'description' => $this->item['description'], 
+            'start_date' => $this->item['start_date'], 
+            'end_date' => $this->item['end_date'], 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
-        $this->dispatch('refresh')->to('user');
+        $this->dispatch('refresh')->to('exam.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

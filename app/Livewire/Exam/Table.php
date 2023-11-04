@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use \Illuminate\View\View;
 
 use App\Models\Exam;
+use App\Models\User;
 
-class Exam extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -54,7 +55,7 @@ class Exam extends Component
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.exam.exam', [
+        return view('livewire.exam.table', [
             'results' => $results
         ]);
     }

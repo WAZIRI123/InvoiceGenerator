@@ -23,6 +23,12 @@
 
          <!-- start::Menu link -->
          <x-side-menu.div-link
+        route="exam.index" 
+        title="Exam" />
+        <!-- end::Menu link -->
+
+         <!-- start::Menu link -->
+         <x-side-menu.div-link
         route="admin.index" 
         title="Admin" />
         <!-- end::Menu link -->

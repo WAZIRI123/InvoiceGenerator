@@ -4,6 +4,7 @@ use App\Http\Controllers\Invoice;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\ExamCreate\ExamCreate;
 use App\Livewire\TestCrud;
 use App\Livewire\UserComponent;
 use App\Livewire\Wert;
@@ -38,8 +39,12 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/classes', Table::class)->name('index');
         });
 
+        Route::namespace('Exam')->name('exam.')->group(function () {
+            Route::get('/exam', Table::class)->name('index');
+        });
+
         Route::namespace('Admin')->name('admin.')->group(function () {
-            Route::get('/admin', Admin::class)->name('index');
+            Route::get('/admin', Table::class)->name('index');
         });
 
         Route::namespace('Subject')->name('subject.')->group(function () {

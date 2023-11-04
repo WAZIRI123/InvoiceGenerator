@@ -1,8 +1,9 @@
 <div>
+    
 <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
     <div class="flex justify-between">
-        <div class="text-2xl">Users</div>
-        <button type="submit" wire:click="$dispatchTo('admin.admin-child', 'showCreateForm');" class="text-blue-500">
+        <div class="text-2xl">Exams</div>
+        <button type="submit" wire:click="$dispatchTo('exam.create', 'showCreateForm');" class="text-blue-500">
             <x-tall-crud-icon-add />
         </button> 
     </div>
@@ -10,7 +11,7 @@
     <div class="mt-6">
         <div class="flex justify-between">
             <div class="flex">
-
+                <x-tall-crud-input-search />
             </div>
             <div class="flex">
 
@@ -27,8 +28,10 @@
                     </div>
                 </td>
                 <td class="px-3 py-2" >Name</td>
-                <td class="px-3 py-2" >Email</td>
-                <td class="px-3 py-2" >Profile Picture</td>
+                <td class="px-3 py-2" >Slug</td>
+                <td class="px-3 py-2" >Description</td>
+                <td class="px-3 py-2" >Start Date</td>
+                <td class="px-3 py-2" >End Date</td>
                 <td class="px-3 py-2" >Actions</td>
                 </tr>
             </thead>
@@ -37,13 +40,15 @@
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
                     <td class="px-3 py-2" >{{ $result->id }}</td>
                     <td class="px-3 py-2" >{{ $result->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->email }}</td>
-                    <td class="px-3 py-2" >{{ $result->profile_picture }}</td>
+                    <td class="px-3 py-2" >{{ $result->slug }}</td>
+                    <td class="px-3 py-2" >{{ $result->description }}</td>
+                    <td class="px-3 py-2" >{{ $result->start_date }}</td>
+                    <td class="px-3 py-2" >{{ $result->end_date }}</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('admin.admin-child', 'showEditForm', { user: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('exam.create', 'showEditForm', { exam: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('admin.admin-child', 'showDeleteForm', { user: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('exam.create', 'showDeleteForm', { exam: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>
@@ -56,7 +61,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
-    @livewire('admin.admin-child')
+    @livewire('exam.create')
     @livewire('livewire-toast')
 </div>
  </div>

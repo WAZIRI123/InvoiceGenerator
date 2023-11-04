@@ -5,62 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use GuzzleHttp\Client;
 
 class CarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $client;
+
+    public function __construct(Client $client)
     {
-        //
+        $this->client = $client;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function sortDependenciesByStars($repoName)
     {
-        //
-    }
+        $response = $this->client->get("https://api.github.com/repos/$repoName/network/dependents");
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCarRequest $request)
-    {
-        //
-    }
+        if ($response->getStatusCode() === 200) {
+            $dependents = json_decode($response->getBody(), true);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Car $car)
-    {
-        //
-    }
+            $sortedDependents = usort($dependents, function ($a, $b) {
+                return $b['stargazers_count'] - $a['stargazers_count'];
+            });
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Car $car)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCarRequest $request, Car $car)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Car $car)
-    {
-        //
+            return $sortedDependents;
+        } else {
+            throw new \Exception('Failed to retrieve dependents');
+        }
     }
 }

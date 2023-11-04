@@ -39,6 +39,7 @@
             <div class="mt-4">
                 <x-tall-crud-label>Start Date</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
+                
                 @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div></div><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
@@ -83,6 +84,7 @@
             <div class="mt-4">
                 <x-tall-crud-label>End Date</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.end_date" />
+
                 @error('item.end_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div></div>
         </x-slot>
