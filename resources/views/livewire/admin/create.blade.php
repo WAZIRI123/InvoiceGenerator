@@ -46,25 +46,23 @@
             <div class="grid grid-cols-2 gap-8">
             <div class="mt-4"         
         x-data="{ uploading: false, progress: 0 }"
-        x-on:livewire-upload-start="uploading = true"
-        x-on:livewire-upload-finish="uploading = false"
-        x-on:livewire-upload-error="uploading = false"
+        x-on:livewire-upload-start="$dispatch('uploadings')"
+        x-on:livewire-upload-finish="$dispatch('uploading')"
+        x-on:livewire-upload-error="$dispatch('uploading')"
         x-on:livewire-upload-progress="progress = $event.detail.progress">
                 <x-tall-crud-label>Profile Picture</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="file" wire:model="profile" />
                 @error('profile') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
 
-                 <!-- Progress Bar -->
-        <div x-show="uploading">
-            <progress max="100" x-bind:value="progress"></progress>
-        </div>
-
             </div></div>
         </x-slot>
 
-        <x-slot name="footer">
+        <x-slot name="footer" >
+<div x-data="{ uploading: false, progress: 0 }" x-on:uploadings.window="uploading =true" x-on:uploading.window="uploading =false">
             <x-tall-crud-button wire:click="$set('confirmingItemCreation', false)">Cancel</x-tall-crud-button>
-            <x-tall-crud-button mode="add" wire:loading.attr="disabled" wire:click="createItem()">Save</x-tall-crud-button>
+            <x-tall-crud-button mode="add" wire:uploading.attr="disabled" x-bind:disabled="uploading" wire:target="profile" wire:click="createItem()" >Save</x-tall-crud-button>
+            <span x-show="uploading">uploading...</span>
+            </div>
         </x-slot>
     </x-tall-crud-dialog-modal>
 

@@ -17,6 +17,8 @@ use WithFileUploads;
 
     public $profile;
 
+    public $uploading;
+
     /**
      * @var array
      */
@@ -113,11 +115,18 @@ public function mount(){
         $this->reset(['item']);
     }
 
+    public function setUploading(){
+        $this->uploading=true;
+    }
+
+    public function removeUploading(){
+        $this->uploading=false;
+    }
+
     public function createItem(): void
     {
      $this->validate();
-     dd($this->profile);
-
+   
      $uploadFilePath =$this->profile?'storage/'.$this->profile->store('profiles','public'):'';
 
     $item = User::create([
@@ -129,6 +138,7 @@ public function mount(){
 
     $this->confirmingItemCreation = false;
     $this->dispatch('refresh')->to('admin.table');
+    $this->reset(['item','profile']);
     $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 } 
  
