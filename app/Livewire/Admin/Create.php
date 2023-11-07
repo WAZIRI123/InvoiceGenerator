@@ -5,19 +5,21 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\WithFileUploads;
 
 class Create extends Component
 {
-use WithFileUploads;
+
+    use WithFileUploads;
 
     public $item=[];
 
-    public $profile;
+    public $profileImage;
 
-    public $uploading;
+    public $profile;
 
     /**
      * @var array
@@ -43,15 +45,15 @@ use WithFileUploads;
     
         
     }
- 
+
     /**
      * @var array
      */
     protected $validationAttributes = [
         'item.name' => 'Name',
         'item.email' => 'Email',
+        'item.branch_id' => 'Branch Id',
         'item.password' => 'Password',
-        'item.confirm_password'=>'Confirm Password',
         'item.profile_picture' => 'Profile Picture',
     ];
 
@@ -81,13 +83,11 @@ use WithFileUploads;
     {
         return view('livewire.admin.create');
     }
-
-
-public function mount(){
+    public function mount(){
    
-    $this->user = User::where('id', auth()->user()->id)->first();
-}
-
+        $this->user = User::where('id', auth()->user()->id)->first();
+    }
+    
     #[On('showDeleteForm')]
     public function showDeleteForm(User $user): void
     {
@@ -95,7 +95,6 @@ public function mount(){
         $this->user = $user;
     }
 
- 
     public function deleteItem(): void
     {
         $this->user->delete();
@@ -115,56 +114,68 @@ public function mount(){
         $this->reset(['item']);
     }
 
-    public function setUploading(){
-        $this->uploading=true;
-    }
-
-    public function removeUploading(){
-        $this->uploading=false;
-    }
-
     public function createItem(): void
     {
-     $this->validate();
+        $this->validate();
    
-     $uploadFilePath =$this->profile?'storage/'.$this->profile->store('profiles','public'):'';
+        $uploadFilePath =$this->profile?'storage/'.$this->profile->store('profiles','public'):'';
+   
+       $item = User::create([
+           'name' => $this->item['name'],
+           'email' => $this->item['email'],
+           'password' => $this->item['password'],
+           'profile_picture' =>  $uploadFilePath,
+       ]);
+   
+       $this->confirmingItemCreation = false;
+       $this->dispatch('refresh')->to('admin.table');
+       $this->reset(['item','profile']);
+       $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
-    $item = User::create([
-        'name' => $this->item['name'],
-        'email' => $this->item['email'],
-        'password' => $this->item['password'],
-        'profile_picture' =>  $uploadFilePath,
-    ]);
-
-    $this->confirmingItemCreation = false;
-    $this->dispatch('refresh')->to('admin.table');
-    $this->reset(['item','profile']);
-    $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
-} 
- 
-
+    }
         
     #[On('showEditForm')]
     public function showEditForm(User $user): void
     {
         $this->resetErrorBag();
         $this->user = $user;
+        $this->profileImage=$this->user->profile_picture;
         $this->item = $user->toArray();
         $this->confirmingItemEdit = true;
+    }
+
+    public function removeImage()
+    {
+      $this->profile = null;
+      //$this->profileImage = null;
     }
 
     public function editItem(): void
     {
         $this->validate();
+        if($this->profile !== null)
+        {
+          $currentImagePath = public_path("storage/{$this->profileImage}");
+          shell_exec("rm {$currentImagePath}");
+  
+          $uploadFilePath = $this->profile->store("profiles", "public");
+        }
+        else if(!$this->profile && !$this->profileImage) {
+          $uploadFilePath = "";
+        } else {
+          $uploadFilePath = $this->profileImage;
+        }
+  
+     
         $item = $this->user->update([
             'name' => $this->item['name'], 
             'email' => $this->item['email'], 
             'password' => $this->item['password'], 
-            'profile_picture' => $this->item['profile_picture'], 
+            'profile_picture' => $uploadFilePath, 
          ]);
-
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
+        $this->reset(['item','profile']);
         $this->dispatch('refresh')->to('admin.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
