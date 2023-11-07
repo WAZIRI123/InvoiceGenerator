@@ -110,10 +110,13 @@
 
                 @endif
                 @if($profile && $profile!='')
-              <img src="{{$profile->temporaryUrl() ?? ""}}" alt="profile photo" class="w-1/2  object-cover">
-            @endif
-            @if($profile)
-            <x-tall-crud-button mode="delete" wire:click="removeImage()" class="Justify-center">Clear Image</x-tall-crud-button>
+                <div class="container relative">
+    <img src="{{$profile->temporaryUrl() ?? ""}}" alt="profile photo" class="w-full  object-cover">
+    <button class="text-red-500 absolute top-0 right-0" wire:click="removeImage()">
+        <x-tall-crud-icon-delete />
+    </button>
+</div>
+
 
               @endif
                 <x-tall-crud-input class="block mt-1 w-full" type="file" wire:model.live="profile" />
