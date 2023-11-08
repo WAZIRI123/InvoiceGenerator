@@ -13,4 +13,9 @@ class Stream extends Model
         'name',
         'classes_id',
     ];
+
+    public function class()
+    {
+return $this->belongsTo(Classes::class,'classes_id');
+    }
 }

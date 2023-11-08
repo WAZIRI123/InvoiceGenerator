@@ -5,6 +5,8 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
 use App\Models\Exam;
+use App\Rules\StartDateBeforeToday;
+use Illuminate\Validation\Rule;
 
 class Create extends Component
 {
@@ -20,16 +22,9 @@ class Create extends Component
         'showEditForm',
     ];
 
-    /**
-     * @var array
-     */
-    protected $rules = [
-        'item.name' => 'required',
-        'item.slug' => 'required',
-        'item.description' => 'required',
-        'item.start_date' => 'required',
-        'item.end_date' => 'required',
-    ];
+
+    
+    
 
     /**
      * @var array
@@ -97,7 +92,16 @@ class Create extends Component
 
     public function createItem(): void
     {
-        $this->validate();
+
+        $this->validate(
+            [
+            'item.name' => ['required', 'string', 'max:255'],
+            'item.slug' => ['required', 'string', 'max:255', Rule::unique('exams', 'slug')],
+            'item.description' => ['nullable', 'string'],
+            'item.start_date' => ['required', 'date',new StartDateBeforeToday],
+            'item.end_date' => ['required', 'date', 'after_or_equal:item.start_date'],
+        ]
+    );
         $item = Exam::create([
             'name' => $this->item['name'], 
             'slug' => $this->item['slug'], 
@@ -122,7 +126,16 @@ class Create extends Component
 
     public function editItem(): void
     {
-        $this->validate();
+        
+        $this->validate(
+            [
+            'item.name' => ['required', 'string', 'max:255'],
+            'item.slug' => ['required', 'string', 'max:255', Rule::unique('exams', 'slug')->ignore($this->exam->id)->whereNull('deleted_at')],
+            'item.description' => ['nullable', 'string'],
+            'item.start_date' => ['required', 'date',new StartDateBeforeToday],
+            'item.end_date' => ['required', 'date', 'after_or_equal:item.start_date'],
+        ]
+    );
         $item = $this->exam->update([
             'name' => $this->item['name'], 
             'slug' => $this->item['slug'], 

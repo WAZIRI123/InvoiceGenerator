@@ -43,6 +43,14 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/exam', Table::class)->name('index');
         });
 
+        Route::namespace('Teacher')->name('teacher.')->group(function () {
+            Route::get('/teacher', Table::class)->name('index');
+        });
+
+        Route::namespace('Stream')->name('stream.')->group(function () {
+            Route::get('/stream', Table::class)->name('index');
+        });
+
         Route::namespace('Admin')->name('admin.')->group(function () {
             Route::get('/admin', Table::class)->name('index');
         });
@@ -50,6 +58,12 @@ Route::namespace('App\Livewire')->group(function () {
         Route::namespace('Subject')->name('subject.')->group(function () {
             Route::get('/subjects', Table::class)->name('index');
         });
+
+        Route::namespace('Student')->name('student.')->group(function () {
+            Route::get('/students', Table::class)->name('index');
+        });
+
+
         Route::namespace('AcademicPerformance')->name('Reports.')->group(function () {
             Route::get('/exam-result', ExamResult::class)->name('ExamResult');
         });

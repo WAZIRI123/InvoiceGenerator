@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Student;
+namespace App\Livewire\Teacher;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
 use \Illuminate\View\View;
 
-use App\Models\Student;
+use App\Models\User;
 
-class Student extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -41,11 +41,10 @@ class Student extends Component
     public function render(): View
     {
         $results = $this->query()
-            ->with(['user','class','stream','gender','semester','academicYear','examResults'])
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.student.student', [
+        return view('livewire.teacher.table', [
             'results' => $results
         ]);
     }
@@ -65,6 +64,6 @@ class Student extends Component
 
     public function query(): Builder
     {
-        return Student::query();
+        return User::query();
     }
 }

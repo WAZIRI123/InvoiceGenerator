@@ -1,36 +1,33 @@
 <?php
 
 namespace App\Livewire\Class;
-
-use App\Models\Classes;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
-
+use \Illuminate\View\View;
+use App\Models\Classes;
+use Illuminate\Validation\Rule;
 
 class Create extends Component
 {
-    use AuthorizesRequests;
 
     public $item=[];
-    public $class;
-  
-    protected function rules()
-    {
-        return [
-            'item.name' => ['required', Rule::unique('classes','name')->ignore($this->class->id??0)],
 
+    /**
+     * @var array
+     */
+    protected $listeners = [
+        'showDeleteForm',
+        'showCreateForm',
+        'showEditForm',
     ];
-}
 
-    /**0626 506 672
+  
+
+    /**
      * @var array
      */
     protected $validationAttributes = [
-        'item.name' => 'class name',
-       
+        'item.name' => 'Name',
     ];
 
     /**
@@ -38,49 +35,45 @@ class Create extends Component
      */
     public $confirmingItemDeletion = false;
 
-
- 
+    /**
+     * @var string | int
+     */
+    public $primaryKey;
 
     /**
      * @var bool
      */
     public $confirmingItemCreation = false;
 
+    public $classes ;
+
     /**
      * @var bool
      */
     public $confirmingItemEdit = false;
 
-
     public function render(): View
     {
         return view('livewire.class.create');
     }
-
     #[On('showDeleteForm')]
-    public function showDeleteForm(Classes $Classes): void
+    public function showDeleteForm(Classes $classes): void
     {
-
-        $this->authorize('delete', $Classes);
         $this->confirmingItemDeletion = true;
-
-        $this->class = $Classes;
+        $this->classes = $classes;
     }
-    
-  
-   
-    public function deleteItem(Classes $Classes): void
-    {
 
-        $this->authorize('delete', $Classes);
-        $this->class->delete();
+    public function deleteItem(): void
+    {
+        $this->classes->delete();
         $this->confirmingItemDeletion = false;
-        $this->class = '';
+        $this->classes = '';
         $this->reset(['item']);
         $this->dispatch('refresh')->to('class.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
+
     }
-    
+ 
     #[On('showCreateForm')]
     public function showCreateForm(): void
     {
@@ -91,49 +84,43 @@ class Create extends Component
 
     public function createItem(): void
     {
-        $this->authorize('create', [Classes::class]);
+        $this->validate(    
+            [
+            'item.name' => ['required', 'string', 'max:255', Rule::unique('classes', 'name')],
+         ]
         
-   
-        $this->validate();
-       
-         $Classes = Classes::create([
-            'name' => $this->item['name'],
-        
+    );
+        $item = Classes::create([
+            'name' => $this->item['name'], 
         ]);
-       
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('class.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
+
     }
+        
     #[On('showEditForm')]
-    public function showEditForm(Classes $Classes): void
+    public function showEditForm(Classes $classes): void
     {
-       
         $this->resetErrorBag();
-       
-        $this->class= $Classes;
-        $this->item['name']=$Classes->name;
-      
+        $this->classes = $classes;
+        $this->item = $classes->toArray();
         $this->confirmingItemEdit = true;
-        
     }
 
-    public function editItem(Classes $Classes): void
+    public function editItem(): void
     {
-        $this->authorize('update', $Classes);
- 
-        
-        $this->validate();
-        $this->class->update([
-            'name' => $this->item['name'],
-      
-        ]);
-
-
+        $this->validate(   [
+            'item.name' => ['required', 'string', 'max:255', Rule::unique('classes', 'name')->ignore($this->classes->id)->whereNull('deleted_at')],
+         ]);
+        $item = $this->classes->update([
+            'name' => $this->item['name'], 
+         ]);
         $this->confirmingItemEdit = false;
-        $this->class = '';
-        $this->dispatch('class.table', 'refresh');
+        $this->primaryKey = '';
+        $this->dispatch('refresh')->to('class.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
+
     }
 
 }

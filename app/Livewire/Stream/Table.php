@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Stream;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
 use \Illuminate\View\View;
 
-use App\Models\ExamResult;
+use App\Models\Stream;
 
-class TestCrud extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -41,11 +41,11 @@ class TestCrud extends Component
     public function render(): View
     {
         $results = $this->query()
-            ->with(['student'])
+            ->with(['class'])
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.test-crud', [
+        return view('livewire.stream.table', [
             'results' => $results
         ]);
     }
@@ -65,6 +65,6 @@ class TestCrud extends Component
 
     public function query(): Builder
     {
-        return ExamResult::query();
+        return Stream::query();
     }
 }

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\Gender;
+namespace App\Livewire\Stream;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
-use App\Models\Gender;
+use App\Models\Stream;
+use App\Models\Classes;
 
-class GenderChild extends Component
+class Create extends Component
 {
 
     public $item=[];
@@ -23,15 +24,23 @@ class GenderChild extends Component
     /**
      * @var array
      */
+    public $classes = [];
+
+    /**
+     * @var array
+     */
     protected $rules = [
-        'item.name' => '',
+        'item.name' => 'required|string|max:255',
+        'item.classes_id' => 'required|integer|exists:classes,id',
     ];
+    
 
     /**
      * @var array
      */
     protected $validationAttributes = [
         'item.name' => 'Name',
+        'item.classes_id' => 'Class',
     ];
 
     /**
@@ -49,7 +58,7 @@ class GenderChild extends Component
      */
     public $confirmingItemCreation = false;
 
-    public $gender ;
+    public $stream ;
 
     /**
      * @var bool
@@ -58,22 +67,22 @@ class GenderChild extends Component
 
     public function render(): View
     {
-        return view('livewire.gender.gender-child');
+        return view('livewire.stream.create');
     }
     #[On('showDeleteForm')]
-    public function showDeleteForm(Gender $gender): void
+    public function showDeleteForm(Stream $stream): void
     {
         $this->confirmingItemDeletion = true;
-        $this->gender = $gender;
+        $this->stream = $stream;
     }
 
     public function deleteItem(): void
     {
-        $this->gender->delete();
+        $this->stream->delete();
         $this->confirmingItemDeletion = false;
-        $this->gender = '';
+        $this->stream = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('gender');
+        $this->dispatch('refresh')->to('stream.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -84,38 +93,43 @@ class GenderChild extends Component
         $this->confirmingItemCreation = true;
         $this->resetErrorBag();
         $this->reset(['item']);
+
+        $this->classes = Classes::orderBy('name')->get();
     }
 
     public function createItem(): void
     {
         $this->validate();
-        $item = Gender::create([
+        $item = Stream::create([
             'name' => $this->item['name'] ?? '', 
+            'classes_id' => $this->item['classes_id'] ?? 0, 
         ]);
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('gender');
+        $this->dispatch('refresh')->to('stream.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
         
     #[On('showEditForm')]
-    public function showEditForm(Gender $gender): void
+    public function showEditForm(Stream $stream): void
     {
         $this->resetErrorBag();
-        $this->gender = $gender;
-        $this->item = $gender->toArray();
+        $this->stream = $stream;
+        $this->item = $stream->toArray();
         $this->confirmingItemEdit = true;
+
+        $this->classes = Classes::orderBy('name')->get();
     }
 
     public function editItem(): void
     {
         $this->validate();
-        $item = $this->gender->update([
+        $item = $this->stream->update([
             'name' => $this->item['name'] ?? '', 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
-        $this->dispatch('refresh')->to('gender');
+        $this->dispatch('refresh')->to('stream.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

@@ -2,34 +2,62 @@
 
 namespace App\Livewire\Subject;
 
-use App\Models\Subject; // Import the Subject model
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\View\View;
+use \Illuminate\View\View;
+
+use App\Models\Subject;
 
 class Table extends Component
 {
     use WithPagination;
 
+    /**
+     * @var array
+     */
     protected $listeners = ['refresh' => '$refresh'];
+    /**
+     * @var string
+     */
     public $sortBy = 'id';
+
+    /**
+     * @var bool
+     */
     public $sortAsc = true;
+
+    /**
+     * @var string
+     */
+    public $q;
+
+    /**
+     * @var int
+     */
     public $per_page = 15;
+
 
     public function mount(): void
     {
+
     }
 
     public function render(): View
     {
         $results = $this->query()
+            ->with(['class'])
+            ->when($this->q, function ($query) {
+                return $query->where(function ($query) {
+                    $query->where('name', 'like', '%' . $this->q . '%');
+                });
+            })
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
         return view('livewire.subject.table', [
             'results' => $results
-        ])->layoutData(['title' => 'Subject | School Management System']);
+        ]);
     }
 
     public function sortBy(string $field): void
@@ -40,6 +68,11 @@ class Table extends Component
         $this->sortBy = $field;
     }
 
+    public function updatingQ(): void
+    {
+        $this->resetPage();
+    }
+
     public function updatingPerPage(): void
     {
         $this->resetPage();
@@ -47,6 +80,6 @@ class Table extends Component
 
     public function query(): Builder
     {
-        return Subject::query(); // Update to use the Subject model
+        return Subject::query();
     }
 }

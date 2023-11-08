@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Stream;
+namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
 use \Illuminate\View\View;
 
-use App\Models\Stream;
+use App\Models\Student;
 
-class Stream extends Component
+class Wert extends Component
 {
     use WithPagination;
 
@@ -28,11 +28,6 @@ class Stream extends Component
     public $sortAsc = true;
 
     /**
-     * @var string
-     */
-    public $q;
-
-    /**
      * @var int
      */
     public $per_page = 15;
@@ -46,15 +41,11 @@ class Stream extends Component
     public function render(): View
     {
         $results = $this->query()
-            ->when($this->q, function ($query) {
-                return $query->where(function ($query) {
-                    $query->where('name', 'like', '%' . $this->q . '%');
-                });
-            })
+            ->with(['user','class','stream','semester'])
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.stream.stream', [
+        return view('livewire.wert', [
             'results' => $results
         ]);
     }
@@ -67,11 +58,6 @@ class Stream extends Component
         $this->sortBy = $field;
     }
 
-    public function updatingQ(): void
-    {
-        $this->resetPage();
-    }
-
     public function updatingPerPage(): void
     {
         $this->resetPage();
@@ -79,6 +65,6 @@ class Stream extends Component
 
     public function query(): Builder
     {
-        return Stream::query();
+        return Student::query();
     }
 }

@@ -36,21 +36,40 @@
            
         @hasrole('admin')  
     
-          <!-- start::Menu link -->
-          <x-side-menu.div-link  
+        <!-- start::Menu link -->
+        <x-side-menu.div-link  
         route="class.index" 
         title="class"/>
         <!-- end::Menu link -->
 
-            <!-- start::Menu link -->
-            <x-side-menu.div-link  
+        <!-- start::Menu link -->
+        <x-side-menu.div-link  
         route="subject.index" 
         title="Subject"/>
         <!-- end::Menu link -->
+
+          <!-- start::Menu link -->
+          <x-side-menu.div-link  
+        route="student.index" 
+        title="student"/>
+        <!-- end::Menu link -->
+
+         <!-- start::Menu link -->
+         <x-side-menu.div-link  
+        route="stream.index" 
+        title="stream"/>
+        <!-- end::Menu link -->
+
+              <!-- start::Menu link -->
+              <x-side-menu.div-link  
+        route="teacher.index" 
+        title="teacher"/>
+        <!-- end::Menu link -->
+
         @endhasrole
     
-            <!-- start::Menu  link -->
-            <x-side-menu.div-link  
+        <!-- start::Menu  link -->
+        <x-side-menu.div-link  
         route="Reports.ExamResult" 
         title="Exam Result" />
         <!-- end::Menu link -->

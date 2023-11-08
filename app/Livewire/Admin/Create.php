@@ -93,11 +93,17 @@ class Create extends Component
     {
         $this->confirmingItemDeletion = true;
         $this->user = $user;
+       $this->profileImage=$this->user->profile_picture;
     }
 
     public function deleteItem(): void
     {
         $this->user->delete();
+        if($this->profileImage !== null)
+        {
+          $currentImagePath = public_path("storage/{$this->profileImage}");
+          shell_exec("rm {$currentImagePath}");
+        }
         $this->confirmingItemDeletion = false;
         $this->user = '';
         $this->reset(['item']);
@@ -126,7 +132,7 @@ class Create extends Component
            'password' => $this->item['password'],
            'profile_picture' =>  $uploadFilePath,
        ]);
-   
+       $item->assignRole('admin');
        $this->confirmingItemCreation = false;
        $this->dispatch('refresh')->to('admin.table');
        $this->reset(['item','profile']);

@@ -8,6 +8,7 @@
     </div>
 
     <div class="mt-6">
+    @livewire('livewire-toast')
         <div class="flex justify-between">
             <div class="flex">
 
@@ -64,6 +65,6 @@
         {{ $results->links() }}
     </div>
     @livewire('admin.create')
-    @livewire('livewire-toast')
+ 
 </div>
  </div>

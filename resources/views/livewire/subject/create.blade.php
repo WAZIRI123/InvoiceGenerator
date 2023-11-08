@@ -27,11 +27,30 @@
                 @error('item.name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
+                <x-tall-crud-label>Subject Code</x-tall-crud-label>
+                <x-tall-crud-input disabled class="block mt-1 w-full" type="text" wire:model="item.subject_code" />
+                @error('item.subject_code') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div></div><div class="grid grid-cols-2 gap-8">
+            <div class="mt-4">
                 <x-tall-crud-label>Classes Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.classes_id"><option value="1">Yes</option><option value="0">No</option>
+                <x-tall-crud-select class="block mt-1 w-full"
+                 wire:model="item.classes_id">
+                 <option value="">Select Class</option>
+                    @foreach ($classes as $class )
+
+                    <option value="{{$class->id}}">{{$class->name}}</option>
+
+                    @endforeach
                 </x-tall-crud-select> 
                 @error('item.classes_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div>
+            </div>
+            <div class="mt-4">
+                <x-tall-crud-label>Description</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
+                @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div></div><div class="grid grid-cols-2 gap-8">
+
+           </div>
         </x-slot>
 
         <x-slot name="footer">
@@ -52,11 +71,28 @@
                 @error('item.name') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
+                <x-tall-crud-label>Subject Code</x-tall-crud-label>
+                <x-tall-crud-input disabled class="block mt-1 w-full" type="text" wire:model="item.subject_code" />
+                @error('item.subject_code') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div></div><div class="grid grid-cols-2 gap-8">
+            <div class="mt-4">
                 <x-tall-crud-label>Classes Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.classes_id"><option value="1">Yes</option><option value="0">No</option>
+                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.classes_id"><    <option value="">Select Class</option>
+                    @foreach ($classes as $class )
+
+                    <option value="{{$class->id}}">{{$class->name}}</option>
+
+                    @endforeach
                 </x-tall-crud-select> 
                 @error('item.classes_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div>
+            </div>
+            <div class="mt-4">
+                <x-tall-crud-label>Description</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
+                @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div></div><div class="grid grid-cols-2 gap-8">
+
+          </div>
         </x-slot>
 
         <x-slot name="footer">
