@@ -232,7 +232,7 @@ class Create extends Component
         $this->user = $user;
          
         $this->profileImage=$this->user->profile_picture;
-        $this->item =array_merge($user->toArray(),$student?->toArray());
+        $this->item =array_merge($user->toArray(),$student?->toArray()??[]);
 
         $this->item['is_graduate'] = $this->item['is_graduate']?? false;
         
