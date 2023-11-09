@@ -14,7 +14,7 @@ class Student extends Model
         'date_of_birth',
         'classes_id',
         'stream_id',
-        'gender_id',
+        'gender',
         'semester_id',
         'date_of_admission',
         'is_graduate',

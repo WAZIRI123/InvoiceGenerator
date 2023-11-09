@@ -25,10 +25,12 @@ class Create extends Component
     use WithFileUploads,DateTime;
 
     public $item=[];
-
+    public $class;
     public $profileImage;
 
     public $profile;
+
+    public $is_graduate;
 
     /**
      * @var array
@@ -50,12 +52,13 @@ class Create extends Component
             'item.password' => ['required', 'string', new Password(8), 'confirmed'],
             'item.password_confirmation' => ['required', 'string'],
             'item.admission_no' => 'required',
+            'item.gender' => 'required',
             'item.academic_year' => 'required',
             'item.date_of_admission' => 'required|date',
-            'item.date_of_birth' => 'nullable|date',
-            'item.is_graduate' => 'required|boolean',
+            'item.date_of_birth' => 'required|date',
+            'is_graduate' => 'nullable',
             'profile' => ['nullable', 'image', 'max:1024'],
-            'item.classes_id' => 'required|integer|exists:classes,id',
+            'class' => 'required|integer|exists:classes,id',
             'item.stream_id' => 'required|integer|exists:streams,id',
             'item.semester_id' => 'required|integer|exists:semesters,id',
         ];
@@ -70,12 +73,13 @@ class Create extends Component
         'item.name' => 'Name',
         'item.email' => 'Email',
         'item.password' => 'Password',
+        'item.gender' => 'gender',
         'item.password_confirmation' => 'Password Confirmation',
         'item.admission_no' => 'Admission Number',
         'item.academic_year' => 'Academic Year',
         'item.date_of_admission' => 'Date of Admission',
         'item.date_of_birth' => 'Date of Birth',
-        'item.is_graduate' => 'Is Graduate',
+        'is_graduate' => 'Is Graduate',
         'profile' => 'Profile Picture',
         'item.classes_id' => 'Class',
         'item.stream_id' => 'Stream',
@@ -139,7 +143,10 @@ class Create extends Component
 
     public function deleteItem(): void
     {
+        DB::transaction(function (){
+        Student::where('user_id',$this->user->id)->delete();
         $this->user->delete();
+        });
         if($this->profileImage !== null)
         {
           $currentImagePath = public_path("storage/{$this->profileImage}");
@@ -161,10 +168,10 @@ class Create extends Component
         $this->reset(['item']);
         $this->classes = Classes::orderBy('name')->get();
 
-        $this->streams = Stream::orderBy('name')->get();
-
         $this->semesters = Semester::orderBy('name')->get();
-
+        
+        $this->item['is_graduate'] = $this->item['is_graduate']?? false;
+        
         $this->item['admission_no'] = IdGenerator::generate(['table' => 'students', 'field' => 'admission_no', 'length' => 5, 'prefix' => 'St']);
         $this->item['date_of_admission'] =
         Carbon::now()->format('Y-m-d');
@@ -172,33 +179,38 @@ class Create extends Component
         $this->item['academic_year']=$this->getFinancialYear()->start.'-'.$this->getFinancialYear()->end;
     }
 
+    public function updatedClass(){
+        $this->streams=Stream::where('classes_id',$this->class)->get();
+    }
+
     public function createItem(): void
     {
+  
         $this->validate();
-   
+        DB::transaction(function (){
         $uploadFilePath =$this->profile?'storage/'.$this->profile->store('profiles','public'):'';
-   DB::transaction();
+      
        $user = User::create([
            'name' => $this->item['name'],
            'email' => $this->item['email'],
            'password' => $this->item['password'],
            'profile_picture' =>  $uploadFilePath,
        ]);
-       $user->assignRole('admin');
+       $user->assignRole('student');
 
        $student=Student::create([
         'admission_no' => $this->item['admission_no'], 
         'date_of_birth' => $this->item['date_of_birth'], 
         'date_of_admission' => $this->item['date_of_admission'], 
-        'is_graduate' => $this->item['is_graduate'], 
-        'academic_year' => $this->item['academic_year'], 
+        'is_graduate' => $this->is_graduate? true:false, 
+        'gender' => $this->item['gender'], 
+        'academic_year_id' => $this->item['academic_year'], 
         'user_id' =>$user->id, 
-        'classes_id' => $this->item['classes_id'], 
+        'classes_id' => $this->class, 
         'stream_id' => $this->item['stream_id'], 
         'semester_id' => $this->item['semester_id'],
        ]);
-
- DB::commit();
+    });
        $this->confirmingItemCreation = false;
        $this->dispatch('refresh')->to('student.table');
        $this->reset(['item','profile']);
@@ -210,9 +222,27 @@ class Create extends Component
     public function showEditForm(User $user): void
     {
         $this->resetErrorBag();
+
+        $student=Student::where('user_id' ,$user->id)->get()->first();
+        $this->classes = Classes::orderBy('name')->get();
+
+        $this->semesters = Semester::orderBy('name')->get();
+        $this->streams=Stream::where('classes_id',$student?->classes_id)->get();
+
         $this->user = $user;
+         
         $this->profileImage=$this->user->profile_picture;
-        $this->item = $user->toArray();
+        $this->item =array_merge($user->toArray(),$student?->toArray());
+
+        $this->item['is_graduate'] = $this->item['is_graduate']?? false;
+        
+        $this->item['academic_year']=$student?->academic_year_id;
+        $this->item['admission_no']=$student?->admission_no;
+        $this->item['date_of_admission']=$student?->date_of_admission;
+    
+        $this->is_graduate=$student?->is_graduate;
+        $this->class=$student?->classes_id;
+
         $this->confirmingItemEdit = true;
     }
 
@@ -224,7 +254,9 @@ class Create extends Component
 
     public function editItem(): void
     {
+      
         $this->validate();
+        DB::transaction(function (){
         if($this->profile !== null)
         {
           $currentImagePath = public_path("storage/{$this->profileImage}");
@@ -239,12 +271,30 @@ class Create extends Component
         }
   
      
-        $item = $this->user->update([
+        $user = $this->user->update([
             'name' => $this->item['name'], 
             'email' => $this->item['email'], 
             'password' => $this->item['password'], 
             'profile_picture' => $uploadFilePath, 
          ]);
+
+         $student=Student::where('user_id' ,$this->user->id)->get()->first();
+
+         $student= $student->update([
+            'admission_no' => $this->item['admission_no'], 
+            'date_of_birth' => $this->item['date_of_birth'], 
+            'date_of_admission' => $this->item['date_of_admission'], 
+            'is_graduate' => $this->is_graduate? true:false, 
+            'gender' => $this->item['gender'], 
+            'academic_year_id' => $this->item['academic_year'], 
+            'user_id' =>$this->user->id, 
+            'classes_id' => $this->class, 
+            'stream_id' => $this->item['stream_id'], 
+            'semester_id' => $this->item['semester_id'],
+           ]);
+
+        });
+
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
         $this->reset(['item','profile']);

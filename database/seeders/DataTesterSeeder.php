@@ -146,7 +146,7 @@ $semester2 = Semester::create([
             'date_of_birth' => '1995-03-15',  // Change the date of birth
             'classes_id' => $class->id,
             'stream_id' => $Stream->id,
-            'gender_id' => $gender->id,
+            'gender' => 'male',
             'semester_id' => $semester->id,
             'date_of_admission' => '2021-02-15',  // Change the date of admission
             'is_graduate' => 0,  // Not a graduate
@@ -169,7 +169,7 @@ $semester2 = Semester::create([
             'classes_id' => $class->id,
             'semester_id' => $semester->id,
             'stream_id' => $Stream->id,
-            'gender_id' => $gender->id,
+            'gender' => 'male',
             'date_of_admission' => '2021-03-20',  // Change the date of admission
             'is_graduate' => 0,  // Not a graduate
              // No graduation year
@@ -184,7 +184,7 @@ $semester2 = Semester::create([
             'classes_id' => $class->id,
             'semester_id' => $semester->id,
             'stream_id' => $Stream->id,
-            'gender_id' => $gender->id,
+            'gender' => 'female',
             'date_of_admission' => '2021-01-01',
             'is_graduate' => 1, // 10% probability of being a graduate
              // 70% probability of having a graduation year
