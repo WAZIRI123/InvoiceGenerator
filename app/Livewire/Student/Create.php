@@ -55,7 +55,7 @@ class Create extends Component
             'item.gender' => 'required',
             'item.academic_year' => 'required',
             'item.date_of_admission' => 'required|date',
-            'item.date_of_birth' => 'required|date',
+            'item.date_of_birth' => 'required|date|date_format:Y-m-d|before:' .today()->subYears(7)->format('Y-m-d'),
             'is_graduate' => 'nullable',
             'profile' => ['nullable', 'image', 'max:1024'],
             'class' => 'required|integer|exists:classes,id',
@@ -128,6 +128,7 @@ class Create extends Component
     {
         return view('livewire.student.create');
     }
+
     public function mount(){
    
         $this->user = User::where('id', auth()->user()->id)->first();

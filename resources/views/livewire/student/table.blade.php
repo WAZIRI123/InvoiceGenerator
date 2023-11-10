@@ -2,7 +2,7 @@
 <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
     <div class="flex justify-between">
         <div class="text-2xl">Students</div>
-        <button type="submit" wire:click="$dispatchTo('student.create', 'showCreateForm');" class="text-blue-500">
+        <button type="submit" wire:click="$dispatchTo('teacher.create', 'showCreateForm');" class="text-blue-500">
             <x-tall-crud-icon-add />
         </button> 
     </div>
@@ -48,10 +48,10 @@
     
 </td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('student.create', 'showEditForm', { user: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('teacher.create', 'showEditForm', { user: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('student.create', 'showDeleteForm', { user: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('teacher.create', 'showDeleteForm', { user: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>
@@ -64,7 +64,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
-    @livewire('student.create')
+    @livewire('teacher.create')
  
 </div>
  </div>

@@ -1,10 +1,17 @@
 <?php
 
 namespace App\Livewire\Teacher;
+
+use App\Models\Classes;
+use App\Models\Teacher;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
 use App\Models\User;
+use App\Traits\DateTime;
+use Carbon\Carbon;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -13,13 +20,14 @@ use Livewire\WithFileUploads;
 class Create extends Component
 {
 
-    use WithFileUploads;
+    use WithFileUploads,DateTime;
 
     public $item=[];
-
+    public $class=[];
     public $profileImage;
-
+    public $classes=[];
     public $profile;
+
 
     /**
      * @var array
@@ -40,6 +48,10 @@ class Create extends Component
             'item.email' => ['required', 'string', 'email', Rule::unique('users', 'email')->ignore($this->user->id)->whereNull('deleted_at')],
             'item.password' => ['required', 'string', new Password(8), 'confirmed'],
             'item.password_confirmation' => ['required', 'string'],
+            'item.registration_no' => 'required',
+            'item.gender_id' => 'required',
+            'item.date_of_employment' => 'required|date',
+            'item.date_of_birth' => 'required|date|date_format:Y-m-d|before:' .today()->subYears(7)->format('Y-m-d'),
             'profile' => ['nullable', 'image', 'max:1024'],
         ];
     
@@ -52,10 +64,16 @@ class Create extends Component
     protected $validationAttributes = [
         'item.name' => 'Name',
         'item.email' => 'Email',
-        'item.branch_id' => 'Branch Id',
         'item.password' => 'Password',
-        'item.profile_picture' => 'Profile Picture',
+        'item.gender_id' => 'gender_id',
+        'item.password_confirmation' => 'Password Confirmation',
+        'item.registration_no' => 'Admission Number',
+        'item.date_of_employment' => 'Date of Admission',
+        'item.date_of_birth' => 'Date of Birth',
+        'profile' => 'Profile Picture',
+    
     ];
+    
 
     /**
      * @var bool
@@ -74,6 +92,7 @@ class Create extends Component
 
     public $user ;
 
+
     /**
      * @var bool
      */
@@ -83,6 +102,7 @@ class Create extends Component
     {
         return view('livewire.teacher.create');
     }
+
     public function mount(){
    
         $this->user = User::where('id', auth()->user()->id)->first();
@@ -98,7 +118,14 @@ class Create extends Component
 
     public function deleteItem(): void
     {
+        DB::transaction(function (){
+        
+        $teacher=Teacher::where('user_id',$this->user->id);
+        
+        $teacher->classes()->sync([]);
+        $teacher->delete();
         $this->user->delete();
+        });
         if($this->profileImage !== null)
         {
           $currentImagePath = public_path("storage/{$this->profileImage}");
@@ -118,22 +145,42 @@ class Create extends Component
         $this->confirmingItemCreation = true;
         $this->resetErrorBag();
         $this->reset(['item']);
+        $this->classes = Classes::orderBy('name')->get();
+        $this->item['registration_no'] = IdGenerator::generate(['table' => 'teachers', 'field' => 'registration_no', 'length' => 5, 'prefix' => 'TC']);
+        $this->item['date_of_employment'] =
+        Carbon::now()->format('Y-m-d');
+
     }
+
+
 
     public function createItem(): void
     {
+  
         $this->validate();
-   
+        DB::transaction(function (){
         $uploadFilePath =$this->profile?'storage/'.$this->profile->store('profiles','public'):'';
-   
-       $item = User::create([
+      
+       $user = User::create([
            'name' => $this->item['name'],
            'email' => $this->item['email'],
            'password' => $this->item['password'],
            'profile_picture' =>  $uploadFilePath,
        ]);
-       $item->assignRole('admin');
-   
+       $user->assignRole('teacher');
+  
+
+       $teacher=Teacher::create([
+        'registration_no' => $this->item['registration_no'], 
+        'date_of_birth' => $this->item['date_of_birth'], 
+        'date_of_employment' => $this->item['date_of_employment'], 
+  
+        'gender_id' => $this->item['gender_id'], 
+ 
+        'user_id' =>$user->id, 
+       ]);
+       $teacher->classes()->sync($this->class);
+    });
        $this->confirmingItemCreation = false;
        $this->dispatch('refresh')->to('teacher.table');
        $this->reset(['item','profile']);
@@ -145,9 +192,15 @@ class Create extends Component
     public function showEditForm(User $user): void
     {
         $this->resetErrorBag();
+
+        $teacher=Teacher::where('user_id' ,$user->id)->get()->first();
+        $this->class=$teacher->classes()->get()->pluck('id')->toArray();
+        $this->classes = Classes::orderBy('name')->get();
         $this->user = $user;
         $this->profileImage=$this->user->profile_picture;
-        $this->item = $user->toArray();
+        $this->item =array_merge($user->toArray(),$teacher?->toArray()??[]);
+        $this->item['registration_no']=$teacher?->registration_no;
+        $this->item['date_of_employment']=$teacher?->date_of_employment;
         $this->confirmingItemEdit = true;
     }
 
@@ -159,7 +212,9 @@ class Create extends Component
 
     public function editItem(): void
     {
+      
         $this->validate();
+        DB::transaction(function (){
         if($this->profile !== null)
         {
           $currentImagePath = public_path("storage/{$this->profileImage}");
@@ -173,13 +228,30 @@ class Create extends Component
           $uploadFilePath = $this->profileImage;
         }
   
-     
-        $item = $this->user->update([
+        $user = $this->user->update([
             'name' => $this->item['name'], 
             'email' => $this->item['email'], 
             'password' => $this->item['password'], 
             'profile_picture' => $uploadFilePath, 
          ]);
+
+         $teacher=Teacher::where('user_id' ,$this->user->id)->get()->first();
+
+
+        $teacher->update([
+            'registration_no' => $this->item['registration_no'], 
+            'date_of_birth' => $this->item['date_of_birth'], 
+            'date_of_employment' => $this->item['date_of_employment'], 
+ 
+            'gender_id' => $this->item['gender_id'], 
+
+            'user_id' =>$this->user->id, 
+   
+           ]);
+           $teacher->classes()->attach($this->class);
+
+        });
+
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
         $this->reset(['item','profile']);

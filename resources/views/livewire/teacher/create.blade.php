@@ -55,7 +55,46 @@
                 <x-tall-crud-input class="block mt-1 w-full" type="file" wire:model="profile" />
                 @error('profile') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
 
-            </div></div>
+            </div>
+
+            <div class="mt-4">
+                    <x-tall-crud-label>Semester</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender_id">
+                        <option value="">Please Select Gender</option>
+
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+
+
+                    </x-tall-crud-select>
+                    @error('item.gender_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                </div>
+
+        
+        </div>
+
+            <div class="grid grid-cols-2 gap-8">
+                <div class="mt-4">
+                <x-tall-crud-label>date of birth</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" placeholder="yyy-mm-dd" wire:model="item.date_of_birth" />
+                @error('item.date_of_birth') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+
+            <div class="mt-4">
+            <x-tall-crud-label>Attach Class</x-tall-crud-label>
+            <x-tall-crud-checkbox-wrapper class="mt-2">
+       
+                @foreach ($classes as $c )
+                <x-tall-crud-checkbox class="ml-2" wire:model="class" value="{{$c->id}}" /> {{$c->name}}
+                @endforeach
+
+            </x-tall-crud-checkbox-wrapper>
+
+            
+            </div>
+
+            </div>
+
         </x-slot>
 
         <x-slot name="footer">
@@ -71,6 +110,7 @@
         <x-slot name="title">
             Edit Record
         </x-slot>
+
 
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
@@ -91,12 +131,12 @@
             </div>
 
             <div class="mt-4">
-                <x-tall-crud-label>Password confirmation</x-tall-crud-label>
+                <x-tall-crud-label>Password Confirmation</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.password_confirmation" />
                 @error('item.password_confirmation') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
+            </div></div>
 
-        </div><div class="grid grid-cols-2 gap-8">
+        <div class="grid grid-cols-2 gap-8">
         <div class="mt-4"         
         x-data="{ uploading: false, progress: 0 }"
         x-on:livewire-upload-start="$dispatch('uploadings')"
@@ -117,13 +157,46 @@
     </button>
 </div>
 
-
               @endif
                 <x-tall-crud-input class="block mt-1 w-full" type="file" wire:model.live="profile" />
               
                 @error('profile') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
 
-            </div></div>
+            </div>
+     
+                <div class="mt-4">
+                <x-tall-crud-label>date of birth</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" placeholder="yyy-mm-dd" wire:model="item.date_of_birth" />
+                @error('item.date_of_birth') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-8">
+                
+                <div class="mt-4">
+                    <x-tall-crud-label>Gender</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender_id">
+                    
+
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+
+
+                    </x-tall-crud-select>
+                    @error('item.gender_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                </div>
+
+                <div class="mt-4">
+            <x-tall-crud-label>Attach Class</x-tall-crud-label>
+            <x-tall-crud-checkbox-wrapper class="mt-2">
+    
+                @foreach ($classes as $c )
+                <x-tall-crud-checkbox class="ml-2" wire:model="class" value="{{$c->id}}" /> {{$c->name}}
+                @endforeach
+
+            </x-tall-crud-checkbox-wrapper>
+            </div>
+            </div>
         </x-slot>
 
         <x-slot name="footer">
