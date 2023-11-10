@@ -122,7 +122,6 @@ class Create extends Component
         
         $teacher=Teacher::where('user_id',$this->user->id);
         
-        $teacher->classes()->sync([]);
         $teacher->delete();
         $this->user->delete();
         });
