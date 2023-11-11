@@ -36,17 +36,27 @@ class DataTesterSeeder extends Seeder
 
     public function run()
     {
-        $academicYear = AcademicYear::create([
-            'academic_year' => '2023-2024',
-            'start_date' => '2023-08-01',
-            'end_date' => '2024-07-31',
-            'status' => 'active',
-        ]);
+        // $academicYear = AcademicYear::create([
+        //     'academic_year' => '2023-2024',
+        //     'start_date' => '2023-08-01',
+        //     'end_date' => '2024-07-31',
+        //     'status' => 'active',
+        // ]);
 
 
-    AcademicYear::checkUserAcademicYear();
+    // AcademicYear::checkUserAcademicYear();
+    // 
+    // $academicYear = AcademicYear::where('status', 'active')->first();
 
-    $academicYear = AcademicYear::where('status', 'active')->first();
+    Classes
+    Stream
+    subject
+    semester
+    teacher
+    student
+    exam
+    marking exam
+
 
     $class = Classes::factory()->create();
 

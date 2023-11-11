@@ -12,7 +12,6 @@ use App\Traits\DateTime;
 use Carbon\Carbon;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\WithFileUploads;
@@ -124,6 +123,7 @@ class Create extends Component
         
         $teacher->delete();
         $this->user->delete();
+
         });
         if($this->profileImage !== null)
         {

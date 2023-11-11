@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\ExamMark;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
 use \Illuminate\View\View;
 
-use App\Models\Student;
+use App\Models\ExamResult;
 
-class Wert extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -41,11 +41,11 @@ class Wert extends Component
     public function render(): View
     {
         $results = $this->query()
-            ->with(['user','class','stream','semester'])
+            ->with(['student','semester','exam','subject'])
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.wert', [
+        return view('livewire.exam-mark.table', [
             'results' => $results
         ]);
     }
@@ -65,6 +65,6 @@ class Wert extends Component
 
     public function query(): Builder
     {
-        return Student::query();
+        return ExamResult::query();
     }
 }

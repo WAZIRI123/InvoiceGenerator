@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Result;
+namespace App\Livewire\ExamMark;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
@@ -10,7 +10,7 @@ use App\Models\Semester;
 use App\Models\Exam;
 use App\Models\Subject;
 
-class ResultChild extends Component
+class Create extends Component
 {
 
     public $item=[];
@@ -48,25 +48,18 @@ class ResultChild extends Component
      * @var array
      */
     protected $rules = [
-        'item.student_id' => 'required',
-        'item.exam_id' => 'required',
-        'item.subject_id' => 'required',
-        'item.semester_id' => 'required',
-        'item.marks_obtained' => '',
-        'item.student_id' => 'required',
-        'item.semester_id' => 'required',
-        'item.exam_id' => 'required',
-        'item.subject_id' => 'required',
+        'item.marks_obtained' => 'nullable|numeric|min:0|max:100', // Adjust the numeric and range constraints accordingly
+        'item.student_id' => 'required|integer',
+        'item.semester_id' => 'required|integer',
+        'item.exam_id' => 'required|integer',
+        'item.subject_id' => 'required|integer',
     ];
+    
 
     /**
      * @var array
      */
     protected $validationAttributes = [
-        'item.student_id' => 'Student Id',
-        'item.exam_id' => 'Exam Id',
-        'item.subject_id' => 'Subject Id',
-        'item.semester_id' => 'Semester Id',
         'item.marks_obtained' => 'Marks Obtained',
         'item.student_id' => 'Student',
         'item.semester_id' => 'Semester',
@@ -98,7 +91,7 @@ class ResultChild extends Component
 
     public function render(): View
     {
-        return view('livewire.result.result-child');
+        return view('livewire.exam-mark.create');
     }
     #[On('showDeleteForm')]
     public function showDeleteForm(ExamResult $examresult): void
@@ -113,7 +106,7 @@ class ResultChild extends Component
         $this->confirmingItemDeletion = false;
         $this->examresult = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('result');
+        $this->dispatch('refresh')->to('exam-mark.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -138,18 +131,14 @@ class ResultChild extends Component
     {
         $this->validate();
         $item = ExamResult::create([
-            'student_id' => $this->item['student_id'] ?? '', 
-            'exam_id' => $this->item['exam_id'] ?? '', 
-            'subject_id' => $this->item['subject_id'] ?? '', 
-            'semester_id' => $this->item['semester_id'] ?? '', 
-            'marks_obtained' => $this->item['marks_obtained'] ?? '', 
-            'student_id' => $this->item['student_id'] ?? 0, 
-            'semester_id' => $this->item['semester_id'] ?? 0, 
-            'exam_id' => $this->item['exam_id'] ?? 0, 
-            'subject_id' => $this->item['subject_id'] ?? 0, 
+            'marks_obtained' => $this->item['marks_obtained'], 
+            'student_id' => $this->item['student_id'], 
+            'semester_id' => $this->item['semester_id'], 
+            'exam_id' => $this->item['exam_id'], 
+            'subject_id' => $this->item['subject_id'], 
         ]);
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('result');
+        $this->dispatch('refresh')->to('exam-mark.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
@@ -175,15 +164,11 @@ class ResultChild extends Component
     {
         $this->validate();
         $item = $this->examresult->update([
-            'student_id' => $this->item['student_id'] ?? '', 
-            'exam_id' => $this->item['exam_id'] ?? '', 
-            'subject_id' => $this->item['subject_id'] ?? '', 
-            'semester_id' => $this->item['semester_id'] ?? '', 
-            'marks_obtained' => $this->item['marks_obtained'] ?? '', 
+            'marks_obtained' => $this->item['marks_obtained'], 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
-        $this->dispatch('refresh')->to('result');
+        $this->dispatch('refresh')->to('exam-mark.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

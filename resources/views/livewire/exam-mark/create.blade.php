@@ -22,37 +22,12 @@
 
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
-                <x-tall-crud-label>Student Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.student_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.student_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
-            <div class="mt-4">
-                <x-tall-crud-label>Exam Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
-                <x-tall-crud-label>Subject Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.subject_id">
-                <option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.subject_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
-            <div class="mt-4">
-                <x-tall-crud-label>Semester Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.semester_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.semester_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
                 <x-tall-crud-label>Marks Obtained</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.marks_obtained" />
                 @error('item.marks_obtained') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
 
-            <div class="grid grid-cols-3">
+           
                 <div class="mt-4">
                     <x-tall-crud-label>Student</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.student_id">
@@ -63,9 +38,9 @@
                     </x-tall-crud-select>
                     @error('item.student_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div><div class="grid grid-cols-2 gap-8">
 
-            <div class="grid grid-cols-3">
+          
                 <div class="mt-4">
                     <x-tall-crud-label>Semester</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.semester_id">
@@ -76,9 +51,9 @@
                     </x-tall-crud-select>
                     @error('item.semester_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div>
+         
 
-            <div class="grid grid-cols-3">
+          
                 <div class="mt-4">
                     <x-tall-crud-label>Exam</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
@@ -89,9 +64,9 @@
                     </x-tall-crud-select>
                     @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div><div class="grid grid-cols-2 gap-8">
 
-            <div class="grid grid-cols-3">
+          
                 <div class="mt-4">
                     <x-tall-crud-label>Subject</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.subject_id">
@@ -102,7 +77,7 @@
                     </x-tall-crud-select>
                     @error('item.subject_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div></div>
+            </div>
         </x-slot>
 
         <x-slot name="footer">
@@ -118,36 +93,12 @@
 
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
-                <x-tall-crud-label>Student Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.student_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.student_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
-            <div class="mt-4">
-                <x-tall-crud-label>Exam Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
-                <x-tall-crud-label>Subject Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.subject_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.subject_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
-            <div class="mt-4">
-                <x-tall-crud-label>Semester Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.semester_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.semester_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
                 <x-tall-crud-label>Marks Obtained</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.marks_obtained" />
                 @error('item.marks_obtained') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
 
-            <div class="grid grid-cols-3">
+        ]
                 <div class="mt-4">
                     <x-tall-crud-label>Student</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.student_id">
@@ -158,9 +109,9 @@
                     </x-tall-crud-select>
                     @error('item.student_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div><div class="grid grid-cols-2 gap-8">
 
-            <div class="grid grid-cols-3">
+            
                 <div class="mt-4">
                     <x-tall-crud-label>Semester</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.semester_id">
@@ -171,9 +122,9 @@
                     </x-tall-crud-select>
                     @error('item.semester_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div>
+          
 
-            <div class="grid grid-cols-3">
+           
                 <div class="mt-4">
                     <x-tall-crud-label>Exam</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
@@ -184,9 +135,9 @@
                     </x-tall-crud-select>
                     @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div><div class="grid grid-cols-2 gap-8">
 
-            <div class="grid grid-cols-3">
+      
                 <div class="mt-4">
                     <x-tall-crud-label>Subject</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.subject_id">
@@ -197,7 +148,7 @@
                     </x-tall-crud-select>
                     @error('item.subject_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
-            </div></div>
+            </div>
         </x-slot>
 
         <x-slot name="footer">

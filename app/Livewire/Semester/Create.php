@@ -8,7 +8,7 @@ use App\Models\Semester;
 use App\Models\Subject;
 use App\Models\Classes;
 
-class SemesterChild extends Component
+class Create extends Component
 {
 
     public $item=[];
@@ -40,24 +40,23 @@ class SemesterChild extends Component
      * @var array
      */
     protected $rules = [
-        'item.name' => '',
-        'item.classes_id' => 'required',
-        'item.description' => '',
-        'item.start_date' => '',
-        'item.end_date' => '',
-        'item.class_id' => 'required',
+        'item.name' => 'required|string|max:255',
+        'item.description' => 'required|string|max:1000',
+        'item.start_date' => 'required|date|date_format:Y-m-d',
+        'item.end_date' => 'required|date |date_format:Y-m-d|after_or_equal:item.start_date',
+        'item.classes_id' => 'required|integer|exists:classes,id',
     ];
+    
 
     /**
      * @var array
      */
     protected $validationAttributes = [
         'item.name' => 'Name',
-        'item.classes_id' => 'Classes Id',
         'item.description' => 'Description',
         'item.start_date' => 'Start Date',
         'item.end_date' => 'End Date',
-        'item.class_id' => 'Class',
+        'item.classes_id' => 'Class',
     ];
 
     /**
@@ -84,7 +83,7 @@ class SemesterChild extends Component
 
     public function render(): View
     {
-        return view('livewire.semester.semester-child');
+        return view('livewire.semester.create');
     }
     #[On('showDeleteForm')]
     public function showDeleteForm(Semester $semester): void
@@ -99,7 +98,7 @@ class SemesterChild extends Component
         $this->confirmingItemDeletion = false;
         $this->semester = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('semester');
+        $this->dispatch('refresh')->to('semester.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -121,17 +120,16 @@ class SemesterChild extends Component
     {
         $this->validate();
         $item = Semester::create([
-            'name' => $this->item['name'] ?? '', 
-            'classes_id' => $this->item['classes_id'] ?? '', 
-            'description' => $this->item['description'] ?? '', 
-            'start_date' => $this->item['start_date'] ?? '', 
-            'end_date' => $this->item['end_date'] ?? '', 
-            'class_id' => $this->item['class_id'] ?? 0, 
+            'name' => $this->item['name'], 
+            'description' => $this->item['description'], 
+            'start_date' => $this->item['start_date'], 
+            'end_date' => $this->item['end_date'], 
+            'classes_id' => $this->item['classes_id'], 
         ]);
         $item->subjects()->attach($this->checkedSubjects);
 
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('semester');
+        $this->dispatch('refresh')->to('semester.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
@@ -157,18 +155,18 @@ class SemesterChild extends Component
     {
         $this->validate();
         $item = $this->semester->update([
-            'name' => $this->item['name'] ?? '', 
-            'classes_id' => $this->item['classes_id'] ?? '', 
-            'description' => $this->item['description'] ?? '', 
-            'start_date' => $this->item['start_date'] ?? '', 
-            'end_date' => $this->item['end_date'] ?? '', 
+            'name' => $this->item['name'], 
+            'description' => $this->item['description'], 
+            'start_date' => $this->item['start_date'], 
+            'end_date' => $this->item['end_date'],
+            'classes_id' => $this->item['classes_id'] 
          ]);
 
-        $this->item->subjects()->sync($this->checkedSubjects);
+        $this->semester->subjects()->sync($this->checkedSubjects);
         $this->checkedSubjects = [];
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
-        $this->dispatch('refresh')->to('semester');
+        $this->dispatch('refresh')->to('semester.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

@@ -1,13 +1,14 @@
 <div>
 <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
     <div class="flex justify-between">
-        <div class="text-2xl">Students</div>
-        <button type="submit" wire:click="$dispatchTo('wert-child', 'showCreateForm');" class="text-blue-500">
+        <div class="text-2xl">Semesters</div>
+        <button type="submit" wire:click="$dispatchTo('semester.create', 'showCreateForm');" class="text-blue-500">
             <x-tall-crud-icon-add />
         </button> 
     </div>
 
     <div class="mt-6">
+    @livewire('livewire-toast')
         <div class="flex justify-between">
             <div class="flex">
 
@@ -26,15 +27,11 @@
                         <x-tall-crud-sort-icon sortField="id" :sort-by="$sortBy" :sort-asc="$sortAsc" />
                     </div>
                 </td>
-                <td class="px-3 py-2" >Admission No</td>
-                <td class="px-3 py-2" >Date Of Birth</td>
-                <td class="px-3 py-2" >Date Of Admission</td>
-                <td class="px-3 py-2" >Is Graduate</td>
-                <td class="px-3 py-2" >Academic Year Id</td>
-                <td class="px-3 py-2" >User</td>
+                <td class="px-3 py-2" >Name</td>
+                <td class="px-3 py-2" >Start Date</td>
+                <td class="px-3 py-2" >End Date</td>
                 <td class="px-3 py-2" >Class</td>
-                <td class="px-3 py-2" >Stream</td>
-                <td class="px-3 py-2" >Semester</td>
+                <td class="px-3 py-2" >Subjects</td>
                 <td class="px-3 py-2" >Actions</td>
                 </tr>
             </thead>
@@ -42,20 +39,16 @@
             @foreach($results as $result)
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
                     <td class="px-3 py-2" >{{ $result->id }}</td>
-                    <td class="px-3 py-2" >{{ $result->admission_no }}</td>
-                    <td class="px-3 py-2" >{{ $result->date_of_birth }}</td>
-                    <td class="px-3 py-2" >{{ $result->date_of_admission }}</td>
-                    <td class="px-3 py-2" >{{ $result->is_graduate }}</td>
-                    <td class="px-3 py-2" >{{ $result->academic_year_id }}</td>
-                    <td class="px-3 py-2" >{{ $result->user?->name }}</td>
+                    <td class="px-3 py-2" >{{ $result->name }}</td>
+                    <td class="px-3 py-2" >{{ $result->start_date }}</td>
+                    <td class="px-3 py-2" >{{ $result->end_date }}</td>
                     <td class="px-3 py-2" >{{ $result->class?->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->stream?->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->semester?->name }}</td>
+                    <td class="px-3 py-2" >{{ $result->subjects->implode('name', ',') }}</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('wert-child', 'showEditForm', { student: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('semester.create', 'showEditForm', { semester: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('wert-child', 'showDeleteForm', { student: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('semester.create', 'showDeleteForm', { semester: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>
@@ -68,7 +61,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
-    @livewire('wert-child')
-    @livewire('livewire-toast')
+    @livewire('semester.create')
+   
 </div>
  </div>

@@ -64,6 +64,6 @@ class Table extends Component
 
     public function query(): Builder
     {
-        return User::query();
+        return User::query()->role('student');
     }
 }

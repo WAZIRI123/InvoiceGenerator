@@ -41,6 +41,7 @@ class Table extends Component
     public function render(): View
     {
         $results = $this->query()
+            ->role('teacher')
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
@@ -64,6 +65,6 @@ class Table extends Component
 
     public function query(): Builder
     {
-        return User::query();
+        return User::query()->role('teacher');
     }
 }

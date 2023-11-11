@@ -9,7 +9,7 @@ use \Illuminate\View\View;
 
 use App\Models\Semester;
 
-class Semester extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -28,11 +28,6 @@ class Semester extends Component
     public $sortAsc = true;
 
     /**
-     * @var string
-     */
-    public $q;
-
-    /**
      * @var int
      */
     public $per_page = 15;
@@ -47,15 +42,10 @@ class Semester extends Component
     {
         $results = $this->query()
             ->with(['class','subjects'])
-            ->when($this->q, function ($query) {
-                return $query->where(function ($query) {
-                    $query->where('name', 'like', '%' . $this->q . '%');
-                });
-            })
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.semester.semester', [
+        return view('livewire.semester.table', [
             'results' => $results
         ]);
     }
@@ -66,11 +56,6 @@ class Semester extends Component
             $this->sortAsc = !$this->sortAsc;
         }
         $this->sortBy = $field;
-    }
-
-    public function updatingQ(): void
-    {
-        $this->resetPage();
     }
 
     public function updatingPerPage(): void

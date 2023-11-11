@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -17,12 +18,14 @@ class UserSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $user = User::create([
-            'name'          => 'super-admin',
-            'email'         => 'super-admin@demo.com', 
-            'password'      => bcrypt('12345678'),
-            'email_verified_at' => now(),
-            'created_at'    => date("Y-m-d H:i:s")
+        $useradmin=User::create([
+            'name' => 'admin',
+            'email' => 'waziri@example.com',
+            'password' => bcrypt('password123'),
         ]);
+        $adminRole = Role::create(['name' => 'admin']);
+        $studentRole = Role::create(['name' => 'student']);
+        $teacherRole = Role::create(['name' => 'teacher']);
+        $useradmin->assignRole([ $adminRole->id]);
     }
 }

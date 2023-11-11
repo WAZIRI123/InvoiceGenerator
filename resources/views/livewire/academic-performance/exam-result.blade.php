@@ -7,7 +7,6 @@
         <tr>
             <th class="px-3 py-2">Student Name</th>
             <th class="px-3 py-2">Admission Number</th>
-            <th class="px-3 py-2">Gender</th>
             <th class="px-3 py-2">Semester</th>
             <th class="px-3 py-2">Stream</th>
             <th class="px-3 py-2">Date of Admission</th>
@@ -20,7 +19,6 @@
             <tr class="hover:bg-blue-300 {{ $loop->even ? 'bg-blue-100' : '' }}">
                 <td class="px-3 py-2">{{ $student->user->name }}</td>
                 <td class="px-3 py-2">{{ $student->admission_no }}</td>
-                <td class="px-3 py-2">{{ $student->gender->name }}</td>
                 <td class="px-3 py-2">{{ $student->semester->name }}</td>
                 <td class="px-3 py-2">{{ $student->stream->name }}</td>
                 <td class="px-3 py-2">{{ $student->date_of_admission }}</td>

@@ -17,7 +17,7 @@
     @if($academic_year_start=getFinancialYear()['start'] && $academic_year_end=getFinancialYear()['end'])
 
         {{getFinancialYear()['start'].'-'.$academic_year_end}}
-        ABAINANO primary  SCHOOL │ Online Examination Result 
+        EasyResult│ SCHOOL  Online Examination Result 
     
 
     @endif

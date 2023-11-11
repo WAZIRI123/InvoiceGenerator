@@ -63,6 +63,12 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/students', Table::class)->name('index');
         });
 
+        Route::namespace('Semester')->name('semester.')->group(function () {
+            Route::get('/semesters', Table::class)->name('index');
+        });
+        Route::namespace('ExamMark')->name('marking.')->group(function () {
+            Route::get('/exam-marking', Table::class)->name('index');
+        });
 
         Route::namespace('AcademicPerformance')->name('Reports.')->group(function () {
             Route::get('/exam-result', ExamResult::class)->name('ExamResult');
