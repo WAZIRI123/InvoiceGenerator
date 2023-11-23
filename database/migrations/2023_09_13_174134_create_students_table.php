@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('classes_id')->constrained()->onDelete('cascade');
             $table->foreignId('stream_id')->constrained()->onDelete('cascade');
             $table->string('gender');
+            $table->string('resultStatus')->nullable()->default('inComplete');
             $table->foreignId('semester_id')->constrained()->onDelete('cascade');
             $table->string('academic_year_id');
             $table->timestamps();

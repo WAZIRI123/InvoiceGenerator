@@ -70,6 +70,10 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/exam-marking', Table::class)->name('index');
         });
 
+        Route::namespace('GradeSystem')->name('grading.')->group(function () {
+            Route::get('/grade-system', Table::class)->name('index');
+        });
+
         Route::namespace('AcademicPerformance')->name('Reports.')->group(function () {
             Route::get('/exam-result', ExamResult::class)->name('ExamResult');
         });

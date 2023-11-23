@@ -59,7 +59,7 @@
 
             <div class="mt-4">
                     <x-tall-crud-label>Semester</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender_id">
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender">
                         <option value="">Please Select Gender</option>
 
                         <option value="male">male</option>
@@ -67,7 +67,7 @@
 
 
                     </x-tall-crud-select>
-                    @error('item.gender_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                    @error('item.gender') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
 
         
@@ -175,7 +175,7 @@
                 
                 <div class="mt-4">
                     <x-tall-crud-label>Gender</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender_id">
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender">
                     
 
                         <option value="male">male</option>
@@ -183,7 +183,7 @@
 
 
                     </x-tall-crud-select>
-                    @error('item.gender_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                    @error('item.gender') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
 
                 <div class="mt-4">

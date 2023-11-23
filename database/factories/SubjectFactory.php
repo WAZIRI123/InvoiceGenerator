@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Classes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class SubjectFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => 'test subjects',
+            'subject_code' => '10test',
+            'classes_id' =>Classes::factory()->create(),
+            'description' => 'test desc',
         ];
     }
 }

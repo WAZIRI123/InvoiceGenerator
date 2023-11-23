@@ -100,6 +100,13 @@
         route="Reports.ExamResult" 
         title="Exam Result" />
         <!-- end::Menu link -->
+
+
+              <!-- start::Menu  link -->
+              <x-side-menu.div-link  
+        route="grading.index" 
+        title="Grade System" />
+        <!-- end::Menu link -->
   
 
 

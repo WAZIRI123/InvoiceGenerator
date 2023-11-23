@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->string('registration_no');
             $table->date('date_of_employment');
-            $table->string('gender_id');
+            $table->string('gender');
             $table->timestamps();
         });
     }

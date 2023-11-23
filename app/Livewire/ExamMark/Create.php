@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\Semester;
 use App\Models\Exam;
 use App\Models\Subject;
+use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
@@ -102,12 +103,35 @@ class Create extends Component
 
     public function deleteItem(): void
     {
+        DB::beginTransaction();
+        try {
+        $student=Student::find($this->examresult->student_id);
         $this->examresult->delete();
+        $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+
+        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+
+        if(!array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray())){
+
+            $student = Student::find($this->item['student_id']);
+
+            $student->resultStatus = 'complete';
+
+            $student->save();
+    
+            }
+        DB::commit();
         $this->confirmingItemDeletion = false;
         $this->examresult = '';
         $this->reset(['item']);
         $this->dispatch('refresh')->to('exam-mark.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
+        }
+        catch(\Exception $e){
+
+        DB::rollback();
+
+        }
 
     }
  
@@ -137,6 +161,21 @@ class Create extends Component
             'exam_id' => $this->item['exam_id'], 
             'subject_id' => $this->item['subject_id'], 
         ]);
+        $examResultsSemester1 = ExamResult::where('student_id', $this->item['student_id'])->where('semester_id', 1)->get();
+        $student=Student::find($this->item['student_id']);
+        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+
+        if(!array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray())){
+
+            $student = Student::find($this->item['student_id']);
+
+            $student->resultStatus = 'complete';
+
+            $student->save();
+    
+            }
+
+
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('exam-mark.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
@@ -147,8 +186,11 @@ class Create extends Component
     public function showEditForm(ExamResult $examresult): void
     {
         $this->resetErrorBag();
+
         $this->examresult = $examresult;
+
         $this->item = $examresult->toArray();
+
         $this->confirmingItemEdit = true;
 
         $this->students = Student::orderBy('admission_no')->get();

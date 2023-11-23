@@ -6,12 +6,19 @@
     <thead class="bg-secondary text-gray-100 font-bold">
         <tr>
             <th class="px-3 py-2">Student Name</th>
+            
             <th class="px-3 py-2">Admission Number</th>
+            
             <th class="px-3 py-2">Semester</th>
+            
             <th class="px-3 py-2">Stream</th>
+            
             <th class="px-3 py-2">Date of Admission</th>
+            
             <th class="px-3 py-2">Graduate</th>
+            
             <th class="px-3 py-2">Action</th>
+            
         </tr>
     </thead>
     <tbody class="divide-y divide-blue-400">
@@ -25,9 +32,17 @@
                 <td class="px-3 py-2">{{ $student->is_graduate ? 'Yes' : 'No' }}</td>
 
                 <td class="px-3 py-2">
+                @if($student->resultStatus == 'complete')
                 <button type="submit" wire:click.live="showStudentResult({{ $student->id}})" class="text-green-500">
                 <x-custom-components.icon-edit />
                         </button>
+
+                @else
+                <span>in complete</span>
+                
+                 @endif
+                  
+                 
                   
                 </td>
             </tr>
@@ -38,9 +53,7 @@
         </div>
 @if ($data)
         <x-custom-components.confirmation-dialog wire:model.live="confirmingItemView">
-        <x-slot name="title" >
-            View
-        </x-slot>
+
 
         <x-slot name="content">
         <fieldset class="legend" style="background-color: transparent;
@@ -48,7 +61,7 @@
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
     text-align: left;
-    width: auto;">
+    width: 100%;">
     <br>
     <p align="center">
         <font color="navy" size="3"><b>Student Examination Results</b></font>

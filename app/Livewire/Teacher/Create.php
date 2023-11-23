@@ -48,7 +48,7 @@ class Create extends Component
             'item.password' => ['required', 'string', new Password(8), 'confirmed'],
             'item.password_confirmation' => ['required', 'string'],
             'item.registration_no' => 'required',
-            'item.gender_id' => 'required',
+            'item.gender' => 'required',
             'item.date_of_employment' => 'required|date',
             'item.date_of_birth' => 'required|date|date_format:Y-m-d|before:' .today()->subYears(7)->format('Y-m-d'),
             'profile' => ['nullable', 'image', 'max:1024'],
@@ -64,7 +64,7 @@ class Create extends Component
         'item.name' => 'Name',
         'item.email' => 'Email',
         'item.password' => 'Password',
-        'item.gender_id' => 'gender_id',
+        'item.gender' => 'gender',
         'item.password_confirmation' => 'Password Confirmation',
         'item.registration_no' => 'Admission Number',
         'item.date_of_employment' => 'Date of Admission',
@@ -174,7 +174,7 @@ class Create extends Component
         'date_of_birth' => $this->item['date_of_birth'], 
         'date_of_employment' => $this->item['date_of_employment'], 
   
-        'gender_id' => $this->item['gender_id'], 
+        'gender' => $this->item['gender'], 
  
         'user_id' =>$user->id, 
        ]);
@@ -242,7 +242,7 @@ class Create extends Component
             'date_of_birth' => $this->item['date_of_birth'], 
             'date_of_employment' => $this->item['date_of_employment'], 
  
-            'gender_id' => $this->item['gender_id'], 
+            'gender' => $this->item['gender'], 
 
             'user_id' =>$this->user->id, 
    

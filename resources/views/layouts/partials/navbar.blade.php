@@ -8,18 +8,14 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
                 </svg>
-               
             </button>
         </div>
         <div class="flex items-center"> 
      <!-- Show the first section on medium screens and larger -->
 <h1 class="hidden md:block text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
     @if($academic_year_start=getFinancialYear()['start'] && $academic_year_end=getFinancialYear()['end'])
-
         {{getFinancialYear()['start'].'-'.$academic_year_end}}
         EasyResult│ SCHOOL  Online Examination Result 
-    
-
     @endif
 
 </h1>

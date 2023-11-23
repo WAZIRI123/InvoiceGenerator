@@ -48,6 +48,7 @@
                         <button type="submit" wire:click="$dispatchTo('exam-mark.create', 'showEditForm', { examresult: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
+
                         <button type="submit" wire:click="$dispatchTo('exam-mark.create', 'showDeleteForm', { examresult: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
