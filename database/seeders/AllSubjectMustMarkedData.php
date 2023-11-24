@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Exam;
@@ -19,7 +21,7 @@ use App\Traits\DataTesterTrait;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class DataTesterSeeder extends Seeder
+class AllSubjectMustMarkedData extends Seeder
 {
     use DateTime,DataTesterTrait;
     /**
@@ -168,8 +170,11 @@ class DataTesterSeeder extends Seeder
         $user2->assignRole([$studentRole->id]);
 
        $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester->id);
+       $semester1Subjects=Semester::find(1)->subjects?->pluck('id')->toArray();
 
-       if (! $recordExists) {
+     $isSubjectContained=in_array($subject->id,$semester1Subjects);
+
+       if (! $recordExists && $isSubjectContained) {
 
         $examResult = $this->createExamResult(
                 $student->id,
@@ -198,8 +203,9 @@ class DataTesterSeeder extends Seeder
        }
 
     $recordExists = $this->recordExists($student->id, $exam->id, $subject3->id, $semester->id);
+     $isSubjectContained=in_array($subject3->id,$semester1Subjects);
 
-    if (! $recordExists) {
+    if (! $recordExists && $isSubjectContained) {
 
 $anotherExamResult = $this->createExamResult(
         $student->id,
@@ -229,8 +235,9 @@ $anotherExamResult = $this->createExamResult(
 }
 
         $recordExists = $this->recordExists($student->id, $exam->id, $subject2->id, $semester->id);
+     $isSubjectContained=in_array($subject2->id,$semester1Subjects);
 
-        if (! $recordExists) {
+        if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
@@ -258,8 +265,9 @@ $anotherExamResult = $this->createExamResult(
 
 
          $recordExists = $this->recordExists($student->id, $exam->id, $subject4->id, $semester->id);
+     $isSubjectContained=in_array($subject4->id,$semester1Subjects);
 
-         if (! $recordExists) {
+         if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
@@ -289,8 +297,9 @@ $anotherExamResult = $this->createExamResult(
      // Check if a record exists
      $recordExists = $this->recordExists($student->id, 
      $exam->id, $subject5->id, $semester->id);
+     $isSubjectContained=in_array($subject5->id,$semester1Subjects);
 
-     if (! $recordExists) {
+     if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
@@ -321,8 +330,9 @@ $anotherExamResult = $this->createExamResult(
          // Check if a record exists
          $recordExists = $this->recordExists($student->id, 
          $exam->id, $subject6->id, $semester->id);
+     $isSubjectContained=in_array($subject6->id,$semester1Subjects);
 
-         if (! $recordExists) {
+         if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,

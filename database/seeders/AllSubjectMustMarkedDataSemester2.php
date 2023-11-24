@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Exam;
@@ -19,7 +20,7 @@ use App\Traits\DataTesterTrait;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class DataTesterSeeder extends Seeder
+class AllSubjectMustMarkedDataSemester2 extends Seeder
 {
     use DateTime,DataTesterTrait;
     /**
@@ -101,7 +102,7 @@ class DataTesterSeeder extends Seeder
                 'My Exam',
                 'my-exams',
                 $classId1,
-                $semester->id,
+                $semester2->id,
                 $subject->id,
                 'This is my exam.',
                 now(),
@@ -127,7 +128,7 @@ class DataTesterSeeder extends Seeder
                 $classId1,
                 $stream->id,
                 'female',
-                $semester->id,
+                $semester2->id,
                 '2021-02-15',
                 0,
                 $this->getFinancialYear()->start.'-'.$this->getFinancialYear()->end
@@ -144,7 +145,7 @@ class DataTesterSeeder extends Seeder
                 $classId1,
                 $stream->id,
                 'female',
-                $semester->id,
+                $semester2->id,
                 '2021-03-20',
                 0,
                 $this->getFinancialYear()->start.'-'.$this->getFinancialYear()->end
@@ -159,7 +160,7 @@ class DataTesterSeeder extends Seeder
                 $classId1,
                 $stream->id,
                 'female',
-                $semester->id,
+                $semester2->id,
                 '2021-01-01',
                 1,
                 $this->getFinancialYear()->start.'-'.$this->getFinancialYear()->end
@@ -167,25 +168,28 @@ class DataTesterSeeder extends Seeder
 
         $user2->assignRole([$studentRole->id]);
 
-       $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester->id);
+       $recordExists = $this->recordExists($student->id, $exam->id, $subject->id, $semester2->id);
+       $semester2Subjects=Semester::find(2)->subjects?->pluck('id')->toArray();
 
-       if (! $recordExists) {
+     $isSubjectContained=in_array($subject->id,$semester2Subjects);
+
+       if (! $recordExists && $isSubjectContained) {
 
         $examResult = $this->createExamResult(
                 $student->id,
                 $exam->id,
                 $subject->id,
-                $semester->id,
+                $semester2->id,
                 rand(0, 100)
                 );
 
-        $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+        $examResultsSemester2 = ExamResult::where('student_id', $student->id)->where('semester_id', 2)->get();
 
         $student=Student::find($student->id);
 
-        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+        $semester2Subjects=Semester::where('id',2)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
  
-        if(count(array_intersect($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects))===count($semester1Subjects) ){
+        if(count(array_intersect($examResultsSemester2->pluck('subject_id')->toArray(),$semester2Subjects))===count($semester2Subjects) ){
 
             $student = Student::find($student->id);
 
@@ -197,26 +201,27 @@ class DataTesterSeeder extends Seeder
 
        }
 
-    $recordExists = $this->recordExists($student->id, $exam->id, $subject3->id, $semester->id);
+    $recordExists = $this->recordExists($student->id, $exam->id, $subject3->id, $semester2->id);
+     $isSubjectContained=in_array($subject3->id,$semester2Subjects);
 
-    if (! $recordExists) {
+    if (! $recordExists && $isSubjectContained) {
 
 $anotherExamResult = $this->createExamResult(
         $student->id,
         $exam->id,
         $subject3->id,
-        $semester->id,
+        $semester2->id,
         rand(0, 100)
         );
 
-    $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+    $examResultsSemester2 = ExamResult::where('student_id', $student->id)->where('semester_id', 2)->get();
 
     $student=Student::find($student->id);
 
-    $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+    $semester2Subjects=Semester::where('id',2)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
 
       
-    if(count(array_intersect($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects))===count($semester1Subjects) ){
+    if(count(array_intersect($examResultsSemester2->pluck('subject_id')->toArray(),$semester2Subjects))===count($semester2Subjects) ){
 
         $student = Student::find($student->id);
 
@@ -228,24 +233,25 @@ $anotherExamResult = $this->createExamResult(
 
 }
 
-        $recordExists = $this->recordExists($student->id, $exam->id, $subject2->id, $semester->id);
+        $recordExists = $this->recordExists($student->id, $exam->id, $subject2->id, $semester2->id);
+     $isSubjectContained=in_array($subject2->id,$semester2Subjects);
 
-        if (! $recordExists) {
+        if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
                 $exam->id,
                 $subject2->id,
-                $semester->id,
+                $semester2->id,
                 rand(0, 100)
                 );
 
-        $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+        $examResultsSemester2 = ExamResult::where('student_id', $student->id)->where('semester_id', 2)->get();
 
         $student=Student::find($student->id);
-        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+        $semester2Subjects=Semester::where('id',2)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
  
-        if(count(array_intersect($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects))===count($semester1Subjects) ){
+        if(count(array_intersect($examResultsSemester2->pluck('subject_id')->toArray(),$semester2Subjects))===count($semester2Subjects) ){
 
             $student = Student::find($student->id);
 
@@ -257,25 +263,26 @@ $anotherExamResult = $this->createExamResult(
         }
 
 
-         $recordExists = $this->recordExists($student->id, $exam->id, $subject4->id, $semester->id);
+         $recordExists = $this->recordExists($student->id, $exam->id, $subject4->id, $semester2->id);
+     $isSubjectContained=in_array($subject4->id,$semester2Subjects);
 
-         if (! $recordExists) {
+         if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
                 $exam->id,
                 $subject4->id,
-                $semester->id,
+                $semester2->id,
                 rand(0, 100)
                 ); 
 
-        $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+        $examResultsSemester2 = ExamResult::where('student_id', $student->id)->where('semester_id', 2)->get();
 
         $student=Student::find($student->id);
 
-        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+        $semester2Subjects=Semester::where('id',2)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
  
-        if(count(array_intersect($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects))===count($semester1Subjects) ){
+        if(count(array_intersect($examResultsSemester2->pluck('subject_id')->toArray(),$semester2Subjects))===count($semester2Subjects) ){
 
             $student = Student::find($student->id);
 
@@ -288,25 +295,26 @@ $anotherExamResult = $this->createExamResult(
 
      // Check if a record exists
      $recordExists = $this->recordExists($student->id, 
-     $exam->id, $subject5->id, $semester->id);
+     $exam->id, $subject5->id, $semester2->id);
+     $isSubjectContained=in_array($subject5->id,$semester2Subjects);
 
-     if (! $recordExists) {
+     if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
                 $exam->id,
                 $subject5->id,
-                $semester->id,
+                $semester2->id,
                 rand(0, 100)
             );
 
-        $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+        $examResultsSemester2 = ExamResult::where('student_id', $student->id)->where('semester_id', 2)->get();
 
         $student=Student::find($student->id);
 
-        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+        $semester2Subjects=Semester::where('id',2)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
  
-        if( count(array_intersect($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects))===count($semester1Subjects) ){
+        if( count(array_intersect($examResultsSemester2->pluck('subject_id')->toArray(),$semester2Subjects))===count($semester2Subjects) ){
 
             $student = Student::find($student->id);
 
@@ -320,24 +328,25 @@ $anotherExamResult = $this->createExamResult(
 
          // Check if a record exists
          $recordExists = $this->recordExists($student->id, 
-         $exam->id, $subject6->id, $semester->id);
+         $exam->id, $subject6->id, $semester2->id);
+     $isSubjectContained=in_array($subject6->id,$semester2Subjects);
 
-         if (! $recordExists) {
+         if (! $recordExists && $isSubjectContained) {
 
         $this->createExamResult(
                 $student->id,
                 $exam->id,
                 $subject6->id,
-                $semester->id,
+                $semester2->id,
                 rand(0, 100)
                 );
 
-        $examResultsSemester1 = ExamResult::where('student_id', $student->id)->where('semester_id', 1)->get();
+        $examResultsSemester2 = ExamResult::where('student_id', $student->id)->where('semester_id', 2)->get();
 
         $student=Student::find($student->id);
-        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+        $semester2Subjects=Semester::where('id',2)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
  
-        if(empty(array_diff($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects)) && empty(array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray()))){
+        if(empty(array_diff($examResultsSemester2->pluck('subject_id')->toArray(),$semester2Subjects)) && empty(array_diff($semester2Subjects,$examResultsSemester2->pluck('subject_id')->toArray()))){
 
             $student = Student::find($student->id);
 
@@ -351,4 +360,5 @@ $anotherExamResult = $this->createExamResult(
     
 
     }
+
 }
