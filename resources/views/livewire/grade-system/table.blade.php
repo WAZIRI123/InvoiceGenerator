@@ -1,8 +1,9 @@
 <div>
 <div class="bg-white rounded-lg px-8 py-6 my-16 overflow-x-scroll custom-scrollbar">
+@livewire('livewire-toast')
     <div class="flex justify-between">
         <div class="text-2xl">Grade_Systems</div>
-        <button type="submit" wire:click="$dispatchTo('wert-child', 'showCreateForm');" class="text-blue-500">
+        <button type="submit" wire:click="$dispatchTo('grade-system.create', 'showCreateForm');" class="text-blue-500">
             <x-tall-crud-icon-add />
         </button> 
     </div>
@@ -26,7 +27,7 @@
                         <x-tall-crud-sort-icon sortField="id" :sort-by="$sortBy" :sort-asc="$sortAsc" />
                     </div>
                 </td>
-                <td class="px-3 py-2" >Exam Id</td>
+               
                 <td class="px-3 py-2" >Mark From</td>
                 <td class="px-3 py-2" >Mark To</td>
                 <td class="px-3 py-2" >Remark</td>
@@ -38,16 +39,15 @@
             @foreach($results as $result)
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
                     <td class="px-3 py-2" >{{ $result->id }}</td>
-                    <td class="px-3 py-2" >{{ $result->exam_id }}</td>
                     <td class="px-3 py-2" >{{ $result->mark_from }}</td>
                     <td class="px-3 py-2" >{{ $result->mark_to }}</td>
                     <td class="px-3 py-2" >{{ $result->remark }}</td>
                     <td class="px-3 py-2" >{{ $result->exam?->name }}</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('wert-child', 'showEditForm', { gradesystem: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('grade-system.create', 'showEditForm', { gradesystem: {{ $result->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('wert-child', 'showDeleteForm', { gradesystem: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('grade-system.create', 'showDeleteForm', { gradesystem: {{ $result->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>
@@ -60,7 +60,7 @@
     <div class="mt-4">
         {{ $results->links() }}
     </div>
-    @livewire('wert-child')
-    @livewire('livewire-toast')
+    @livewire('grade-system.create')
+   
 </div>
  </div>

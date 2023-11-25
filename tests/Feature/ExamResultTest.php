@@ -40,7 +40,58 @@ class ExamResultTest extends TestCase
 
         $examResultsSemester1 = ModelsExamResult::where('student_id', 3)->where('semester_id', 1)->get();
       $test=$examResultsSemester1->pluck('subject_id')->toArray();
+
+      $examResultsSemesterStudent1 = ModelsExamResult::where('student_id', 1)->where('semester_id', 1)->get();
+   
+      $totalMarksSemesterStudent = 0;
+
+      $totalSubjectsSemesterStudent = 0;
+ 
+      foreach ( $examResultsSemester1 as $result) {
+ 
+      $totalMarksSemesterStudent  += $result->marks_obtained;
+      
+      $totalSubjectsSemesterStudent++;
+ 
+      }
+      $student=Student::find(3);
+      $rankSemesterStudent =$totalMarksSemesterStudent ? Student::where('classes_id', $student->classes_id)
+ 
+      ->where('stream_id', $student->stream_id)
+ 
+      ->where('academic_year_id', $student->academic_year_id)
+ 
+      ->where('semester_id', 1)
+ 
+      ->whereRaw("(SELECT SUM(marks_obtained) FROM exam_results WHERE student_id = students.id AND semester_id = 1) > ?", [$totalMarksSemesterStudent])
+ 
+      ->count() + 1:'';
+
+     $totalMarksSemester1 = 0;
+
+     $totalSubjectsSemester1 = 0;
+
+     foreach ($examResultsSemesterStudent1 as $result) {
+
+     $totalMarksSemester1 += $result->marks_obtained;
      
+     $totalSubjectsSemester1++;
+
+     }
+     $student1=Student::find(1);
+     $rankSemesterStudent1 =$totalSubjectsSemester1? Student::where('classes_id', $student1->classes_id)
+
+     ->where('stream_id', $student1->stream_id)
+
+     ->where('academic_year_id', $student1->academic_year_id)
+
+     ->where('semester_id', 1)
+
+     ->whereRaw("(SELECT SUM(marks_obtained) FROM exam_results WHERE student_id = students.id AND semester_id = 1) > ?", [$totalMarksSemester1])
+
+     ->count() + 1:'';
+
+    //  $cumulativeAverageSemester1 = $totalSubjectsSemester1 > 0 ? ($totalMarksSemester1 / $totalSubjectsSemester1) : 0;
        
         $missingSubjectsSemester1 =array_diff($examResultsSemester1->pluck('subject_id')->toArray(),$semester1Subjects);
 
@@ -52,8 +103,13 @@ class ExamResultTest extends TestCase
             
             $this->assertEquals(count($examResultsSemester1), count($semester1Subjects));
 
+            $this->assertEquals($rankSemesterStudent,1);
+            
+            $this->assertEquals($rankSemesterStudent1,2);
+
             $this->assertEmpty($missingSubjectsSemester1);
             Artisan::call('migrate:fresh');
+
             
     }
 
@@ -91,6 +147,9 @@ class ExamResultTest extends TestCase
             $this->assertEmpty($missingSubjectsSemester2);
             
     }
+
+
+
     
 
 

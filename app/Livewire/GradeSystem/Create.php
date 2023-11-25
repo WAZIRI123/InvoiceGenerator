@@ -31,10 +31,9 @@ class Create extends Component
      */
     protected $rules = [
         'item.exam_id' => 'required|numeric',
-        'item.mark_from' => '',
-        'item.mark_to' => '',
-        'item.remark' => '',
-        'item.exam_id' => 'required',
+        'item.mark_from' => 'required|numeric|min:0|max:100',
+        'item.mark_to' => 'required|numeric|min:0|max:100|gt:item.mark_from',
+        'item.remark' => 'required|string',
     ];
 
     /**
@@ -87,7 +86,7 @@ class Create extends Component
         $this->confirmingItemDeletion = false;
         $this->gradesystem = '';
         $this->reset(['item']);
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('granding-system.table');
         $this->dispatch('show', 'Record Deleted Successfully')->to('livewire-toast');
 
     }
@@ -106,14 +105,14 @@ class Create extends Component
     {
         $this->validate();
         $item = GradeSystem::create([
-            'exam_id' => $this->item['exam_id'] ?? '', 
-            'mark_from' => $this->item['mark_from'] ?? '', 
-            'mark_to' => $this->item['mark_to'] ?? '', 
-            'remark' => $this->item['remark'] ?? '', 
-            'exam_id' => $this->item['exam_id'] ?? 0, 
+            'exam_id' => $this->item['exam_id'], 
+            'mark_from' => $this->item['mark_from'], 
+            'mark_to' => $this->item['mark_to'], 
+            'remark' => $this->item['remark'], 
+            'exam_id' => $this->item['exam_id'], 
         ]);
         $this->confirmingItemCreation = false;
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('granding-system.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
 
     }
@@ -133,14 +132,14 @@ class Create extends Component
     {
         $this->validate();
         $item = $this->gradesystem->update([
-            'exam_id' => $this->item['exam_id'] ?? '', 
-            'mark_from' => $this->item['mark_from'] ?? '', 
-            'mark_to' => $this->item['mark_to'] ?? '', 
-            'remark' => $this->item['remark'] ?? '', 
+            'exam_id' => $this->item['exam_id'], 
+            'mark_from' => $this->item['mark_from'], 
+            'mark_to' => $this->item['mark_to'], 
+            'remark' => $this->item['remark'], 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
-        $this->dispatch('refresh')->to('wert');
+        $this->dispatch('refresh')->to('granding-system.table');
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

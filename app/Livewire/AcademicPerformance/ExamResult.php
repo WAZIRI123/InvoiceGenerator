@@ -26,6 +26,8 @@
 
       public function mount(){
 
+        
+       
          $loggedInUser = Auth::user();
 
         if ($loggedInUser->hasRole('teacher')) {
@@ -328,6 +330,15 @@
 
     public function render()
     {
+
+
+        if(Auth()->user()->getRoleNames()[0]=="student"){
+         
+            $student=Student::where('user_id',auth()->user()->id)->first();
+            
+            $this->showStudentResult(3);
+        }
+       
         return view('livewire.academic-performance.exam-result')->layoutData(['title' => 'Admin Dashboard | School Management System']);
     }
 

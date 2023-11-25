@@ -21,12 +21,16 @@
         </x-slot>
 
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
-                <x-tall-crud-label>Exam Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
+        <div class="mt-4">
+                    <x-tall-crud-label>Exam</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
+                        <option value="">Please Select</option>
+                        @foreach($exams as $c)
+                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                </div>
             <div class="mt-4">
                 <x-tall-crud-label>Mark From</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.mark_from" />
@@ -41,19 +45,6 @@
                 <x-tall-crud-label>Remark</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.remark" />
                 @error('item.remark') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-
-            <div class="grid grid-cols-3">
-                <div class="mt-4">
-                    <x-tall-crud-label>Exam</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
-                        <option value="">Please Select</option>
-                        @foreach($exams as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
-                        @endforeach
-                    </x-tall-crud-select>
-                    @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-                </div>
             </div></div>
         </x-slot>
 
@@ -69,12 +60,16 @@
         </x-slot>
 
         <x-slot name="content"><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
-                <x-tall-crud-label>Exam Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id"><option value="1">Yes</option><option value="0">No</option>
-                </x-tall-crud-select> 
-                @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
+        <div class="mt-4">
+                    <x-tall-crud-label>Exam</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
+                        <option value="">Please Select</option>
+                        @foreach($exams as $c)
+                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                </div>
             <div class="mt-4">
                 <x-tall-crud-label>Mark From</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.mark_from" />
@@ -89,19 +84,6 @@
                 <x-tall-crud-label>Remark</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.remark" />
                 @error('item.remark') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-
-            <div class="grid grid-cols-3">
-                <div class="mt-4">
-                    <x-tall-crud-label>Exam</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
-                        <option value="">Please Select</option>
-                        @foreach($exams as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
-                        @endforeach
-                    </x-tall-crud-select>
-                    @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-                </div>
             </div></div>
         </x-slot>
 

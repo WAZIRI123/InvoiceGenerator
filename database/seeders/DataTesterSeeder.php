@@ -136,7 +136,7 @@ class DataTesterSeeder extends Seeder
 
         $user4 = $this->createUser('Student 2', 'student2@example.com', 'password123');
 
-
+        $user4->assignRole([$studentRole->id]);
         $student4 = $this->createStudent(
                 $user4->id,
                 'A103',
