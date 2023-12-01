@@ -113,6 +113,68 @@ class ExamResultTest extends TestCase
             
     }
 
+    public function test_teacher_see_his_students_only()
+    {
+        Artisan::call('migrate:fresh');
+        $this->seed(AllSubjectMustMarkedData::class);
+
+        $class= Classes::factory()->create();
+
+        $user=User::factory()->create();
+
+        $teacher= Teacher::factory()->create(['user_id'=>$user->id]);
+
+        $teacherRole = User::role('teacher')->first();
+
+        $user->assignRole([ $teacherRole->id]);
+
+        $students=Student::factory(5)->create([
+            'classes_id' =>$class->id
+        ]);
+       
+        $teacher->classes()->attach($class->id);
+
+
+        Livewire::actingAs($user)
+            ->test(ExamResult::class);
+   
+         $this->assertEquals(5,$students->count());
+    
+
+            
+    }
+
+
+    public function test_teacher_can_not_see_others_students()
+    {
+        Artisan::call('migrate:fresh');
+        $this->seed(AllSubjectMustMarkedData::class);
+
+        $class= Classes::factory()->create();
+
+        $class2= Classes::factory()->create();
+
+        $user=User::factory()->create();
+
+        $teacher= Teacher::factory()->create(['user_id'=>$user->id]);
+
+        $teacherRole = User::role('teacher')->first();
+
+        $user->assignRole([ $teacherRole->id]);
+
+        $students=Student::factory(5)->create([
+            'classes_id' =>$class->id
+        ]);
+       
+        $teacher->classes()->sync([$class2->id]);
+
+        Livewire::actingAs($user)
+            ->test(ExamResult::class);
+   
+         $this->assertNotEquals(5,'students');
+         
+    }
+
     
 
     public function test_exam_results_cover_all_subjects_in_semesters2()

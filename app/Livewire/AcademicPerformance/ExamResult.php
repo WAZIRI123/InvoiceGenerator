@@ -18,16 +18,16 @@
 
     class ExamResult extends Component
     {
-      public $students ;
+// 6.14.12 node to revert to
+      public $students;
 
-      public $data ;
+      public $data;
 
       public $confirmingItemView;
 
       public function mount(){
 
         
-       
          $loggedInUser = Auth::user();
 
         if ($loggedInUser->hasRole('teacher')) {
@@ -336,7 +336,7 @@
          
             $student=Student::where('user_id',auth()->user()->id)->first();
             
-            $this->showStudentResult(3);
+            $this->showStudentResult($student->id);
         }
        
         return view('livewire.academic-performance.exam-result')->layoutData(['title' => 'Admin Dashboard | School Management System']);
