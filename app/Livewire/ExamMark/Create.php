@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Livewire\ExamMark;
+
+use App\Http\Helpers\AppHelper;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use \Illuminate\View\View;
@@ -8,7 +10,12 @@ use App\Models\ExamResult;
 use App\Models\Student;
 use App\Models\Semester;
 use App\Models\Exam;
+use App\Models\ExamRule;
+use App\Models\Grade;
+use App\Models\Mark;
+use App\Models\Section;
 use App\Models\Subject;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class Create extends Component
@@ -49,11 +56,14 @@ class Create extends Component
      * @var array
      */
     protected $rules = [
-        'item.marks_obtained' => 'nullable|numeric|min:0|max:100', // Adjust the numeric and range constraints accordingly
-        'item.student_id' => 'required|integer',
-        'item.semester_id' => 'required|integer',
-        'item.exam_id' => 'required|integer',
+        'item.academic_year_id' => 'nullable|integer',
+        'item.class_id' => 'required|integer',
+        'item.section_id' => 'required|integer',
         'item.subject_id' => 'required|integer',
+        'item.exam_id' => 'required|integer',
+        'item.registrationIds' => 'required|array',
+        'item.marks_type' => 'required|array',
+        'item.absent' => 'nullable|array',
     ];
     
 
@@ -61,12 +71,16 @@ class Create extends Component
      * @var array
      */
     protected $validationAttributes = [
-        'item.marks_obtained' => 'Marks Obtained',
-        'item.student_id' => 'Student',
-        'item.semester_id' => 'Semester',
-        'item.exam_id' => 'Exam',
-        'item.subject_id' => 'Subject',
+        'item.academic_year_id' => 'Academic year ID',
+        'item.class_id' => 'Class ID',
+        'item.section_id' => 'Section ID',
+        'item.subject_id' => 'Subject ID',
+        'item.exam_id' => 'Exam ID',
+        'item.registrationIds' => 'Registration IDs',
+        'item.marks_type' => 'Marks type',
+        'item.absent' => 'Absent',
     ];
+    
 
     /**
      * @var bool
@@ -89,6 +103,235 @@ class Create extends Component
      * @var bool
      */
     public $confirmingItemEdit = false;
+
+
+        public function store($request)
+        {
+            $this->validate();
+    
+            if(AppHelper::getInstituteCategory() == 'college') {
+                $acYear =  $this->item['academic_year_id'];
+            }
+            else{
+                $acYear = AppHelper::getAcademicYear();
+            }
+    
+            $class_id =$this->item['class_id'];
+            $section_id =$this->item['section_id'];
+            $subject_id =$this->item['subject_id'];
+            $exam_id =$this->item['exam_id']  ;
+    
+            // some validation before entry the mark
+            $examInfo = Exam::where('status', AppHelper::ACTIVE)
+                ->where('id', $exam_id)
+                ->first();
+            if(!$examInfo) {
+
+                $this->dispatch('show', 'Exam Not Found')->to('livewire-toast');
+
+            }
+    
+            $examRule = ExamRule::where('exam_id',$exam_id)
+                ->where('subject_id', $subject_id)
+                ->first();
+            if(!$examRule) {
+
+                $this->dispatch('show', 'Exam rules not found for this subject and exam!')->to('livewire-toast');
+
+            }
+    
+            $entryExists = Mark::where('academic_year_id', $acYear)
+                ->where('class_id', $class_id)
+                ->where('section_id', $section_id)
+                ->where('subject_id', $subject_id)
+                ->where('exam_id', $exam_id)
+                ->whereIn('registration_id', $request->get('registrationIds'))
+                ->count();
+    
+            if($entryExists){
+
+                $this->dispatch('show', 'This subject marks already exists for this exam & students!')->to('livewire-toast');
+
+            }
+            //validation end
+    
+            //pull grading information
+            $grade = Grade::where('id', $examRule->grade_id)->first();
+            if(!$grade){
+                $this->dispatch('show', 'Grading information not found!')->to('livewire-toast');
+    
+            }
+            $gradingRules = json_decode($grade->rules);
+    
+            //exam distributed marks rules
+            $distributeMarksRules = [];
+            foreach (json_decode($examRule->marks_distribution) as $rule){
+                $distributeMarksRules[$rule->type] = [
+                    'total_marks' => $rule->total_marks,
+                    'pass_marks' => $rule->pass_marks
+                ];
+            }
+    
+            $distributedMarks = $request->get('marks_type');
+            $absent = $request->get('absent');
+            $timeStampNow = Carbon::now(env('APP_TIMEZONE', 'Asia/Dhaka'));
+            $userId = auth()->user()->id;
+    
+            $marksData = [];
+            $isInvalid = false;
+            $message = '';
+    
+            foreach ($request->get('registrationIds') as $student){
+                $marks = $distributedMarks[$student];
+                [$isInvalid, $message, $totalMarks, $grade, $point, $typeWiseMarks] = $this->processMarksAndCalculateResult(
+                    $examRule,
+                    $gradingRules,
+                    $distributeMarksRules,
+                    $marks);
+    
+                if($isInvalid){
+                    break;
+                }
+    
+                $data = [
+                    'academic_year_id' => $acYear,
+                    'class_id' => $class_id,
+                    'section_id' => $section_id,
+                    'registration_id' => $student,
+                    'exam_id' => $exam_id,
+                    'subject_id' => $subject_id,
+                    'marks' => json_encode($typeWiseMarks),
+                    'total_marks' => $totalMarks,
+                    'grade' => $grade,
+                    'point' => $point,
+                    'present' => isset($absent[$student]) ? '0' : '1',
+                    "created_at" => $timeStampNow,
+                    "created_by" => $userId,
+                ];
+    
+                $marksData[] = $data;
+            }
+    
+    
+            if($isInvalid){
+                $this->dispatch('show', $message)->to('livewire-toast');
+            }
+    
+    
+            DB::beginTransaction();
+            try {
+    
+                Mark::insert($marksData);
+                DB::commit();
+            }
+            catch(\Exception $e){
+                DB::rollback();
+                $message = str_replace(array("\r", "\n","'","`"), ' ', $e->getMessage());
+                return redirect()->route('marks.create')->with("error",$message);
+            }
+    
+            $sectionInfo = Section::where('id', $section_id)->first();
+            $subjectInfo = Subject::with(['class' => function($query){
+                $query->select('name','id');
+            }])->where('id', $subject_id)->first();
+            //now notify the admins about this record
+            $msg = "Class {$subjectInfo->class->name}, section {$sectionInfo->name}, {$subjectInfo->name} subject marks added for {$examInfo->name} exam  by ".auth()->user()->name;
+            $nothing = AppHelper::sendNotificationToAdmins('info', $msg);
+            // Notification end
+            $this->dispatch('show', 'Exam marks added successfully!')->to('livewire-toast');
+      
+        }
+    
+    
+        /**
+         * Process student entry marks and
+         * calculate grade point
+         *
+         * @param $examRule collection
+         * @param $gradingRules array
+         * @param $distributeMarksRules array
+         * @param $strudnetMarks array
+         */
+        private function processMarksAndCalculateResult($examRule, $gradingRules, $distributeMarksRules, $studentMarks) {
+            $totalMarks = 0;
+            $isFail = false;
+            $isInvalid = false;
+            $message = "";
+            $typeWiseMarks = [];
+    
+            foreach ($distributeMarksRules as $type => $marksRule){
+                if(!isset($studentMarks[$type])){
+                    $typeWiseMarks[$type] = 0;
+                    continue;
+                }
+    
+                $marks = floatval($studentMarks[$type]);
+                $typeWiseMarks[$type] = $marks;
+                $totalMarks += $marks;
+    
+                // AppHelper::PASSING_RULES
+                if(in_array($examRule->passing_rule, [2,3])){
+                    if($marks > $marksRule['total_marks']){
+                        $isInvalid = true;
+                        $message = AppHelper::MARKS_DISTRIBUTION_TYPES[$type]. " marks is too high from exam rules marks distribution!";
+                        break;
+                    }
+    
+                    if($marks < $marksRule['pass_marks']){
+                        $isFail = true;
+                    }
+                }
+            }
+    
+            //fraction number make ceiling
+            $totalMarks = ceil($totalMarks);
+    
+            // AppHelper::PASSING_RULES
+            if(in_array($examRule->passing_rule, [1,3])){
+                if($totalMarks < $examRule->over_all_pass){
+                    $isFail = true;
+                }
+            }
+    
+            if($isFail){
+                $grade = 'F';
+                $point = 0.00;
+    
+                return [$isInvalid, $message, $totalMarks, $grade, $point, $typeWiseMarks];
+            }
+    
+            [$grade, $point] = $this->findGradePointFromMarks($gradingRules, $totalMarks);
+    
+            return [$isInvalid, $message, $totalMarks, $grade, $point, $typeWiseMarks];
+    
+        }
+    
+        private function findGradePointFromMarks($gradingRules, $marks) {
+            $grade = 'F';
+            $point = 0.00;
+            foreach ($gradingRules as $rule){
+                if ($marks >= $rule->marks_from && $marks <= $rule->marks_upto){
+                    $grade = AppHelper::GRADE_TYPES[$rule->grade];
+                    $point = $rule->point;
+                    break;
+                }
+            }
+            return [$grade, $point];
+        }
+    
+        private function findGradeFromPoint($point, $gradingRules) {
+            $grade = 'F';
+    
+            foreach ($gradingRules as $rule){
+                if($point >= floatval($rule->point)){
+                    $grade = AppHelper::GRADE_TYPES[$rule->grade];
+                    break;
+                }
+            }
+    
+            return $grade;
+    
+        }
 
     public function render(): View
     {
