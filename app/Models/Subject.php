@@ -11,14 +11,33 @@ class Subject extends Model
 
     protected $fillable = [
         'name',
-        'subject_code',
-        'classes_id',
-        'description',
+        'code',
+        'type',
+        'class_id',
+        'status',
+        'order',
+        'exclude_in_result'
     ];
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class)
+            ->select('teachers.id','teachers.name');
+    }
 
     public function class()
     {
         
-return $this->belongsTo(Classes::class,'classes_id');
+      return $this->belongsTo(Classes::class,'classes_id');
+    }
+
+    public function marks()
+    {
+        return $this->hasMany(Mark::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class);
     }
 }

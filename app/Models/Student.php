@@ -29,6 +29,7 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
+    
     public function class()
     {
         return $this->belongsTo(Classes::class, 'classes_id');
@@ -59,5 +60,15 @@ class Student extends Model
     public function examResults()
     {
         return $this->hasMany(ExamResult::class, 'student_id');
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class)->withPivot('subject_type')
+            ->select('id','name','code','type');
+    }
+    public function marks()
+    {
+        return $this->hasMany(Mark::class);
     }
 }

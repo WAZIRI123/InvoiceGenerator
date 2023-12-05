@@ -19,7 +19,7 @@ class Mark extends Model
         'academic_year_id',
         'class_id',
         'section_id',
-        'registration_id',
+        'student_id',
         'exam_id',
         'subject_id',
         'marks',

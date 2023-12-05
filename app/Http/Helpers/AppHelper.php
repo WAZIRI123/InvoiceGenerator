@@ -166,10 +166,8 @@ class AppHelper
     public static function getAcademicYear()
     {
         $settings = AppHelper::getAppSettings(null, true);
-        if(AppHelper::getInstituteCategory() != 'college') {
+
             return isset($settings['academic_year']) ? intval($settings['academic_year']) : 0;
-        }
-        return 0;
     }
 
     public static function getUserSessionHash()
@@ -557,6 +555,7 @@ class AppHelper
 
         return $permissions;
     }
+    
 
     /**
      *

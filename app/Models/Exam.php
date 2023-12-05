@@ -10,12 +10,39 @@ class Exam extends Model
     use HasFactory;
 
     protected $fillable = [
+        'classes_id',
         'name',
-        'slug',
-        'description',
-        'start_date',
-        'end_date',
+        'elective_subject_point_addition',
+        'marks_distribution_types',
+        'status',
+        'open_for_marks_entry'
     ];
 
-    protected $dates = ['start_date', 'end_date'];
+    
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+
+    public function scopeIclass($query, $classId)
+    {
+        if($classId){
+            return $query->where('classes_id', $classId);
+        }
+
+        return $query;
+    }
+
+    public function marks()
+    {
+        return $this->hasMany(Mark::class, 'exam_id');
+
+    }
+
+    public function result()
+    {
+        return $this->hasMany(Result::class);
+
+    }
+
 }
