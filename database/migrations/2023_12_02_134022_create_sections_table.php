@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('capacity');
-            $table->unsignedInteger('class_id');
+            $table->unsignedInteger('classes_id');
             $table->unsignedInteger('teacher_id');
             $table->text('note')->nullable();
             $table->enum('status', [0,1])->default(1);

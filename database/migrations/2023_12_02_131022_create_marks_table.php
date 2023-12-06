@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('marks', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('academic_year_id');
-            $table->unsignedInteger('class_id');
+            $table->unsignedInteger('classes_id');
             $table->unsignedInteger('section_id');
-            $table->unsignedInteger('registration_id');
+            $table->unsignedInteger('student_id');
             $table->unsignedInteger('exam_id');
             $table->unsignedInteger('subject_id');
             $table->text('marks');
@@ -26,13 +26,13 @@ return new class extends Migration
             $table->enum('present',[0,1])->default(1);
      
             $table->foreign('academic_year_id')->references('id')->on('academic_years');
-            $table->foreign('class_id')->references('id')->on('classes');
+            $table->foreign('classes_id')->references('id')->on('classes');
             $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('exam_id')->references('id')->on('exams');
             $table->foreign('subject_id')->references('id')->on('subjects');
 
-            $table->unique(['class_id','exam_id','student_id', 'subject_id']);
+            $table->unique(['classes_id','exam_id','student_id', 'subject_id']);
             
             $table->timestamps();
             $table->softDeletes();

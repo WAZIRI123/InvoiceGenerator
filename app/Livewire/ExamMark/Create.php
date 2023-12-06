@@ -112,7 +112,7 @@ class Create extends Component
     public $confirmingItemEdit = false;
 
 
-        public function store($request)
+        public function store()
         {
             $this->validate();
     
@@ -158,7 +158,7 @@ class Create extends Component
             //validation end
     
             //pull grading information
-            $grade = Grade::where('id', $examRule->grade_id)->first();
+            $grade = Grade::where('id',  $examRule->grade_id)->first();
             if(!$grade){
                 $this->dispatch('show', 'Grading information not found!')->to('livewire-toast');
     
@@ -174,8 +174,8 @@ class Create extends Component
                 ];
             }
     
-            $distributedMarks = $request->get('marks_type');
-            $absent = $request->get('absent');
+            $distributedMarks = $this->item['marks_type'];
+            $absent = $this->item['absent'];
             $timeStampNow = Carbon::now(env('APP_TIMEZONE', 'Asia/Dhaka'));
             $userId = auth()->user()->id;
     
@@ -338,7 +338,7 @@ class Create extends Component
 
     public function render(): View
     {
-        $this->classes=Classes::all();
+       $this->classes=Classes::all()->pluck('id', 'name');
 
        if(auth()->user()->hasRole('teacher')){
 

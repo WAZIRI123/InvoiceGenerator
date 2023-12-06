@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('exam_rules', function (Blueprint $table) {
             $table->id();
-            $table->increments('id');
             $table->unsignedInteger('class_id');
             $table->unsignedInteger('subject_id');
             $table->unsignedInteger('exam_id');

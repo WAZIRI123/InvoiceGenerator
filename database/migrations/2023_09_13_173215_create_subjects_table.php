@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->enum('type', [1,2,3])->default(1);
-            $table->unsignedInteger('class_id');
+            $table->unsignedInteger('classes_id');
             $table->enum('status', [0,1])->default(1);
             $table->unsignedSmallInteger('order')->default(0);
             $table->boolean('exclude_in_result')->default(0);

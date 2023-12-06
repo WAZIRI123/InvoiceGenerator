@@ -87,7 +87,8 @@
                     </x-tall-crud-select>
                     @error('item.stream_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
    
-            </div></div>
+            </div>
+        </div>
 
             <div class="grid grid-cols-2 gap-8">
                 

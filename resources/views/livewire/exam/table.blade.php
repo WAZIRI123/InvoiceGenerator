@@ -29,27 +29,26 @@
                     </div>
                 </td>
                 <td class="px-3 py-2" >Name</td>
-                <td class="px-3 py-2" >Slug</td>
-                <td class="px-3 py-2" >Description</td>
-                <td class="px-3 py-2" >Start Date</td>
-                <td class="px-3 py-2" >End Date</td>
+                <td class="px-3 py-2" >Class</td>
+                <td class="px-3 py-2" >marks distribution types</td>
+                <td class="px-3 py-2" >open for marks entry</td>
                 <td class="px-3 py-2" >Actions</td>
                 </tr>
             </thead>
             <tbody class="divide-y divide-blue-400">
             @foreach($results as $result)
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
-                    <td class="px-3 py-2" >{{ $result->id }}</td>
-                    <td class="px-3 py-2" >{{ $result->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->slug }}</td>
-                    <td class="px-3 py-2" >{{ $result->description }}</td>
-                    <td class="px-3 py-2" >{{ $result->start_date }}</td>
-                    <td class="px-3 py-2" >{{ $result->end_date }}</td>
+                    <td class="px-3 py-2" >{{ $result?->id }}</td>
+                    <td class="px-3 py-2" >{{ $result?->name }}</td>
+                    <td class="px-3 py-2" >{{ $result->class?->name }}</td>
+                    <td class="px-3 py-2" >{{ $result?->marks_distribution_types }}</td>
+ 
+                    <td class="px-3 py-2" >{{ $result?->open_for_marks_entry }}</td>
                     <td class="px-3 py-2" >
-                        <button type="submit" wire:click="$dispatchTo('exam.create', 'showEditForm', { exam: {{ $result->id}} });" class="text-green-500">
+                        <button type="submit" wire:click="$dispatchTo('exam.create', 'showEditForm', { exam: {{ $result?->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />
                         </button>
-                        <button type="submit" wire:click="$dispatchTo('exam.create', 'showDeleteForm', { exam: {{ $result->id}} });" class="text-red-500">
+                        <button type="submit" wire:click="$dispatchTo('exam.create', 'showDeleteForm', { exam: {{ $result?->id}} });" class="text-red-500">
                             <x-tall-crud-icon-delete />
                         </button>
                     </td>

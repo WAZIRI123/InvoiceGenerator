@@ -12,7 +12,6 @@ class Exam extends Model
     protected $fillable = [
         'classes_id',
         'name',
-        'elective_subject_point_addition',
         'marks_distribution_types',
         'status',
         'open_for_marks_entry'
@@ -21,7 +20,7 @@ class Exam extends Model
     
     public function class()
     {
-        return $this->belongsTo(Classes::class);
+        return $this->belongsTo(Classes::class,'classes_id');
     }
 
     public function scopeIclass($query, $classId)
