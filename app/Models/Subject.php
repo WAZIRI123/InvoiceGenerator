@@ -15,7 +15,6 @@ class Subject extends Model
         'type',
         'class_id',
         'status',
-        'order',
         'exclude_in_result'
     ];
 

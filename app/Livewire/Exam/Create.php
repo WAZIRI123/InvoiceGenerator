@@ -140,21 +140,12 @@ class Create extends Component
     public function editItem(): void
     {
         
-        $this->validate(
-            [
-            'item.name' => ['required', 'string', 'max:255'],
-            'item.slug' => ['required', 'string', 'max:255', Rule::unique('exams', 'slug')->ignore($this->exam->id)->whereNull('deleted_at')],
-            'item.description' => ['nullable', 'string'],
-            'item.start_date' => ['required', 'date',new StartDateBeforeToday],
-            'item.end_date' => ['required', 'date', 'after_or_equal:item.start_date'],
-        ]
-    );
+        $this->validate(); 
         $item = $this->exam->update([
             'name' => $this->item['name'], 
-            'slug' => $this->item['slug'], 
-            'description' => $this->item['description'], 
-            'start_date' => $this->item['start_date'], 
-            'end_date' => $this->item['end_date'], 
+            'classes_id' => $this->item['classes_id'], 
+            'marks_distribution_types' => $this->item['marks_distribution_types'], 
+            'open_for_marks_entry' => $this->item['open_for_marks_entry'], 
          ]);
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';

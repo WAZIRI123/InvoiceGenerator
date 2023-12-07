@@ -7,11 +7,15 @@ use \Illuminate\View\View;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\Subject;
 use App\Models\Classes;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
 
     public $item=[];
+
+    public $subjectTypes=[];
 
     /**
      * @var array
@@ -32,21 +36,23 @@ class Create extends Component
      */
     protected $rules = [
         'item.name' => 'required|string|max:255',
-        'item.subject_code' => 'required',
+        'item.code' => 'required',
+        'item.type' => 'required',
         'item.classes_id' => 'required|integer|exists:classes,id',
-        'item.description' => 'nullable|string',
-        'item.classes_id' => 'required|integer|exists:classes,id',
+        'item.exclude_in_result' => 'nullable|string',
+  
     ];
     
 
     /**
+     * 
      * @var array
      */
     protected $validationAttributes = [
         'item.name' => 'Name',
-        'item.subject_code' => 'Subject Code',
-        'item.classes_id' => 'Classes Id',
-        'item.description' => 'Description',
+        'item.code' => 'Subject Code',
+        'item.type' => 'type',
+        'item.exclude_in_result' => 'exclude in result',
         'item.classes_id' => 'Class',
     ];
 
@@ -67,6 +73,10 @@ class Create extends Component
 
     public $subject ;
 
+    public $teachersCollection=[] ;
+
+    public $teachers = [];
+
     /**
      * @var bool
      */
@@ -74,6 +84,11 @@ class Create extends Component
 
     public function render(): View
     {
+        $this->subjectTypes=[
+            1 => 'Core',
+            2 => 'Electives',
+            3 => 'Selective'
+        ];
         return view('livewire.subject.create');
     }
     #[On('showDeleteForm')]
@@ -85,7 +100,18 @@ class Create extends Component
 
     public function deleteItem(): void
     {
-        $this->subject->delete();
+          DB::beginTransaction();
+        try {
+            $this->subject->teachers()->detach();
+            $this->subject->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            $this->dispatch('show', 'Failed to Delete')->to('livewire-toast');
+  
+        }
+
+       
         $this->confirmingItemDeletion = false;
         $this->subject = '';
         $this->reset(['item']);
@@ -101,7 +127,8 @@ class Create extends Component
         $this->resetErrorBag();
         $this->reset(['item']);
         $this->reset(['item']);
-        $this->item['subject_code'] = IdGenerator::generate(['table' => 'subjects', 'field' => 'subject_code', 'length' => 5, 'prefix' => 'S']);
+        $this->item['code'] = IdGenerator::generate(['table' => 'subjects', 'field' => 'code', 'length' => 5, 'prefix' => 'S']);
+        $this->teachers = Teacher::orderBy('name')->get();
         $this->classes = Classes::orderBy('name')->get();
     }
 
@@ -111,12 +138,13 @@ class Create extends Component
         $item = Subject::create(
             [
             'name' => $this->item['name'], 
-            'subject_code' => $this->item['subject_code'], 
+            'code' => $this->item['code'], 
             'classes_id' => $this->item['classes_id'], 
-            'description' => $this->item['description'], 
-            'classes_id' => $this->item['classes_id'], 
+            'exclude_in_result' => $this->item['exclude_in_result'], 
+            'type' => $this->item['type'], 
           ]
        );
+       $item->teachers()->attach([$this->teachers]);
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('subject.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
@@ -137,12 +165,27 @@ class Create extends Component
     public function editItem(): void
     {
         $this->validate();
-        $item = $this->subject->update([
-            'name' => $this->item['name'] , 
-            'subject_code' => $this->item['subject_code'], 
+        DB::beginTransaction();
+        try {
+        $this->subject->teachers()->detach();
+        $item = $this->subject->update(         [
+            'name' => $this->item['name'], 
+            'code' => $this->item['code'], 
             'classes_id' => $this->item['classes_id'], 
-            'description' => $this->item['description'], 
-         ]);
+            'exclude_in_result' => $this->item['exclude_in_result'], 
+            'type' => $this->item['type'], 
+          ]);
+
+          $item->teachers()->attach([$this->teachers]);
+          DB::commit();
+        } catch (\Exception $e) {
+
+            {
+                DB::rollback();
+                $this->dispatch('show', 'Failed to update')->to('livewire-toast');
+      
+            }
+
         $this->confirmingItemEdit = false;
         $this->primaryKey = '';
         $this->dispatch('refresh')->to('subject.table');

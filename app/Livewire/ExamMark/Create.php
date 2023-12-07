@@ -344,7 +344,7 @@ class Create extends Component
 
         $teacher = Teacher::where('user_id',auth()->user()->id); 
         
-        $this->subjects = $teacher ? $teacher->pluck('id','name')  :'';
+        $this->subjects = $teacher ? $teacher->subjects?->pluck('id','name')  :'';
 
         }
         
