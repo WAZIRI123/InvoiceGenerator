@@ -41,9 +41,9 @@
                     <td class="px-3 py-2" >{{ $result?->id }}</td>
                     <td class="px-3 py-2" >{{ $result?->name }}</td>
                     <td class="px-3 py-2" >{{ $result->class?->name }}</td>
-                    <td class="px-3 py-2" >{{ $result?->marks_distribution_types }}</td>
+                    <td class="px-3 py-2" >{{ \AppHelper::MARKS_DISTRIBUTION_TYPES[$result?->marks_distribution_types] }}</td>
  
-                    <td class="px-3 py-2" >{{ $result?->open_for_marks_entry }}</td>
+                    <td class="px-3 py-2" >{{ $result?->open_for_marks_entry ? 'Yes':'No' }}</td>
                     <td class="px-3 py-2" >
                         <button type="submit" wire:click="$dispatchTo('exam.create', 'showEditForm', { exam: {{ $result?->id}} });" class="text-green-500">
                             <x-tall-crud-icon-edit />

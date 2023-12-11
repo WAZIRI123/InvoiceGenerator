@@ -31,7 +31,7 @@
                 </td>
                 <td class="px-3 py-2" >Name</td>
                 <td class="px-3 py-2" >Subject Code</td>
-                <td class="px-3 py-2" >Description</td>
+                <td class="px-3 py-2" >type</td>
                 <td class="px-3 py-2" >Class</td>
                 <td class="px-3 py-2" >Actions</td>
                 </tr>
@@ -41,9 +41,9 @@
                 <tr class="hover:bg-blue-300 {{ ($loop->even ) ? "bg-blue-100" : ""}}">
                     <td class="px-3 py-2" >{{ $result->id }}</td>
                     <td class="px-3 py-2" >{{ $result->name }}</td>
-                    <td class="px-3 py-2" >{{ $result->subject_code }}</td>
+                    <td class="px-3 py-2" >{{ $result->code }}</td>
      
-                    <td class="px-3 py-2" >{{ $result->description }}</td>
+                    <td class="px-3 py-2" >{{ \AppHelper::SUBJECT_TYPE[$result->type] }}</td>
                     <td class="px-3 py-2" >{{ $result->class?->name }}</td>
                     <td class="px-3 py-2" >
                         <button type="submit" wire:click="$dispatchTo('subject.create', 'showEditForm', { subject: {{ $result->id}} });" class="text-green-500">

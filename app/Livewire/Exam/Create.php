@@ -133,7 +133,9 @@ class Create extends Component
     {
         $this->resetErrorBag();
         $this->exam = $exam;
+ 
         $this->item = $exam->toArray();
+    
         $this->confirmingItemEdit = true;
     }
 

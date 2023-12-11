@@ -9,6 +9,7 @@ use App\Models\Subject;
 use App\Models\Classes;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class Create extends Component
 {
@@ -31,17 +32,7 @@ class Create extends Component
      */
     public $classes = [];
 
-    /**
-     * @var array
-     */
-    protected $rules = [
-        'item.name' => 'required|string|max:255',
-        'item.code' => 'required',
-        'item.type' => 'required',
-        'item.classes_id' => 'required|integer|exists:classes,id',
-        'item.exclude_in_result' => 'nullable|string',
-  
-    ];
+
     
 
     /**
@@ -91,6 +82,7 @@ class Create extends Component
         ];
         return view('livewire.subject.create');
     }
+
     #[On('showDeleteForm')]
     public function showDeleteForm(Subject $subject): void
     {
@@ -111,7 +103,6 @@ class Create extends Component
   
         }
 
-       
         $this->confirmingItemDeletion = false;
         $this->subject = '';
         $this->reset(['item']);
@@ -128,13 +119,21 @@ class Create extends Component
         $this->reset(['item']);
         $this->reset(['item']);
         $this->item['code'] = IdGenerator::generate(['table' => 'subjects', 'field' => 'code', 'length' => 5, 'prefix' => 'S']);
-        $this->teachers = Teacher::orderBy('name')->get();
+        $this->teachersCollection = Teacher::all();
         $this->classes = Classes::orderBy('name')->get();
     }
 
     public function createItem(): void
     {
-        $this->validate();
+        $this->validate([
+            'item.name' => 'required|string|max:255',
+            'item.code' =>['required',Rule::unique('subjects', 'code')],
+            'item.type' => 'required',
+            'item.classes_id' => 'required|integer|exists:classes,id',
+            'item.exclude_in_result' => 'nullable|integer',
+      
+        ]);
+  
         $item = Subject::create(
             [
             'name' => $this->item['name'], 
@@ -144,7 +143,8 @@ class Create extends Component
             'type' => $this->item['type'], 
           ]
        );
-       $item->teachers()->attach([$this->teachers]);
+      
+       $item->teachers()->attach($this->teachers);
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('subject.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
@@ -156,15 +156,27 @@ class Create extends Component
     {
         $this->resetErrorBag();
         $this->subject = $subject;
+     
+
+        $this->teachers=$subject->teachers()->get()->pluck('id')->toArray();
+
         $this->item = $subject->toArray();
         $this->confirmingItemEdit = true;
-
+        $this->teachersCollection = Teacher::all();
+        
         $this->classes = Classes::orderBy('name')->get();
     }
 
     public function editItem(): void
     {
-        $this->validate();
+        $this->validate([
+            'item.name' => 'required|string|max:255',
+            'item.code' =>['required',Rule::unique('subjects', 'code')->ignore($this->subject->id)->whereNull('deleted_at')],
+            'item.type' => 'required',
+            'item.classes_id' => 'required|integer|exists:classes,id',
+            'item.exclude_in_result' => 'nullable|integer',
+      
+        ]);
         DB::beginTransaction();
         try {
         $this->subject->teachers()->detach();
@@ -176,11 +188,13 @@ class Create extends Component
             'type' => $this->item['type'], 
           ]);
 
-          $item->teachers()->attach([$this->teachers]);
+          $this->subject->teachers()->attach($this->teachers);
+       
           DB::commit();
+       
         } catch (\Exception $e) {
 
-            {
+                
                 DB::rollback();
                 $this->dispatch('show', 'Failed to update')->to('livewire-toast');
       
@@ -194,3 +208,4 @@ class Create extends Component
     }
 
 }
+

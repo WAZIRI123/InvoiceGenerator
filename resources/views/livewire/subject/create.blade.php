@@ -20,7 +20,8 @@
             Add Record
         </x-slot>
 
-        <x-slot name="content"><div class="grid grid-cols-2 gap-8">
+        <x-slot name="content">
+        <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                 <x-tall-crud-label>Name</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.name" />
@@ -30,7 +31,9 @@
                 <x-tall-crud-label>Subject Code</x-tall-crud-label>
                 <x-tall-crud-input disabled class="block mt-1 w-full" type="text" wire:model="item.code" />
                 @error('item.code') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div>
+        </div>
+            <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                 <x-tall-crud-label>Classes Id</x-tall-crud-label>
                 <x-tall-crud-select class="block mt-1 w-full"
@@ -53,15 +56,16 @@
                         @endforeach
                     </x-tall-crud-select>
                     @error('item.type') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-   
             </div>
 
         </div>
 
-        <div class="grid grid-cols-2 
+<div class="grid grid-cols-2 
     gap-8">
 <div class="mt-4">
+<x-tall-crud-label>Asign Teacher</x-tall-crud-label>
 @foreach ($teachersCollection as $c )
+
     <x-tall-crud-checkbox class="ml-2" wire:model="teachers" value="{{$c->id}}" /> {{$c->name}}
 @endforeach
 </div>
@@ -71,6 +75,7 @@
                     <x-tall-crud-checkbox wire:model="item.exclude_in_result"  />
                     exclude in result
          
+                    @error('item.exclude_in_result') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
 </div>
         </x-slot>
@@ -86,7 +91,8 @@
             Edit Record
         </x-slot>
 
-        <x-slot name="content"><div class="grid grid-cols-2 gap-8">
+        <x-slot name="content">
+        <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                 <x-tall-crud-label>Name</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.name" />
@@ -96,10 +102,14 @@
                 <x-tall-crud-label>Subject Code</x-tall-crud-label>
                 <x-tall-crud-input disabled class="block mt-1 w-full" type="text" wire:model="item.code" />
                 @error('item.code') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div>
+        </div>
+            <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                 <x-tall-crud-label>Classes Id</x-tall-crud-label>
-                <x-tall-crud-select class="block mt-1 w-full" wire:model="item.classes_id"><    <option value="">Select Class</option>
+                <x-tall-crud-select class="block mt-1 w-full"
+                 wire:model="item.classes_id">
+                 <option value="">Select Class</option>
                     @foreach ($classes as $class )
 
                     <option value="{{$class->id}}">{{$class->name}}</option>
@@ -109,13 +119,37 @@
                 @error('item.classes_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
-                <x-tall-crud-label>Description</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
-                @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
+                    <x-tall-crud-label>Subject Type</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.type">
+                        <option value="">Please Select</option>
+                        @foreach($subjectTypes as  $key=>$value)
+                        <option value="{{$key}}">{{$value}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.type') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
 
-          </div>
-        </x-slot>
+        </div>
+
+<div class="grid grid-cols-2 
+    gap-8">
+<div class="mt-4">
+<x-tall-crud-label>Asign Teacher</x-tall-crud-label>
+@foreach ($teachersCollection as $c )
+
+    <x-tall-crud-checkbox class="ml-2" wire:model="teachers" value="{{$c->id}}" /> {{$c->name}}
+@endforeach
+</div>
+<div class="mt-4">
+                <x-tall-crud-label>exclude in result</x-tall-crud-label>
+
+                    <x-tall-crud-checkbox wire:model="item.exclude_in_result"  />
+                    exclude in result
+         
+                    @error('item.exclude_in_result') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+</div>        
+</x-slot>
 
         <x-slot name="footer">
             <x-tall-crud-button wire:click="$set('confirmingItemEdit', false)">Cancel</x-tall-crud-button>

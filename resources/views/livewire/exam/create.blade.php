@@ -54,8 +54,8 @@
             <div class="mt-4">
                 <x-tall-crud-label>open for marks entry</x-tall-crud-label>
 
-                    <x-tall-crud-checkbox wire:model="item.open_for_marks_entry"  />
-                    open for marks entry
+                    <x-tall-crud-checkbox wire:model="open_for_marks_entry" />
+                    open for marks entry 
          
             </div>
         </div>
@@ -105,12 +105,15 @@
    
             </div>
             <div class="mt-4">
-                <x-tall-crud-label>open for marks entry</x-tall-crud-label>
 
-                    <x-tall-crud-checkbox wire:model="item.open_for_marks_entry"  />
+            
+                <x-tall-crud-label>open for marks entry </x-tall-crud-label>
+
+                    <x-tall-crud-checkbox wire:model="item.open_for_marks_entry" />
                     open for marks entry
          
-            </div></div>
+            </div>
+        </div>
         </x-slot>
 
         <x-slot name="footer">

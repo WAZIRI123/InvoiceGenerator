@@ -13,15 +13,19 @@ class Subject extends Model
         'name',
         'code',
         'type',
-        'class_id',
+        'classes_id',
         'status',
         'exclude_in_result'
     ];
 
+    protected $casts = [
+        'exclude_in_result' => 'bool',
+
+      ];
+
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class)
-            ->select('teachers.id','teachers.name');
+        return $this->belongsToMany(Teacher::class);
     }
 
     public function class()

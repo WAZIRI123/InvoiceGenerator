@@ -17,6 +17,11 @@ class Exam extends Model
         'open_for_marks_entry'
     ];
 
+    protected $casts = [
+        'open_for_marks_entry' => 'bool',
+
+      ];
+
     
     public function class()
     {
