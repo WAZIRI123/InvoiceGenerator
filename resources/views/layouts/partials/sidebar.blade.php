@@ -51,6 +51,12 @@
         route="ExamRule.index" 
         title="Exam Rule"/>
         <!-- end::Menu link -->
+
+           <!-- start::Menu link -->
+     <x-side-menu.div-link  
+        route="grade.index" 
+        title="Grade"/>
+        <!-- end::Menu link -->
         
       <!-- start::Menu link -->
       <x-side-menu.div-link  

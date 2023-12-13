@@ -55,6 +55,10 @@ Route::namespace('App\Livewire')->group(function () {
             Route::get('/stream', Table::class)->name('index');
         });
 
+        Route::namespace('Grade')->name('grade.')->group(function () {
+            Route::get('/grade', Table::class)->name('index');
+        });
+
         Route::namespace('Admin')->name('admin.')->group(function () {
             Route::get('/admin', Table::class)->name('index');
         });
