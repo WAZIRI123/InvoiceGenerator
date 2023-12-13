@@ -14,7 +14,8 @@ class Create extends Component
 {
 
     public $item=[];
-
+    public $marks_dist_types=[];
+    public $marks_distribution_types=[];
     /**
      * @var array
      */
@@ -27,10 +28,11 @@ class Create extends Component
 
     
     protected $rules = [
-        'item.name' => 'required|string|max:255', // Example: Required, string, maximum length 255
-        'item.classes_id' => 'required|integer|exists:classes,id', // Example: Required, must be an integer, exists in 'classes' table under 'id' column
-        'item.marks_distribution_types' => 'required|integer', // Example: Required, must be an integer
-        'item.open_for_marks_entry' => 'required|boolean', // Example: Required, must be a boolean (true/false)
+        'item.name' => 'required|string|max:255', 
+        'item.classes_id' => 'required|integer|exists:classes,id', 
+        'marks_dist_types' => 'required|array', 
+
+        'item.open_for_marks_entry' => 'required|boolean', 
     ];
 
     /**
@@ -39,7 +41,7 @@ class Create extends Component
     protected $validationAttributes = [
         'item.name' => 'Name',
         'item.classes_id' => 'Class',
-        'item.marks_distribution_types' => 'distribution type id',
+        'marks_dist_types' => 'distribution type ',
         'item.open_for_marks_entry' => 'open for marks entry',
   
     ];
@@ -61,7 +63,7 @@ class Create extends Component
 
     public $exam ;
     public $classes=[];
-    public $marks_distribution_types=[];
+
 
     /**
      * @var bool
@@ -113,12 +115,11 @@ class Create extends Component
     public function createItem(): void
     {
 
-    $this->validate();       
-
+    $this->validate(); 
   $item = Exam::create([
             'name' => $this->item['name'], 
             'classes_id' => $this->item['classes_id'], 
-            'marks_distribution_types' => $this->item['marks_distribution_types'], 
+            'marks_distribution_types' =>json_encode($this->marks_dist_types), 
             'open_for_marks_entry' => $this->item['open_for_marks_entry'], 
         
         ]);
@@ -146,7 +147,7 @@ class Create extends Component
         $item = $this->exam->update([
             'name' => $this->item['name'], 
             'classes_id' => $this->item['classes_id'], 
-            'marks_distribution_types' => $this->item['marks_distribution_types'], 
+            'marks_distribution_types' => json_encode($this->item['marks_distribution_types']), 
             'open_for_marks_entry' => $this->item['open_for_marks_entry'], 
          ]);
         $this->confirmingItemEdit = false;

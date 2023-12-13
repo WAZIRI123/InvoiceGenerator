@@ -45,6 +45,12 @@
         route="stream.index" 
         title="stream"/>
         <!-- end::Menu link -->
+
+          <!-- start::Menu link -->
+     <x-side-menu.div-link  
+        route="ExamRule.index" 
+        title="Exam Rule"/>
+        <!-- end::Menu link -->
         
       <!-- start::Menu link -->
       <x-side-menu.div-link  
