@@ -18,6 +18,8 @@ class Create extends Component
 
     public $item=[];
 
+    public $marks_distribution=[];
+
     /**
      * @var array
      */
@@ -62,10 +64,10 @@ class Create extends Component
      * @var array
      */
     protected $rules = [
-        'item.marks_distribution' => '',
-        'item.passing_rule' => '',
-        'item.total_exam_marks' => '',
-        'item.over_all_pass' => '',
+        'marks_distribution' => 'required',
+        'item.passing_rule' => 'required',
+        'item.total_exam_marks' => 'required',
+        'item.over_all_pass' => 'required',
         'item.classes_id' => 'required',
         'exam' => 'required',
         'item.combine_subject_id' => 'required',
@@ -77,7 +79,7 @@ class Create extends Component
      * @var array
      */
     protected $validationAttributes = [
-        'item.marks_distribution' => 'Marks Distribution',
+        'marks_distribution' => 'Marks Distribution',
         'item.passing_rule' => 'Passing Rule',
         'item.total_exam_marks' => 'Total Exam Marks',
         'item.over_all_pass' => 'Over All Pass',
@@ -115,6 +117,7 @@ class Create extends Component
     {
         return view('livewire.exam-rule.create');
     }
+    
     #[On('showDeleteForm')]
     public function showDeleteForm(ExamRule $examrule): void
     {
@@ -180,9 +183,16 @@ class Create extends Component
     public function createItem(): void
     {
         $this->validate();
-
+        $marksDistribution = [];
+        foreach ($this->marks_distribution['type'] as $key => $value){
+            $marksDistribution[] = [
+                'type' => $value,
+                'total_marks' => $this->marks_distribution['total_marks'][$key],
+                'pass_marks' => $this->marks_distribution['pass_marks'][$key],
+            ];
+        }
         $item = ExamRule::create([
-            'marks_distribution' => $this->item['marks_distribution'], 
+            'marks_distribution' => json_encode( $marksDistribution), 
             'passing_rule' => $this->item['passing_rule'], 
             'total_exam_marks' => $this->item['total_exam_marks'], 
             'over_all_pass' => $this->item['over_all_pass'], 
@@ -220,8 +230,16 @@ class Create extends Component
     public function editItem(): void
     {
         $this->validate();
+        $marksDistribution = [];
+        foreach ($this->marks_distribution['type'] as $key => $value){
+            $marksDistribution[] = [
+                'type' => $value,
+                'total_marks' => $this->marks_distribution['total_marks'][$key],
+                'pass_marks' => $this->marks_distribution['pass_marks'][$key],
+            ];
+        }
         $item = $this->examrule->update([
-            'marks_distribution' => $this->item['marks_distribution'], 
+            'marks_distribution' => json_encode( $marksDistribution), 
             'passing_rule' => $this->item['passing_rule'], 
             'total_exam_marks' => $this->item['total_exam_marks'], 
             'over_all_pass' => $this->item['over_all_pass'], 
