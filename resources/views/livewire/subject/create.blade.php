@@ -66,7 +66,7 @@
 <x-tall-crud-label>Asign Teacher</x-tall-crud-label>
 @foreach ($teachersCollection as $c )
 
-    <x-tall-crud-checkbox class="ml-2" wire:model="teachers" value="{{$c->id}}" /> {{$c->name}}
+    <x-tall-crud-checkbox class="ml-2" wire:model="teachers" value="{{$c->id}}" /> {{$c->user?->name}}
 @endforeach
 </div>
 <div class="mt-4">
@@ -137,7 +137,7 @@
 <x-tall-crud-label>Asign Teacher</x-tall-crud-label>
 @foreach ($teachersCollection as $c )
 
-    <x-tall-crud-checkbox class="ml-2" wire:model="teachers" value="{{$c->id}}" /> {{$c->name}}
+    <x-tall-crud-checkbox class="ml-2" wire:model="teachers" value="{{$c->id}}" /> {{$c->user?->name}}
 @endforeach
 </div>
 <div class="mt-4">

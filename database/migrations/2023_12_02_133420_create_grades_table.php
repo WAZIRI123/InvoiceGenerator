@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('grades', function (Blueprint $table) {
+        Schema::create('grades', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('rules');
+            $table->string('marks_from');
+            $table->string('marks_upto');
             $table->softDeletes();
             $table->timestamps();
         });

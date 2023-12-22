@@ -10,8 +10,6 @@ use App\Models\ExamRule;
 use App\Models\Classes;
 use App\Models\Exam;
 use App\Models\Subject;
-use App\Models\Grade;
-use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class Create extends Component
 {
@@ -55,10 +53,7 @@ class Create extends Component
      */
     public $subjects = [];
 
-    /**
-     * @var array
-     */
-    public $grades = [];
+   
 
     /**
      * @var array
@@ -66,13 +61,12 @@ class Create extends Component
     protected $rules = [
         'marks_distribution' => 'required',
         'item.passing_rule' => 'required',
-        'item.total_exam_marks' => 'required',
-        'item.over_all_pass' => 'required',
-        'item.classes_id' => 'required',
+        'item.total_exam_marks' => 'required|numeric', 
+        'item.over_all_pass' => 'required|numeric', 
+        'item.classes_id' => 'required|integer', 
         'exam' => 'required',
-        'item.combine_subject_id' => 'required',
-        'item.subject_id' => 'required',
-        'item.grade_id' => 'required',
+        'item.combine_subject_id' => 'nullable', 
+        'item.subject_id' => 'required|integer', 
     ];
 
     /**
@@ -85,9 +79,9 @@ class Create extends Component
         'item.over_all_pass' => 'Over All Pass',
         'item.classes_id' => 'Class',
         'exam' => 'Exam',
-        'item.combine_subject_id' => 'CombineSubject',
+        
         'item.subject_id' => 'Subject',
-        'item.grade_id' => 'Grade',
+
     ];
 
     /**
@@ -125,30 +119,33 @@ class Create extends Component
         $this->examrule = $examrule;
     }
 
-    public  function addMarksDistField(){
-        $this->MarksDistFields[]= '';
-    }
 
 
-    public function removeMarksDistField($index)
-    {
- 
-        unset($this->MarksDistFields[$index]);
+    public Function updatedExam($exam_id=null){
+        if ($exam_id!=null) {
+            $markDistTypesKeys = json_decode(Exam::find($exam_id)?->marks_distribution_types);
+        }else {
+            $markDistTypesKeys = json_decode(Exam::find($this->exam)?->marks_distribution_types);
+        }
 
-        $this->MarksDistFields = array_values($this->MarksDistFields);
-    }
-
-    public Function updatedExam(){
-        $markDistTypesKeys = json_decode(Exam::find($this->exam)->marks_distribution_types);
 
         $markDistTypesValues = AppHelper::MARKS_DISTRIBUTION_TYPES;
+        
+        if ( $markDistTypesKeys!=null) {
 
         $this->markDistTypes = collect($markDistTypesValues)->filter(function ($value, $key) use ($markDistTypesKeys) {
             return in_array($key, $markDistTypesKeys); 
         })->all();
 
+        }
+        foreach ($this->markDistTypes as $key => $value) {
+            $this->marks_distribution['type'][$key]=$value;
+        }
+      
 
     }
+   
+   
     public function deleteItem(): void
     {
         $this->examrule->delete();
@@ -169,6 +166,8 @@ class Create extends Component
         
         $this->reset(['item']);
 
+       
+
         $this->classes = Classes::orderBy('name')->get();
 
         $this->exams = Exam::orderBy('name')->get();
@@ -177,12 +176,13 @@ class Create extends Component
 
         $this->subjects = Subject::orderBy('name')->get();
 
-        $this->grades = Grade::orderBy('name')->get();
     }
 
     public function createItem(): void
     {
-        $this->validate();
+      
+      $validatedData = $this->validate();
+    
         $marksDistribution = [];
         foreach ($this->marks_distribution['type'] as $key => $value){
             $marksDistribution[] = [
@@ -197,10 +197,10 @@ class Create extends Component
             'total_exam_marks' => $this->item['total_exam_marks'], 
             'over_all_pass' => $this->item['over_all_pass'], 
             'classes_id' => $this->item['classes_id'], 
-            'exam_id' => $this->item['exam_id'], 
-            'combine_subject_id' => $this->item['combine_subject_id'], 
+            'exam_id' => $this->exam, 
+            'combine_subject_id' => $this->item['combine_subject_id'] !=''? $this->item['combine_subject_id']:null, 
             'subject_id' => $this->item['subject_id'], 
-            'grade_id' => $this->item['grade_id'], 
+            
         ]);
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('exam-rule.table');
@@ -211,20 +211,44 @@ class Create extends Component
     #[On('showEditForm')]
     public function showEditForm(ExamRule $examrule): void
     {
+        $this->reset(['item']);
+       
         $this->resetErrorBag();
         $this->examrule = $examrule;
+      
         $this->item = $examrule->toArray();
+      
         $this->confirmingItemEdit = true;
+        
+        $this->exam=$examrule->toArray()['exam_id'];
 
+         $this->updatedExam($this->examrule->exam_id);
+
+     
+
+        $this->marks_distribution=json_decode($examrule->marks_distribution,true);
+
+    
+        foreach ($this->marks_distribution as $key => $value) {
+            $key++;
+            $this->marks_distribution['type'][$key]=$value['type'];
+            $this->marks_distribution['total_marks'][$key]=$value['total_marks'];
+            $this->marks_distribution['pass_marks'][$key]=$value['pass_marks'];
+          
+        }
+
+       
+        
         $this->classes = Classes::orderBy('name')->get();
 
         $this->exams = Exam::orderBy('name')->get();
-
+        
         $this->combineSubjects = Subject::orderBy('name')->get();
 
         $this->subjects = Subject::orderBy('name')->get();
 
-        $this->grades = Grade::orderBy('name')->get();
+
+
     }
 
     public function editItem(): void

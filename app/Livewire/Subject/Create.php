@@ -120,6 +120,7 @@ class Create extends Component
         $this->reset(['item']);
         $this->item['code'] = IdGenerator::generate(['table' => 'subjects', 'field' => 'code', 'length' => 5, 'prefix' => 'S']);
         $this->teachersCollection = Teacher::all();
+        
         $this->classes = Classes::orderBy('name')->get();
     }
 
@@ -130,7 +131,7 @@ class Create extends Component
             'item.code' =>['required',Rule::unique('subjects', 'code')],
             'item.type' => 'required',
             'item.classes_id' => 'required|integer|exists:classes,id',
-            'item.exclude_in_result' => 'nullable|integer',
+            'item.exclude_in_result' => 'nullable',
       
         ]);
   
@@ -139,7 +140,7 @@ class Create extends Component
             'name' => $this->item['name'], 
             'code' => $this->item['code'], 
             'classes_id' => $this->item['classes_id'], 
-            'exclude_in_result' => $this->item['exclude_in_result'], 
+            'exclude_in_result' => $this->item['exclude_in_result']??0, 
             'type' => $this->item['type'], 
           ]
        );
@@ -174,7 +175,7 @@ class Create extends Component
             'item.code' =>['required',Rule::unique('subjects', 'code')->ignore($this->subject->id)->whereNull('deleted_at')],
             'item.type' => 'required',
             'item.classes_id' => 'required|integer|exists:classes,id',
-            'item.exclude_in_result' => 'nullable|integer',
+            'item.exclude_in_result' => 'nullable',
       
         ]);
         DB::beginTransaction();
@@ -184,7 +185,7 @@ class Create extends Component
             'name' => $this->item['name'], 
             'code' => $this->item['code'], 
             'classes_id' => $this->item['classes_id'], 
-            'exclude_in_result' => $this->item['exclude_in_result'], 
+            'exclude_in_result' => $this->item['exclude_in_result']??0, 
             'type' => $this->item['type'], 
           ]);
 

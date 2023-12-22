@@ -18,10 +18,9 @@ class ExamRule extends Model
      * @var array
      */
     protected $fillable = [
-        'class_id',
+        'classes_id',
         'subject_id',
         'exam_id',
-        'grade_id',
         'combine_subject_id',
         'marks_distribution',
         'passing_rule',

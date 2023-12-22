@@ -17,6 +17,10 @@ class Teacher extends Model
         'date_of_employment',
     ];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
     public function classes(){
         return $this->belongsToMany(Classes::class);
     }

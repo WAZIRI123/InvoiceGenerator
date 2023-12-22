@@ -17,6 +17,7 @@ class Grade extends Model
      */
     protected $fillable = [
         'name',
-        'rules',
+        'marks_from',
+        'marks_upto'
     ];
 }
