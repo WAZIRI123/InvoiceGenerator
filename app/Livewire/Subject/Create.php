@@ -100,6 +100,8 @@ class Create extends Component
         } catch (\Exception $e) {
             DB::rollback();
             $this->dispatch('show', 'Failed to Delete')->to('livewire-toast');
+
+            return;
   
         }
 

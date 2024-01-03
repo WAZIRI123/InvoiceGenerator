@@ -121,6 +121,8 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
+    
+    'currentAcademicYear' => date('y'),
 
     'key' => env('APP_KEY'),
 

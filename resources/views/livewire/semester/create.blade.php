@@ -45,7 +45,7 @@
             <div class="mt-4">
             <x-tall-crud-label>Attach subject</x-tall-crud-label>
             <x-tall-crud-checkbox-wrapper class="mt-2">
-            @foreach( $subjects as $c)
+            @foreach($subjects as $c)
               <x-tall-crud-checkbox class="ml-2" wire:model="checkedSubjects" value="{{$c->id}}" /> {{$c->name}}
             @endforeach
             </x-tall-crud-checkbox-wrapper>

@@ -184,6 +184,7 @@ class Create extends Component
       $validatedData = $this->validate();
     
         $marksDistribution = [];
+
         foreach ($this->marks_distribution['type'] as $key => $value){
             $marksDistribution[] = [
                 'type' => $value,
@@ -191,6 +192,7 @@ class Create extends Component
                 'pass_marks' => $this->marks_distribution['pass_marks'][$key],
             ];
         }
+
         $item = ExamRule::create([
             'marks_distribution' => json_encode( $marksDistribution), 
             'passing_rule' => $this->item['passing_rule'], 
@@ -202,6 +204,7 @@ class Create extends Component
             'subject_id' => $this->item['subject_id'], 
             
         ]);
+        
         $this->confirmingItemCreation = false;
         $this->dispatch('refresh')->to('exam-rule.table');
         $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
@@ -237,8 +240,6 @@ class Create extends Component
           
         }
 
-       
-        
         $this->classes = Classes::orderBy('name')->get();
 
         $this->exams = Exam::orderBy('name')->get();
@@ -262,15 +263,20 @@ class Create extends Component
                 'pass_marks' => $this->marks_distribution['pass_marks'][$key],
             ];
         }
+
         $item = $this->examrule->update([
             'marks_distribution' => json_encode( $marksDistribution), 
             'passing_rule' => $this->item['passing_rule'], 
             'total_exam_marks' => $this->item['total_exam_marks'], 
             'over_all_pass' => $this->item['over_all_pass'], 
          ]);
+
         $this->confirmingItemEdit = false;
+
         $this->primaryKey = '';
+
         $this->dispatch('refresh')->to('exam-rule.table');
+
         $this->dispatch('show', 'Record Updated Successfully')->to('livewire-toast');
 
     }

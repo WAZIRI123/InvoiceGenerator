@@ -25,20 +25,7 @@ class Create extends Component
         'showEditForm',
     ];
 
-    public function rules()
-    {
-        $rules = [];
-    
-        $rules["item.name"] = ['required','string',Rule::unique('grades', 'name')->ignore($this->grade->id)->whereNull('deleted_at')];
-    
-        $rules["item.marks_from"] = 'required|numeric|min:0|max:100';
-
-       $rules["item.marks_upto"] = "required|numeric|gte:item.marks_from|min:0|max:100";
- 
-    
-        return $rules;
-    }
-    
+   
 
 
     /**
@@ -110,8 +97,12 @@ class Create extends Component
     public function createItem(): void
     {
         session()->forget('grade.exists');
-        $this->validate();
-        //get all grades in the class group
+
+        $this->validate([
+        "item.name" => ['required','string',Rule::unique('grades', 'name')->whereNull('deleted_at')],
+        "item.marks_from" => 'required|numeric|min:0|max:100',
+        "item.marks_upto" => "required|numeric|gte:item.marks_from|min:0|max:100"]);
+     
         $gradesInDb = Grade::all();
 
         if ($this->gradeRangeExists(['marks_from' => $this->item['marks_from'], 'marks_upto' => $this->item['marks_upto']], $gradesInDb)) {
@@ -150,7 +141,10 @@ class Create extends Component
     {
         session()->forget('grade.exists');
         $rules["item.name"] = ['required','string',Rule::unique('grades', 'name')->ignore($this->grade->id)->whereNull('deleted_at')];
-        $this->validate();
+        $this->validate([
+            "item.name" => ['required','string',Rule::unique('grades', 'name')->ignore($this->grade->id)->whereNull('deleted_at')],
+            "item.marks_from" => 'required|numeric|min:0|max:100',
+            "item.marks_upto" => "required|numeric|gte:item.marks_from|min:0|max:100"]);
 
         $gradesInDb = Grade::all()->except($this->grade->id);
 

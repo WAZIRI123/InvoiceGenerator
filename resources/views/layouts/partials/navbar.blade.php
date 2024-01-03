@@ -13,10 +13,12 @@
         <div class="flex items-center"> 
      <!-- Show the first section on medium screens and larger -->
 <h1 class="hidden md:block text-gray-100 text-center text-lg font-bold uppercase tracking-widest">
-    @if($academic_year_start=getFinancialYear()['start'] && $academic_year_end=getFinancialYear()['end'])
-        {{getFinancialYear()['start'].'-'.$academic_year_end}}
+    @php
+        $academicYear = \App\Models\AcademicYear::checkUserAcademicYear(); // Replace 1 with the desired user ID
+    @endphp
+        {{$academicYear}}
         EasyResult│ SCHOOL  Online Examination Result 
-    @endif
+
 
 </h1>
 

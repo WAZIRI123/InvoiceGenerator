@@ -106,7 +106,6 @@
     <div class="mt-4 md:mt-0"> 
         <x-tall-crud-label>Marks Distribute Type</x-tall-crud-label>
         <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model.live="marks_distribution.type.{{$key}}" />
-
 @error('marks_distribution.type.'.$key) <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
         @error('marks_distribution.type.'.$key) <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
     </div>

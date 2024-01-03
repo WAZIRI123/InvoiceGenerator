@@ -3,6 +3,7 @@
 namespace App\Livewire\ExamMark;
 
 use App\Http\Helpers\AppHelper;
+use App\Models\AcademicYear;
 use App\Models\Classes;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -54,6 +55,8 @@ class Create extends Component
      */
     public $subjects = [];
 
+    public $academicYears = [];
+
     public $classes=[];
 
     public $sections=[];
@@ -68,9 +71,9 @@ class Create extends Component
         'item.section_id' => 'required|integer',
         'item.subject_id' => 'required|integer',
         'item.exam_id' => 'required|integer',
-        'item.studentIds' => 'required|array',
-        'item.marks_type' => 'required|array',
-        'item.absent' => 'nullable|array',
+        'registrationIds' => 'required|array',
+        'marks_type' => 'required|array',
+        'absent' => 'nullable|array',
     ];
     
 
@@ -83,9 +86,9 @@ class Create extends Component
         'item.section_id' => 'Section ID',
         'item.subject_id' => 'Subject ID',
         'item.exam_id' => 'Exam ID',
-        'item.studentIds' => 'Registration IDs',
-        'item.marks_type' => 'Marks type',
-        'item.absent' => 'Absent',
+        'registrationIds' => 'Registration IDs',
+        'marks_type' => 'Marks type',
+        'absent' => 'Absent',
     ];
     
 
@@ -402,7 +405,9 @@ class Create extends Component
     public function showCreateForm(): void
     {
         $this->confirmingItemCreation = true;
+
         $this->resetErrorBag();
+
         $this->reset(['item']);
 
         $this->students = Student::orderBy('admission_no')->get();
@@ -411,39 +416,139 @@ class Create extends Component
 
         $this->exams = Exam::orderBy('name')->get();
 
+        $this->academicYears = AcademicYear::orderBy('title')->get();
+
+        $this->classes = Classes::orderBy('name')->get();
+
+
         $this->subjects = Subject::orderBy('name')->get();
+        
     }
 
-    // public function createItem(): void
-    // {
-    //     $this->validate();
-    //     $item = ExamResult::create([
-    //         'marks_obtained' => $this->item['marks_obtained'], 
-    //         'student_id' => $this->item['student_id'], 
-    //         'semester_id' => $this->item['semester_id'], 
-    //         'exam_id' => $this->item['exam_id'], 
-    //         'subject_id' => $this->item['subject_id'], 
-    //     ]);
-    //     $examResultsSemester1 = ExamResult::where('student_id', $this->item['student_id'])->where('semester_id', 1)->get();
-    //     $student=Student::find($this->item['student_id']);
-    //     $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
+    public function createItem(): void
+    {
+        $this->validate();
 
-    //     if(!array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray())){
 
-    //         $student = Student::find($this->item['student_id']);
+                // some validation before entry the mark
+                $examInfo = Exam::where('status', AppHelper::ACTIVE)
+                ->where('id', $this->item['exam_id'])
+                ->first();
+            if(!$examInfo) {
+                $this->dispatch('show', 'No Exam set')->to('livewire-toast');
 
-    //         $student->resultStatus = 'complete';
+                return;
+            }
 
-    //         $student->save();
+            $examRule = ExamRule::where('exam_id',$this->item['exam_id'])
+            ->where('subject_id',$this->item['subject_id'])
+            ->first();
+
+        if(!$examRule) {
+            $this->dispatch('show', 'No Exam Rule set')->to('livewire-toast');
+
+            return;
+
+        }
+        
+        $entryExists = Mark::where('academic_year_id',$this->item['academic_year_id'])
+                ->where('class_id', $this->item['class_id'])
+                ->where('section_id', $this->item['section_id'])
+                ->where('subject_id', $this->item['section_id'])
+                ->where('exam_id', $this->item['section_id'])
+                ->whereIn('student_id', $this->item['studentIds'])
+                ->count();
     
-    //         }
+            if($entryExists){
+
+                $this->dispatch('show', 'This subject marks already exists for this exam & students!')->to('livewire-toast');
+
+                return;
+
+            }
+
+        $gradingRules=Grade::all();
+            //exam distributed marks rules
+            $distributeMarksRules = [];
+            foreach (json_decode($examRule->marks_distribution) as $rule){
+                $distributeMarksRules[$rule->type] = [
+                    'total_marks' => $rule->total_marks,
+                    'pass_marks' => $rule->pass_marks
+                ];
+            }
+            
+         $distributedMarks = $this->item['marks_type'];
+
+        foreach ($this->item['studentIds'] as $student){
+                $marks = $distributedMarks[$student];
+                [$isInvalid, $message, $totalMarks, $grade, $point, $typeWiseMarks] = $this->processMarksAndCalculateResult(
+                    $examRule,
+                    $gradingRules,
+                    $distributeMarksRules,
+                    $marks);
+    
+                if($isInvalid){
+                    break;
+                }
+    
+                $data = [
+                    'academic_year_id' => $acYear,
+                    'class_id' => $class_id,
+                    'section_id' => $section_id,
+                    'registration_id' => $student,
+                    'exam_id' => $exam_id,
+                    'subject_id' => $subject_id,
+                    'marks' => json_encode($typeWiseMarks),
+                    'total_marks' => $totalMarks,
+                    'grade' => $grade,
+                    'point' => $point,
+                    'present' => isset($absent[$student]) ? '0' : '1',
+                    "created_at" => $timeStampNow,
+                    "created_by" => $userId,
+                ];
+    
+                $marksData[] = $data;
+            }
+    
+    
+            if($isInvalid){
+                $this->dispatch('show', $message)->to('livewire-toast');
+            }
 
 
-    //     $this->confirmingItemCreation = false;
-    //     $this->dispatch('refresh')->to('exam-mark.table');
-    //     $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
+        $item = Mark::create([
+            'academic_year_id' => $this->item['academic_year_id'],
+            'class_id' => $this->item['class_id'],
+            'section_id' => $this->item['section_id'],
+            'student_id' => $this->item['student_id'],
+            'exam_id' => $this->item['exam_id'],
+            'subject_id' => $this->item['subject_id'],
+            'marks' => json_encode($typeWiseMarks),
+            'total_marks' => $this->item['marks_obtained'],
+            'grade' => $this->item['marks_obtained'],
+            'point' => $this->item['marks_obtained'],
+            'present' => $this->item['marks_obtained'],
+        ]);
+        $examResultsSemester1 = ExamResult::where('student_id', $this->item['student_id'])->where('semester_id', 1)->get();
+        $student=Student::find($this->item['student_id']);
+        $semester1Subjects=Semester::where('id',1)->where('classes_id',$student->classes_id)->first()->subjects?->pluck('id')->toArray();
 
-    // }
+        if(!array_diff($semester1Subjects,$examResultsSemester1->pluck('subject_id')->toArray())){
+
+            $student = Student::find($this->item['student_id']);
+
+            $student->resultStatus = 'complete';
+
+            $student->save();
+    
+            }
+
+
+        $this->confirmingItemCreation = false;
+        $this->dispatch('refresh')->to('exam-mark.table');
+        $this->dispatch('show', 'Record Added Successfully')->to('livewire-toast');
+
+    }
         
     #[On('showEditForm')]
     public function showEditForm(ExamResult $examresult): void

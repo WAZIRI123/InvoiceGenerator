@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AcademicYear;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -21,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(125);
+        config(['app.currentAcademicYear' => AcademicYear::checkUserAcademicYear()]);
     }
 }
