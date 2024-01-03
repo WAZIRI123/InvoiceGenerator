@@ -350,13 +350,7 @@ class Create extends Component
         $this->subjects = $teacher ? $teacher->subjects?->pluck('id','name')  :'';
 
         }
-        
-        $this->sections = Section::where('class_id',$this->item['class_id'])->pluck('name', 'id');
 
-
-        $this->exams = Exam::where('status', AppHelper::ACTIVE)
-        ->where('classes_id', $this->item['class_id'])
-        ->pluck('name', 'id');
 
         return view('livewire.exam-mark.create');
     }
@@ -420,9 +414,14 @@ class Create extends Component
 
         $this->classes = Classes::orderBy('name')->get();
 
-
         $this->subjects = Subject::orderBy('name')->get();
         
+    }
+
+    public function updatedClassId(){
+
+        $this->sections = Section::wehere('class_id',$this->item['class_id'])->orderBy('name')->get();
+
     }
 
     public function createItem(): void

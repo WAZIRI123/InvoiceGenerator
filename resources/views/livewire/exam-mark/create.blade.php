@@ -32,7 +32,7 @@
                     <option value="{{$c->id}}">{{$c->name}}<option>
                     @endforeach
                  </x-tall-crud-select>
-                @error('item.academic_year_id')<x-tall-crud-error-message>{{$message}}<x-tall-crud-error-message> @enderror
+                @error('item.academic_year_id')<x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             <div class="mt-4">
                     <x-tall-crud-label>Class</x-tall-crud-label>
@@ -105,12 +105,14 @@
                     @foreach($students as $student)
                 <tr>
                 <td class="px-3 py-2" >
-                                    {{$loop->iteration}}
+
+                {{$loop->iteration}}
+
                 </td>
                 <td class="px-3 py-2" >
 
                 <div class="mt-4">
-                <x-tall-crud-label>{{$student->info->name}} [{{$student->regi_no}}</x-tall-crud-label>
+                <x-tall-crud-label>{{$student->info->name}} [{{$student->regi_no}}]</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="registrationIds" />
                 @error('registrationIds') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
@@ -119,16 +121,16 @@
             <td class="px-3 py-2" >
             {{$student->roll_no}}
              </td>
-             @foreach($marksDistributions$distribution)
+             @foreach($marksDistributions as $distribution)
 
             <td class="px-3 py-2" >
             <div class="mt-4">
-            <x-tall-crud-label>Marks Obtained<x-tall-crud-label>
-            <x-tall-crud-input class="block mt-1 w-full" type="number" wire:model="marks_type.{{$student->id}}.{{$distribution->marks_type}}" required max="{{$distribution->total_marks}}" min="0" />
-                @error('type.{{$student->id}}.{{$distribution->type}}') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            <x-tall-crud-label>Marks Obtained</x-tall-crud-label>
+            <x-tall-crud-input class="block mt-1 w-full" type="number" wire:model="marks_type.{{$student->id}}.{{$distribution->marks_type}}" required max="{{$distribution->total_marks}}" min="0"/>
+                @error('marks_type.{{$student->id}}.{{$distribution->marks_type}}') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
             </td>
-                 @endforeach
+            @endforeach
                 <td class="px-3 py-2" >
             
                 </td>
