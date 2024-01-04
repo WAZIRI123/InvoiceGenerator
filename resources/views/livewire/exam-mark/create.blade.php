@@ -21,6 +21,69 @@
         </x-slot>
 
         <x-slot name="content">
+
+        <div class="grid grid-cols-2 gap-8">
+
+        <div class="mt-2">
+                    <x-tall-crud-label>Academic Year</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.academic_year_id">
+                     <option value="">Please Select</option>
+                     @foreach($academicYears as $c)
+                    <option value="{{$c->id}}">{{$c->name}}<option>
+                    @endforeach
+                 </x-tall-crud-select>
+                @error('item.academic_year_id')<x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+
+        <div class="mt-2">
+                    <x-tall-crud-label>Class</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.class_id">
+                        <option value="">Please Select</option>
+                        @foreach($classes as $c)
+                        <option value="{{$c}}">{{$c}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.class_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+
+            <div class="mt-2">
+                    <x-tall-crud-label>section</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.section_id">
+                        <option value="">Please Select</option>
+                        @foreach($sections as $c)
+                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.section_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+
+            
+            <div class="mt-2">
+                    <x-tall-crud-label>subject</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.subject_id">
+                        <option value="">Please Select</option>
+                        @foreach($subjects as $c)
+                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.subject_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+   
+            </div>
+
+            <div class="mt-2">
+                    <x-tall-crud-label>exam</x-tall-crud-label>
+                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
+                        <option value="">Please Select</option>
+                        @foreach($exams as $c)
+                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+                    </x-tall-crud-select>
+                    @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+   
+            </div>
+
+
+     </div>
             
         @if(count($students))
 
