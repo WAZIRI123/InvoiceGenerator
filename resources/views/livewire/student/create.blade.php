@@ -112,7 +112,7 @@
             <div class="grid grid-cols-2 gap-8">
                 
                 <div class="mt-4">
-                    <x-tall-crud-label>Semester</x-tall-crud-label>
+                    <x-tall-crud-label>Gender</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.gender">
                         <option value="">Please Select Gender</option>
 

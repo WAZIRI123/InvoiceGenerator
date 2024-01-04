@@ -412,6 +412,8 @@ class Create extends Component
 
         $this->academicYears = AcademicYear::orderBy('title')->get();
 
+   
+
         $this->classes = Classes::orderBy('name')->get();
 
         $this->subjects = Subject::orderBy('name')->get();
@@ -420,7 +422,7 @@ class Create extends Component
 
     public function updatedClassId(){
 
-        $this->sections = Section::wehere('class_id',$this->item['class_id'])->orderBy('name')->get();
+        $this->sections = Section::where('class_id',$this->item['class_id'])->orderBy('name')->get();
 
     }
 

@@ -20,10 +20,11 @@
             Add Record
         </x-slot>
 
-        <x-slot name="content"><div class="grid grid-cols-2 gap-8">
+        <x-slot name="content">
             
-            @if(count($students))
+        @if(count($students))
 
+        <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
                     <x-tall-crud-label>Academic Year</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.academic_year_id">
@@ -39,7 +40,7 @@
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.class_id">
                         <option value="">Please Select</option>
                         @foreach($classes as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        <option value="{{$c}}">{{$c}}</option>
                         @endforeach
                     </x-tall-crud-select>
                     @error('item.class_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
@@ -162,7 +163,7 @@
                         </table>
                     </div>
 
-        @endif
+           @endif
 
         </x-slot>
 

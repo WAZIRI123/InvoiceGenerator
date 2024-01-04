@@ -13,7 +13,7 @@ class Semester extends Model
 
     public function class()
     {
-    return $this->belongsTo(Classes::class);
+    return $this->belongsTo(Classes::class,'classes_id','id');
     }
 
     public function subjects()

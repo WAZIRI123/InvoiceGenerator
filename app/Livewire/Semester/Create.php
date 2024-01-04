@@ -7,6 +7,7 @@ use \Illuminate\View\View;
 use App\Models\Semester;
 use App\Models\Subject;
 use App\Models\Classes;
+use Carbon\Carbon;
 
 class Create extends Component
 {
@@ -43,7 +44,6 @@ class Create extends Component
         'item.name' => 'required|string|max:255',
         'item.description' => 'required|string|max:1000',
         'item.start_date' => 'required|date|date_format:Y-m-d',
-        'item.end_date' => 'required|date |date_format:Y-m-d|after_or_equal:item.start_date',
         'item.classes_id' => 'required|integer|exists:classes,id',
     ];
     
@@ -118,12 +118,23 @@ class Create extends Component
 
     public function createItem(): void
     {
-        $this->validate();
+    $this->validate();
+
+    $start_date = $this->item['start_date'];
+
+    $startDate = Carbon::createFromFormat('Y-m-d', $start_date);
+
+    $startDate = $startDate->format('d/m/Y');
+
+    $startDate=Carbon::createFromFormat('d/m/Y', $startDate);
+
+    $endDate=$startDate->addMonths(6);
+
         $item = Semester::create([
             'name' => $this->item['name'], 
             'description' => $this->item['description'], 
             'start_date' => $this->item['start_date'], 
-            'end_date' => $this->item['end_date'], 
+            'end_date' => $endDate, 
             'classes_id' => $this->item['classes_id'], 
         ]);
         $item->subjects()->attach($this->checkedSubjects);
@@ -154,11 +165,20 @@ class Create extends Component
     public function editItem(): void
     {
         $this->validate();
+        $start_date = $this->item['start_date'];
+
+        $startDate = Carbon::createFromFormat('Y-m-d', $start_date);
+    
+        $startDate = $startDate->format('d/m/Y');
+    
+        $startDate=Carbon::createFromFormat('d/m/Y', $startDate);
+    
+        $endDate=$startDate->addMonths(6);
         $item = $this->semester->update([
             'name' => $this->item['name'], 
             'description' => $this->item['description'], 
             'start_date' => $this->item['start_date'], 
-            'end_date' => $this->item['end_date'],
+            'end_date' => $endDate,
             'classes_id' => $this->item['classes_id'] 
          ]);
 

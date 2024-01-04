@@ -30,18 +30,9 @@
                 <x-tall-crud-label>Description</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
                 @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
-                <x-tall-crud-label>Start Date</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
-                @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
-            <div class="mt-4">
-                <x-tall-crud-label>End Date</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.end_date" />
-                @error('item.end_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
+            </div></div>
 
+            <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
             <x-tall-crud-label>Attach subject</x-tall-crud-label>
             <x-tall-crud-checkbox-wrapper class="mt-2">
@@ -62,6 +53,15 @@
                     @error('item.classes_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
             </div>
+
+            <div class="grid grid-cols-2 gap-8">
+            <div class="mt-4">
+                <x-tall-crud-label>Start Date</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
+                @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+        </div>
+
         </x-slot>
 
         <x-slot name="footer">
@@ -85,25 +85,16 @@
                 <x-tall-crud-label>Description</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.description" />
                 @error('item.description') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-            <div class="mt-4">
-                <x-tall-crud-label>Start Date</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
-                @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div>
-            <div class="mt-4">
-                <x-tall-crud-label>End Date</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.end_date" />
-                @error('item.end_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-            </div></div><div class="grid grid-cols-2 gap-8">
-
+            </div></div>
+                
+            <div class="grid grid-cols-2 gap-8">
             <div class="mt-4">
             <x-tall-crud-checkbox-wrapper class="mt-2">
             @foreach( $subjects as $c)
               <x-tall-crud-checkbox class="ml-2" wire:model="checkedSubjects" value="{{$c->id}}" /> {{$c->name}}
             @endforeach
             </x-tall-crud-checkbox-wrapper>
-
+            </div>
                 <div class="mt-4">
                     <x-tall-crud-label>Class</x-tall-crud-label>
                     <x-tall-crud-select class="block mt-1 w-full" wire:model="item.classes_id">
@@ -114,6 +105,13 @@
                     @error('item.classes_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
                 </div>
             </div>
+            <div class="grid grid-cols-2 gap-8">
+            <div class="mt-4">
+                <x-tall-crud-label>Start Date</x-tall-crud-label>
+                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.start_date" />
+                @error('item.start_date') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            </div>
+        </div>
         </x-slot>
 
         <x-slot name="footer">
