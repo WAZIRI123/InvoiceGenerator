@@ -40,10 +40,12 @@
         route="class.index" 
         title="class"/>
         <!-- end::Menu link -->
+
+        
      <!-- start::Menu link -->
      <x-side-menu.div-link  
-        route="stream.index" 
-        title="stream"/>
+        route="section.index" 
+        title="section"/>
         <!-- end::Menu link -->
 
           <!-- start::Menu link -->

@@ -17,7 +17,7 @@ class Mark extends Model
      */
     protected $fillable = [
         'academic_year_id',
-        'class_id',
+        'classes_id',
         'section_id',
         'student_id',
         'exam_id',
@@ -38,7 +38,7 @@ class Mark extends Model
 
     public function exam()
     {
-        return $this->belongsTo(Exam::class, 'exam_id');
+        return $this->belongsTo(Exam::class,'exam_id');
     }
 
     public function class()
@@ -48,5 +48,10 @@ class Mark extends Model
     public function subject()
     {
         return $this->belongsTo(Subject::class, 'subject_id');
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
     }
 }

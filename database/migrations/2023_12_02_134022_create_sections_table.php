@@ -22,7 +22,9 @@ return new class extends Migration
             $table->enum('status', [0,1])->default(1);
 
             $table->foreign('classes_id')->references('id')->on('classes');
+
             $table->foreign('teacher_id')->references('id')->on('users');
+            
             $table->timestamps();
             $table->softDeletes();
         });

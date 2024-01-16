@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Student;
 
+use App\Models\AcademicYear;
 use App\Models\Classes;
+use App\Models\Section;
 use App\Models\Semester;
 use App\Models\Stream;
 use App\Models\Student;
@@ -41,30 +43,6 @@ class Create extends Component
         'showEditForm',
     ];
 
-/**
-     * @var array
-     */
-    protected function rules()
-    {
-       return  $rules = [
-            'item.name' => ['required', 'string', 'max:255'],
-            'item.email' => ['required', 'string', 'email', Rule::unique('users', 'email')->ignore($this->user->id)->whereNull('deleted_at')],
-            'item.password' => ['required', 'string', new Password(8), 'confirmed'],
-            'item.password_confirmation' => ['required', 'string'],
-            'item.admission_no' => 'required',
-            'item.gender' => 'required',
-            'item.academic_year' => 'required',
-            'item.date_of_admission' => 'required|date',
-            'item.date_of_birth' => 'required|date|date_format:Y-m-d|before:' .today()->subYears(7)->format('Y-m-d'),
-            'is_graduate' => 'nullable',
-            'profile' => ['nullable', 'image', 'max:1024'],
-            'class' => 'required|integer|exists:classes,id',
-            'item.stream_id' => 'required|integer|exists:streams,id',
-            'item.semester_id' => 'required|integer|exists:semesters,id',
-        ];
-    
-        
-    }
 
     /**
      * @var array
@@ -177,17 +155,30 @@ class Create extends Component
         $this->item['date_of_admission'] =
         Carbon::now()->format('Y-m-d');
 
-        $this->item['academic_year']=$this->getFinancialYear()->start.'-'.$this->getFinancialYear()->end;
+        $this->item['academic_year']=AcademicYear::latest()->first()->id;
     }
 
     public function updatedClass(){
-        $this->streams=Stream::where('classes_id',$this->class)->get();
+        $this->streams=Section::where('classes_id',$this->class)->get();
     }
 
     public function createItem(): void
     {
   
-        $this->validate();
+        $this->validate(['item.name' => ['required', 'string', 'max:255'],
+        'item.email' => ['required', 'string', 'email', Rule::unique('users', 'email')->whereNull('deleted_at')],
+        'item.password' => ['required', 'string', new Password(8), 'confirmed'],
+        'item.password_confirmation' => ['required', 'string'],
+        'item.admission_no' => 'required',
+        'item.gender' => 'required',
+        'item.academic_year' => 'required',
+        'item.date_of_admission' => 'required|date',
+        'item.date_of_birth' => 'required|date|date_format:Y-m-d|before:' .today()->subYears(7)->format('Y-m-d'),
+        'is_graduate' => 'nullable',
+        'profile' => ['nullable', 'image', 'max:1024'],
+        'class' => 'required|integer|exists:classes,id',
+        'item.stream_id' => 'required|integer|exists:sections,id',
+        'item.semester_id' => 'required|integer|exists:semesters,id']);
         DB::transaction(function (){
         $uploadFilePath =$this->profile?'storage/'.$this->profile->store('profiles','public'):'';
       
@@ -228,7 +219,7 @@ class Create extends Component
         $this->classes = Classes::orderBy('name')->get();
 
         $this->semesters = Semester::orderBy('name')->get();
-        $this->streams=Stream::where('classes_id',$student?->classes_id)->get();
+        $this->streams=Section::where('classes_id',$student?->classes_id)->get();
 
         $this->user = $user;
          
@@ -256,7 +247,20 @@ class Create extends Component
     public function editItem(): void
     {
       
-        $this->validate();
+        $this->validate(['item.name' => ['required', 'string', 'max:255'],
+        'item.email' => ['required', 'string', 'email', Rule::unique('users', 'email')->ignore($this->user->id)->whereNull('deleted_at')],
+        'item.password' => ['required', 'string', new Password(8), 'confirmed'],
+        'item.password_confirmation' => ['required', 'string'],
+        'item.admission_no' => 'required',
+        'item.gender' => 'required',
+        'item.academic_year' => 'required',
+        'item.date_of_admission' => 'required|date',
+        'item.date_of_birth' => 'required|date|date_format:Y-m-d|before:' .today()->subYears(7)->format('Y-m-d'),
+        'is_graduate' => 'nullable',
+        'profile' => ['nullable', 'image', 'max:1024'],
+        'class' => 'required|integer|exists:classes,id',
+        'item.stream_id' => 'required|integer|exists:sections,id',
+        'item.semester_id' => 'required|integer|exists:semesters,id']);
         DB::transaction(function (){
         if($this->profile !== null)
         {

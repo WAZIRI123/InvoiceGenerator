@@ -35,9 +35,9 @@ class Student extends Model
         return $this->belongsTo(Classes::class, 'classes_id');
     }
 
-    public function stream()
+    public function section()
     {
-        return $this->belongsTo(Stream::class, 'stream_id');
+        return $this->belongsTo(Section::class, 'stream_id');
     }
 
     public function gender()

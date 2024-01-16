@@ -48,7 +48,7 @@ if (!$currentAcademicYear) {
 
 public function getCombinedDatesAttribute()
 {
-    return $this->start_date . ' - ' . $this->end_date;
+    return $this->start_date . ' / ' . $this->end_date;
 }
 
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Section;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
 use \Illuminate\View\View;
 
-use App\Models\AcademicYear;
+use App\Models\Section;
 
-class Wert extends Component
+class Table extends Component
 {
     use WithPagination;
 
@@ -41,10 +41,11 @@ class Wert extends Component
     public function render(): View
     {
         $results = $this->query()
+            ->with(['teacher','class','marks'])
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate($this->per_page);
 
-        return view('livewire.wert', [
+        return view('livewire.section.table', [
             'results' => $results
         ]);
     }
@@ -64,6 +65,6 @@ class Wert extends Component
 
     public function query(): Builder
     {
-        return AcademicYear::query();
+        return Section::query();
     }
 }

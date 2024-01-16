@@ -43,10 +43,6 @@ class Exam extends Model
 
     }
 
-    public function result()
-    {
-        return $this->hasMany(Result::class);
-
-    }
+   
 
 }

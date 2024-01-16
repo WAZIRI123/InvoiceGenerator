@@ -18,7 +18,7 @@ class Section extends Model
     protected $fillable = [
         'name',
         'capacity',
-        'class_id',
+        'classes_id',
         'teacher_id',
         'note',
         'status',
