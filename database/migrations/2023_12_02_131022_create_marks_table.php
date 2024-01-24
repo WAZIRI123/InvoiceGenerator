@@ -33,6 +33,10 @@ return new class extends Migration
             $table->foreign('subject_id')->references('id')->on('subjects');
 
             $table->unique(['classes_id','exam_id','student_id', 'subject_id']);
+            // $table->unique(['classes_id', 'exam_id', 'student_id', 'subject_id'])
+            // ->where(function ($query) {
+            //     $query->whereNull('deleted_at');
+            // });
             
             $table->timestamps();
             $table->softDeletes();

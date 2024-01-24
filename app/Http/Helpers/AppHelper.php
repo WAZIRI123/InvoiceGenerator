@@ -661,7 +661,22 @@ class AppHelper
             $totalMarks += $marks;
 
             // AppHelper::PASSING_RULES
-            if (in_array($examRule->passing_rule, [2, 3])) {
+            // 2=Individual,3=Over All & Individual
+            // AppHelper::MARKS_DISTRIBUTION_TYPES= const MARKS_DISTRIBUTION_TYPES = [
+            //     1 => "Written",
+            //     2 => "MCQ",
+            //     3 => "SBA",
+            //     4 => "Attendance",
+            //     5 => "Assignment",
+            //     6 => "Lab Report",
+            //     7 => "Practical",
+            // ];
+            // $distributeMarksRules[$type] it like written=>[
+            //     'total_marks'=>30,
+            //     'pass_marks' =>50,
+            // ]
+dd($examRule->passing_rule);
+            if (in_array($examRule->passing_rule, [2 , 3])) {
                 if ($marks > $distributeMarksRules[$type]['total_marks']) {
                     $isInvalid = true;
                     $message = AppHelper::MARKS_DISTRIBUTION_TYPES[$type] . " marks is too high from exam rules marks distribution!";
@@ -677,7 +692,7 @@ class AppHelper
         //fraction number make ceiling
         $totalMarks = ceil($totalMarks);
 
-        // AppHelper::PASSING_RULES
+        // AppHelper::PASSING_RULES=  const PASSING_RULES = [1 => 'Over All', 2 => 'Individual', 3 => 'Over All & Individual'];
         if (in_array($examRule->passing_rule, [1, 3])) {
             if ($totalMarks < $examRule->over_all_pass) {
                 $isFail = true;
@@ -700,6 +715,18 @@ class AppHelper
     {
         $grade = 'F';
         $point = 0.00;
+        // $gradingRules it like $gradingRules=['a'=>['from'=>90,'to'=>100]]
+
+    //    const GRADE_TYPES = [
+    //     1 => 'A+',
+    //     2 => 'A',
+    //     3 => 'A-',
+    //     4 => 'B',
+    //     5 => 'C',
+    //     6 => 'D',
+    //     7 => 'F',
+    // ];
+
         foreach ($gradingRules as $rule) {
             if ($marks >= $rule->marks_from && $marks <= $rule->marks_upto) {
                 $grade = AppHelper::GRADE_TYPES[$rule->grade];

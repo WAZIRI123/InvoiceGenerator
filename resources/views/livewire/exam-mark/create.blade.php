@@ -119,10 +119,10 @@
                 </td>
                 <td class="px-3 py-2" >
 
-                <div class="mt-4">
+         
+       <div class="mt-4">
                 <x-tall-crud-label>{{$student->user?->name}}</x-tall-crud-label>
                 <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model.live="studentIds.{{$key}}.admission_no" />
-
             </div>
 
             </td>
@@ -166,64 +166,54 @@
             Edit Record
         </x-slot>
 
-        <x-slot name="content"><div class="grid grid-cols-2 gap-8">
+        <x-slot name="content">
+       @if($examresult)
+
+            <div class="bg-white rounded-lg px-8 py-6 my-4 overflow-x-scroll custom-scrollbar">
+            <table class="w-full my-8 whitespace-nowrap" wire:loading.class.delay="opacity-50">
+            <thead class="bg-secondary text-gray-100 font-bold">
+                <tr class="text-left font-bold bg-black-400">
+             
+                        @php
+                            $marksDistributions = json_decode($examRule->marks_distribution);
+                        @endphp
+                            @foreach($marksDistributions as $distribution)
+                            <td class="px-3 py-2" >{{$distribution->type}}</td>
+                       
+                            @endforeach
+
+                            <td class="px-3 py-2" >Absent</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                <tr>
+                
+             @foreach($marksDistributions as $distribution)
+
+            <td class="px-3 py-2" >
             <div class="mt-4">
-                <x-tall-crud-label>Marks Obtained</x-tall-crud-label>
-                <x-tall-crud-input class="block mt-1 w-full" type="text" wire:model="item.marks_obtained" />
-                @error('item.marks_obtained') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+            <x-tall-crud-input class="block mt-1 w-full" type="number" wire:model="marks_type.{{$student->id}}.{{$distribution->type}}" required max="{{$distribution->total_marks}}" min="0"/>
+                @error("marks_type.{{$student->id}}.{{$distribution->type}}") <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
             </div>
-
-        ]
+            </td>
+            @endforeach
+    
+                <td class="px-3 py-2" >
+                    
                 <div class="mt-4">
-                    <x-tall-crud-label>Student</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.student_id">
-                        <option value="">Please Select</option>
-                        @foreach($students as $c)
-                        <option value="{{$c->id}}">{{$c->admission_no}}</option>
-                        @endforeach
-                    </x-tall-crud-select>
-                    @error('item.student_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
+                <x-tall-crud-checkbox wire:model="absent.{{$student->id}}" />
+                 Absent
+         
                 </div>
-            </div><div class="grid grid-cols-2 gap-8">
 
-            
-                <div class="mt-4">
-                    <x-tall-crud-label>Semester</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.semester_id">
-                        <option value="">Please Select</option>
-                        @foreach($semesters as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
-                        @endforeach
-                    </x-tall-crud-select>
-                    @error('item.semester_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-                </div>
-          
+                 </td>
+            </tr>
+             </tbody>
+                 </table>
+                    </div>
 
-           
-                <div class="mt-4">
-                    <x-tall-crud-label>Exam</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.exam_id">
-                        <option value="">Please Select</option>
-                        @foreach($exams as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
-                        @endforeach
-                    </x-tall-crud-select>
-                    @error('item.exam_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-                </div>
-            </div><div class="grid grid-cols-2 gap-8">
-
-      
-                <div class="mt-4">
-                    <x-tall-crud-label>Subject</x-tall-crud-label>
-                    <x-tall-crud-select class="block mt-1 w-full" wire:model="item.subject_id">
-                        <option value="">Please Select</option>
-                        @foreach($subjects as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
-                        @endforeach
-                    </x-tall-crud-select>
-                    @error('item.subject_id') <x-tall-crud-error-message>{{$message}}</x-tall-crud-error-message> @enderror
-                </div>
-            </div>
+           @endif
         </x-slot>
 
         <x-slot name="footer">
